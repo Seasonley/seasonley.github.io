@@ -1,0 +1,23 @@
+{
+  "disease": "疾病概况",
+  "transmission": "传播途径",
+  "symptoms": "发病症状",
+  "abilities": "特殊能力",
+  "infectivity": "传染性",
+  "severity": "严重性",
+  "lethality": "致命性",
+  "start_location": "开始地点",
+  "infected": "受感染",
+  "dead": "死亡",
+  "cured": "治愈",
+  "suspected": "疑似",
+  "sonfirmed": "确诊",
+  "world": "世界概况",
+  "cure": "治愈",
+  "data_loading": "载入中",
+  "data_loading_desc": "载入数据，请耐心等候。",
+  "news": "新闻",
+  "china":"中国",
+  "gtitle":"该页以瘟疫公司的风格展示2019-nCoV的概况",
+  "gdesc":"点击城市开始。你可以通过点击城市名称来查看更多详细资讯。"
+}

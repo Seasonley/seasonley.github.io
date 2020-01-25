@@ -1,0 +1,33 @@
+{
+  "name": "seasonley.github.io",
+  "version": "1.0.0",
+  "engineStrict": true,
+  "engines": {
+    "node":"10.8.0"
+  },
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "p.dev": "parcel ./PlagueInc/index.html",
+    "p.build": "parcel build ./PlagueInc/index.html -d 2019ncov --public-url \/2019ncov --no-source-maps"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Seasonley/seasonley.github.io.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Seasonley/seasonley.github.io/issues"
+  },
+  "homepage": "https://github.com/Seasonley/seasonley.github.io#readme",
+  "dependencies": {
+    "parcel": "^1.12.4"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.12.4",
+    "parcel-plugin-url-loader": "^1.3.1"
+  }
+}
