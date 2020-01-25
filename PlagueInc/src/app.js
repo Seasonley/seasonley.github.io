@@ -84,6 +84,14 @@ ajax('../PlagueInc/src/img/china.svg',function (res) {
     };
     windowOnload();
 })
+
+function vbr(t){
+    try {
+        window.navigator.vibrate && window.navigator.vibrate(t);
+    } catch (error) {
+        
+    }
+}
 windowOnload=()=>{
     if ((navigator.language || navigator.browserLanguage).toLowerCase().indexOf('zh') < 0) {
         htmlDom.lang = 'en';
@@ -106,8 +114,12 @@ windowOnload=()=>{
       btnCloseCity
     ].forEach(
       v =>
-        (v.ontouchstart = () =>
-          window.navigator.vibrate&&window.navigator.vibrate(50))
+        v.ontouchstart =function(e){
+
+      e.stopPropagation();
+          vbr(50);
+        }
+        
     );
     
     
@@ -115,16 +127,16 @@ windowOnload=()=>{
         htmlDom.setAttribute("lang", htmlDom.lang === 'zh' ? 'en' : 'zh');
         langLoad();
     }
-    bubStart.ontouchstart = bubStart.onclick = e => {
+    bubStart.ontouchstart = bubStart.onclick = function(e ) {
       e.stopPropagation();
-      window.navigator.vibrate&&window.navigator.vibrate(200);
+      vbr(200);
       e.target.setAttribute("hidden", true);
       renderMapColor($data.listByCountry);
 
       document.body.addEventListener("click", function(event) {
         var ele = event.target;
         if (ele.tagName == "path") {
-          window.navigator.vibrate&&window.navigator.vibrate(50);
+      vbr(50);
           setState({
             $cityName: ele.id,
             $_cityName: ele.id,
