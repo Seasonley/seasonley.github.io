@@ -68,6 +68,9 @@ function ajax(url,successFn) {
     request.send();
 }
 ajax('../PlagueInc/src/img/china.svg',function (res) {
+    setTimeout(() => {
+        loading.setAttribute("hidden",true)
+    }, 500);
     document.body.innerHTML = res + document.body.innerHTML;
     langLoad();
     var box = document.querySelector("#mapChina");

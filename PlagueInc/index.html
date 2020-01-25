@@ -32,6 +32,7 @@ body,html{
     font-weight: bold;
     text-shadow: 1px 1px 5px black;
 }
+[hidden]{display:none;}
   </style>
     <link rel="preload" href="style.css"  as="style" onload="this.rel='stylesheet'">
     <script defer src="src/app.js"></script>
@@ -139,6 +140,18 @@ function horizontalScreen() {
     ].join(';')
     );
 }
+    </script>
+        <script>
+    var _mtac = {};
+    (function() {
+        var mta = document.createElement("script");
+        mta.src = "//pingjs.qq.com/h5/stats.js?v2.0.4";
+        mta.setAttribute("name", "MTAH5");
+        mta.setAttribute("sid", "500709945");
+        mta.setAttribute("crossorigin","anonymous");
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(mta, s);
+    })();
     </script>
   </body>
 </html>
