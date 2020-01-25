@@ -94,7 +94,21 @@ windowOnload=()=>{
     binddialog(btnCity, dialogCity, btnCloseCity);
     binddialog(dialogAlert, dialogAlert, btnCloseAlert);
 
-    [btnCloseNews, btnCloseAlert, btnCity, btnNews, btnSetting, btnSick, btnDna, btnCloseSick, btnCloseCity].forEach(v => v.ontouchstart = () => window.navigator.vibrate(50))
+    [
+      btnCloseNews,
+      btnCloseAlert,
+      btnCity,
+      btnNews,
+      btnSetting,
+      btnSick,
+      btnDna,
+      btnCloseSick,
+      btnCloseCity
+    ].forEach(
+      v =>
+        (v.ontouchstart = () =>
+          window.navigator.vibrate&&window.navigator.vibrate(50))
+    );
     
     
     btnSetting.ontouchstart = () => {
@@ -103,14 +117,14 @@ windowOnload=()=>{
     }
     bubStart.ontouchstart = bubStart.onclick = e => {
       e.stopPropagation();
-      window.navigator.vibrate(200);
+      window.navigator.vibrate&&window.navigator.vibrate(200);
       e.target.setAttribute("hidden", true);
       renderMapColor($data.listByCountry);
 
       document.body.addEventListener("click", function(event) {
         var ele = event.target;
         if (ele.tagName == "path") {
-          window.navigator.vibrate(50);
+          window.navigator.vibrate&&window.navigator.vibrate(50);
           setState({
             $cityName: ele.id,
             $_cityName: ele.id,
