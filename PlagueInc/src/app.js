@@ -5,7 +5,7 @@ _cured= 0,
 _dead= 0;
 lang.en = require('./i18n/en.json');
 lang.zh = require('./i18n/zh.json');
-var $data = require('./data.json').data;
+var $data = require('./static/data.json').data;
 function langLoad() {
     var langstr = '';
     for (var k in lang[htmlDom.lang]) {
