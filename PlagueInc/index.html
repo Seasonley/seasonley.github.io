@@ -36,8 +36,9 @@ body,html{
     <link rel="preload" href="style.css"  as="style" onload="this.rel='stylesheet'">
     <script defer src="src/app.js"></script>
     <script>
-    
-    window.innerHeight>window.innerWidth&& horizontalScreen();
+    window.addEventListener('DOMContentLoaded', () => {
+        window.innerHeight>window.innerWidth&& horizontalScreen();
+    });
 function horizontalScreen() {
     // transform 强制横屏
     var conW = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
