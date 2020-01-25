@@ -101,48 +101,50 @@ windowOnload=()=>{
         htmlDom.setAttribute("lang", htmlDom.lang === 'zh' ? 'en' : 'zh');
         langLoad();
     }
-    bubStart.ontouchstart=(e)=>{
-        e.stopPropagation();
-        window.navigator.vibrate(200);
-        e.target.setAttribute("hidden",true);
-        renderMapColor($data.listByCountry);
+    bubStart.ontouchstart = bubStart.onclick = e => {
+      e.stopPropagation();
+      window.navigator.vibrate(200);
+      e.target.setAttribute("hidden", true);
+      renderMapColor($data.listByCountry);
 
-        document.body.addEventListener('click', function (event) {
-            var ele = event.target;
-            if (ele.tagName == 'path') {
-                window.navigator.vibrate(50);
-                setState({
-                    $cityName: ele.id,
-                    $_cityName: ele.id,
-                    $globalCity: ele.id,
-                    d_Infected: ele.getAttribute('confirmed') || 0,
-                    d_Dead: ele.getAttribute('dead') || 0,
-                    $suspected: ele.getAttribute('suspected') || 0,
-                    $cured: ele.getAttribute('cured') || 0,
-                    i_cure: ele.getAttribute('cured') || 0,
-                    i_infected: ele.getAttribute('confirmed') || 0,
-                    i_dead: ele.getAttribute('dead') || 0,
-                    $cityList: ($data.listByArea.find(v => v.provinceShortName === ele.id) || { cities: [] }).cities
-                })
-            } else
-                if (ele.tagName == 'BODY' || ele.tagName == 'svg') {
-                    setState({
-                        $cityName: lang[htmlDom.lang].china,
-                        $_cityName: lang[htmlDom.lang].china,
-                        $globalCity: lang[htmlDom.lang].china,
-                        d_Infected: _confirmed || 0,
-                        d_Dead: _dead || 0,
-                        $suspected: _suspected,
-                        $cured: _cured,
-                        i_cure: _cured,
-                        i_infected: _confirmed,
-                        i_dead: _dead,
-                        $cityList: [],
-                    })
-                }
-
-        })
-    }
+      document.body.addEventListener("click", function(event) {
+        var ele = event.target;
+        if (ele.tagName == "path") {
+          window.navigator.vibrate(50);
+          setState({
+            $cityName: ele.id,
+            $_cityName: ele.id,
+            $globalCity: ele.id,
+            d_Infected: ele.getAttribute("confirmed") || 0,
+            d_Dead: ele.getAttribute("dead") || 0,
+            $suspected: ele.getAttribute("suspected") || 0,
+            $cured: ele.getAttribute("cured") || 0,
+            i_cure: ele.getAttribute("cured") || 0,
+            i_infected: ele.getAttribute("confirmed") || 0,
+            i_dead: ele.getAttribute("dead") || 0,
+            $cityList: (
+              $data.listByArea.find(v => v.provinceShortName === ele.id) || {
+                cities: []
+              }
+            ).cities
+          });
+        } else if (ele.tagName == "BODY" || ele.tagName == "svg") {
+          setState({
+            $cityName: lang[htmlDom.lang].china,
+            $_cityName: lang[htmlDom.lang].china,
+            $globalCity: lang[htmlDom.lang].china,
+            d_Infected: _confirmed || 0,
+            d_Dead: _dead || 0,
+            $suspected: _suspected,
+            $cured: _cured,
+            i_cure: _cured,
+            i_infected: _confirmed,
+            i_dead: _dead,
+            $cityList: []
+          });
+        }
+      });
+    };
     
     setState({
         $date: (new Date()).toLocaleDateString(htmlDom.lang),
