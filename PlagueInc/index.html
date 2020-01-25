@@ -35,24 +35,6 @@ body,html{
   </style>
     <link rel="preload" href="style.css"  as="style" onload="this.rel='stylesheet'">
     <script defer src="src/app.js"></script>
-    <script>
-    window.addEventListener('DOMContentLoaded', () => {
-        window.innerHeight>window.innerWidth&& horizontalScreen();
-    });
-function horizontalScreen() {
-    // transform 强制横屏
-    var conW = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-    var conH = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-    
-    document.body.setAttribute('style',[
-        "transform: rotate(90deg) translate(" + ((conH - conW) / 2) + "px," + ((conH - conW) / 2) + "px)",
-        "width: "+conH + "px",
-        "height: "+conW + "px",
-        "transform-origin: center center",
-    ].join(';')
-    );
-}
-    </script>
   </head>
   <body>
       <div id="loading" class="loading"  lang="data_loading_desc"></div>
@@ -142,5 +124,21 @@ function horizontalScreen() {
     </p>
 </dialog>
 <button id="bubStart" class="fixed"></button>
+    <script>
+    window.innerHeight>window.innerWidth&& horizontalScreen();
+function horizontalScreen() {
+    // transform 强制横屏
+    var conW = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+    var conH = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+    
+    document.body.setAttribute('style',[
+        "transform: rotate(90deg) translate(" + ((conH - conW) / 2) + "px," + ((conH - conW) / 2) + "px)",
+        "width: "+conH + "px",
+        "height: "+conW + "px",
+        "transform-origin: center center",
+    ].join(';')
+    );
+}
+    </script>
   </body>
 </html>
