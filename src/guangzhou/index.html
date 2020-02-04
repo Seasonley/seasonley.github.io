@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="description" content="广东省医疗物资需求信息平台为2019-nCoV环境下为广东省提供医疗物资需求发布平台，是由志愿者发起的开源项目。医院资源需要补充联系:左琪菲(15021861823),张敏(13265033232)。">
+    <meta name="keywords" content="广东省医疗物资需求信息平台,广东省,医疗,物资,2019ncov,ncov,非典,冠状病毒,癍痧,凉茶,志愿,谢晟立,陈潇峰,宋健,徐云磊,左琪菲,张敏">
+    <title>广东省医疗物资需求信息平台</title>
+    <link rel="stylesheet" href="app.css" />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
+  </head>
+  <body>
+    <div id="app" v-cloak>
+      <h1 class="nc-h1" v-if="showHeader">广东省医疗物资需求信息平台</h1>
+      <ul class="nc-menu">
+        <li class="nc-menu-tab">
+          <input type="radio" name="sortBy" class="nc-menu-check" value="area" v-model="sortBy" id="byArea"/><label
+            for="byArea"
+            >按区域</label
+          >
+          <button class="nc-menu-btn" @click="exportArea"><i class="icon-download"></i>导出</button>
+        </li>
+        <li class="nc-menu-tab">
+          <input type="radio" @click="area=''" name="sortBy" class="nc-menu-check" value="mt" v-model="sortBy" id="byMt"/><label
+            for="byMt"
+            >按物资</label
+          >
+          <button class="nc-menu-btn" @click="exportMt"><i class="icon-download"></i>导出</button>
+        </li>
+      </ul>
+        <ul class="nc-menu" v-if="sortBy==='area'">
+          <li class="nc-menu-item">
+            <input type="radio" name="area" class="nc-menu-check" value="" v-model="area" id="全部地区"/><label
+              for="全部地区"
+              >全部地区 ({{countall}})</label
+            >
+          </li>
+          <li class="nc-menu-item">
+            <input type="radio" name="area" class="nc-menu-check" value="定点" v-model="area" id="定点"/><label
+              for="定点"
+              >❤ 定点医院 ({{countdd}})</label
+            >
+          </li>
+          <li class="nc-menu-item" v-for="city in cities" :key="city[0]">
+            <input type="radio" name="area" :value="city[0]" class="nc-menu-check" v-model="area" :id="city[0]"/>
+            <label :for="city[0]">{{city[0]}} ({{city[1]}})</label>
+          </li>
+        </ul>
+        <ul class="nc-menu" v-if="sortBy==='mt'">
+          <li class="nc-menu-item">
+            <input type="radio" name="mt" class="nc-menu-check" value="" v-model="area" id="全部物资"/><label
+              for="全部物资"
+              >全部物资 ({{countall}})</label
+            >
+          </li>
+          <li class="nc-menu-item" v-for="mt in listByMt" :key="mt">
+            <input type="radio" name="mt" :value="mt[0]" class="nc-menu-check" v-model="area" :id="mt"/>
+            <label :for="mt">{{mt[0]}} ({{mt[1]}})</label>
+          </li>
+        </ul>
+        <label>
+          <input
+            class="nc-input-search"
+            type="search"
+            v-model="w"
+            tabindex="0"
+            placeholder="请输入你要搜索的医院名称"
+          />
+        </label>
+        <article class="nc-res" id="article" :data-loading="loading" @click="reload" :data-showHeader="showHeader">
+          <ul class="nc-xlist">
+            <li class="nc-x" v-for="item in list" :key="item.id" v-if="item.mts.length>0">
+              <h2 class="nc-x-h2">
+                {{item.name}}
+                <a class="nc-x-tel" :href="'tel:'+item.tel1" v-if="/\d/.test(item.tel1)"
+                  ><i class="icon-tel"></i> {{item.concat1}}</a
+                >
+                <a class="nc-x-tel" :href="'tel:'+item.tel2" v-if="/\d/.test(item.tel2)"
+                  ><i class="icon-tel"></i> {{item.concat2}}</a
+                >
+                <a class="nc-x-tel" :href="'tel:'+item.tel3" v-if="/\d/.test(item.tel3)"
+                  ><i class="icon-tel"></i> {{item.concat3}}</a
+                >
+              </h2>
+              <p class="nc-x-addr" tabindex="0" @click="setClipboardText">{{item.addr}}</p>
+              <h3 class="nc-x-h3">
+                急需物资
+                <!-- <time class="nc-x-time">2020-1-28 14:22:01</time> -->
+              </h3>
+              <details class="nc-details"  :data-open="item.mts.length<=3">
+                <summary class="nc-summary">
+                  <ul class="nc-mlist" >
+                    <li class="nc-m" v-for="i in [0,1,2]" :key="i" v-if="item.mts[i]">
+                      {{item.mts[i].name}}
+                      <span class="nc-mt">{{item.mts[i].type}}</span>
+                      <p class="mc-mt-remark">{{item.mts[i].remark}}</p>
+                    </li>
+                  </ul>
+                  <span class="nc-summary-btn" v-if="item.mts.length>3"></span>
+                </summary>
+                <ul class="nc-mlist">
+                  <li class="nc-m" v-for="(item, idx) in item.mts" :key="item.id" v-if="idx>2">
+                    {{item.name}}
+                    <span class="nc-mt">{{item.type}}</span>
+                    <p class="mc-mt-remark">{{item.remark}}</p>
+                  </li>
+                </ul>
+              </details>
+            </li>
+          </ul>
+        </article>
+      <footer class="nc-footer">
+        
+        <details class="nc-footer-details">
+          <summary class="nc-footer-summary">
+            医院资源需要补充，点这里与工作人员联系添加
+          </summary>
+          <div class="nc-footer-btn"><i class="icon-lc"></i>
+              癍痧凉茶志愿队  <a href="tel:15021861823" class="nc-footer-tel"><i class="icon-tel"></i>左琪菲</a>
+              <a href="tel:13265033232" class="nc-footer-tel"><i class="icon-tel"></i>张敏</a>
+            </div>
+        </details>
+      </footer>
+    </div>
+
+    <script src="main.js"></script>
+    <script>
+      var _mtac = {};
+      (function() {
+          var mta = document.createElement("script");
+          mta.src = "stats.js?v2.0.4";
+          mta.setAttribute("name", "MTAH5");
+          mta.setAttribute("sid", "500710008");
+          var s = document.getElementsByTagName("script")[0];
+          s.parentNode.insertBefore(mta, s);
+      })();
+    </script>
+
+  </body>
+</html>
