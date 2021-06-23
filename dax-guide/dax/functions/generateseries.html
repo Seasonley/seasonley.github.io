@@ -1,0 +1,366 @@
+
+            <header>
+                <h1 title="GENERATESERIES"><a href="https://dax.guide/generateseries/" rel="bookmark">GENERATESERIES</a> <span class="smaller">DAX Function (Table manipulation)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                                            </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns a table with one column, populated with sequential values from start to end.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    GENERATESERIES ( &lt;StartValue&gt;, &lt;EndValue&gt; [, &lt;IncrementValue&gt;] )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        StartValue                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The start value of the column.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        EndValue                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The end value of the column.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        IncrementValue                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Optional<br></td>
+                                    <td class="definition">
+                                        <p>The increment value of the column.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="table-ret">Table</span> A table with a single column.</div></p>                    <p>A single column table containing the values of an arithmetic series.<br />
+The name of the column is Value.</p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>When EndValue is less than StartValue, an empty table is returned.<br />
+IncrementValue must be a positive value.<br />
+The sequence stops at the last value that is less than or equal to EndValue.</p>
+                </section>
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 1 related article</a><br>
+                                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/hcVtYbHyPPrh3m/; notranslate" title="">
+--  GENERATESERIES returns a list of values given the first
+--  value, the last and the step.
+EVALUATE 
+    GENERATESERIES ( 1, 10, 1 )
+    
+EVALUATE 
+    GENERATESERIES ( 5, 20, 5 )
+    
+EVALUATE 
+    GENERATESERIES ( 0, 1, 0.1 )
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Value">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-int">2</td>
+</tr>
+<tr>
+<td class="col-int">3</td>
+</tr>
+<tr>
+<td class="col-int">4</td>
+</tr>
+<tr>
+<td class="col-int">5</td>
+</tr>
+<tr>
+<td class="col-int">6</td>
+</tr>
+<tr>
+<td class="col-int">7</td>
+</tr>
+<tr>
+<td class="col-int">8</td>
+</tr>
+<tr>
+<td class="col-int">9</td>
+</tr>
+<tr>
+<td class="col-int">10</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th title="Value">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-int">5</td>
+</tr>
+<tr>
+<td class="col-int">10</td>
+</tr>
+<tr>
+<td class="col-int">15</td>
+</tr>
+<tr>
+<td class="col-int">20</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th title="Value">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-float">0.00</td>
+</tr>
+<tr>
+<td class="col-float">0.10</td>
+</tr>
+<tr>
+<td class="col-float">0.20</td>
+</tr>
+<tr>
+<td class="col-float">0.30</td>
+</tr>
+<tr>
+<td class="col-float">0.40</td>
+</tr>
+<tr>
+<td class="col-float">0.50</td>
+</tr>
+<tr>
+<td class="col-float">0.60</td>
+</tr>
+<tr>
+<td class="col-float">0.70</td>
+</tr>
+<tr>
+<td class="col-float">0.80</td>
+</tr>
+<tr>
+<td class="col-float">0.90</td>
+</tr>
+<tr>
+<td class="col-float">1.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/ICKlr2bqo807Cm/; notranslate" title="">
+--  GENERATESERIES works with date and time too, 
+--  because dates are numbers.
+EVALUATE 
+    GENERATESERIES ( 
+        DATE ( 2021, 1, 28 ),
+        DATE ( 2021, 2, 3 ),
+        1
+    )
+ORDER BY &#91;Value]
+
+EVALUATE
+SELECTCOLUMNS (
+    GENERATESERIES (
+        TIME ( 0, 0, 0 ),
+        TIME ( 23, 59, 59 ),
+        TIME ( 2, 30, 0 )
+    ),
+    &quot;Time&quot;, FORMAT ( &#91;Value], &quot;hh:mm:ss&quot; )
+)
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Value">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-date">2021-01-28</td>
+</tr>
+<tr>
+<td class="col-date">2021-01-29</td>
+</tr>
+<tr>
+<td class="col-date">2021-01-30</td>
+</tr>
+<tr>
+<td class="col-date">2021-01-31</td>
+</tr>
+<tr>
+<td class="col-date">2021-02-01</td>
+</tr>
+<tr>
+<td class="col-date">2021-02-02</td>
+</tr>
+<tr>
+<td class="col-date">2021-02-03</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th title="Time">Time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">00:00:00</td>
+</tr>
+<tr>
+<td class="col-string">02:30:00</td>
+</tr>
+<tr>
+<td class="col-string">05:00:00</td>
+</tr>
+<tr>
+<td class="col-string">07:30:00</td>
+</tr>
+<tr>
+<td class="col-string">10:00:00</td>
+</tr>
+<tr>
+<td class="col-string">12:30:00</td>
+</tr>
+<tr>
+<td class="col-string">15:00:00</td>
+</tr>
+<tr>
+<td class="col-string">17:30:00</td>
+</tr>
+<tr>
+<td class="col-string">20:00:00</td>
+</tr>
+<tr>
+<td class="col-string">22:30:00</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>This example uses <a href="https://dax.guide/generate/" class="ajax" data-id="102">GENERATE</a> to create a table for time within a day with the minute granularity.</p>
+<pre class="brush: dax; title: ; notranslate" title="">
+EVALUATE
+//Time Dimension 
+//Working Hours 9:00am to 5:00pm 
+VAR Opening = 9
+VAR Closing = 17
+//Time Slot 
+VAR TimeSlot = 30
+VAR Offset = ( TimeSlot / 2 )
+RETURN
+    GENERATE (
+        GENERATESERIES ( 0, 1439, 1 ),
+        // 24 hours/day * 60 minutes/hour = 1,440 - 1 (initial time 12am) 
+        VAR __Minutes = &#91;Value]
+        VAR __Time =
+            TIME ( 0, __Minutes, 0 )
+        // MROUND: Rounds Value to the nearest multiple of TimeSlot
+        VAR __MinutesRounded =
+            MROUND ( ( __Minutes + Offset ), TimeSlot )
+        VAR __StartTimeSlotRounded =
+            TIME ( 0, __MinutesRounded - TimeSlot, 0 )
+        VAR __EndTimeSlotRounded =
+            TIME ( 0, __MinutesRounded, 0 )
+        RETURN
+            ROW (
+                    &quot;Hour&quot;, HOUR ( __Time ),
+                    &quot;Minute&quot;, MINUTE ( __Time ),
+                    &quot;Hour Minute 24h&quot;, FORMAT ( __Time, &quot;hh:mm&quot; ),
+                    &quot;Hour Minute 12h&quot;, FORMAT ( __Time, &quot;hh:mm AM/PM&quot; ),
+                    &quot;30 Minute Slot Start&quot;, FORMAT ( __StartTimeSlotRounded, &quot;hh:mm&quot; ),
+                    &quot;30 Minute Slot End&quot;, FORMAT ( __EndTimeSlotRounded, &quot;hh:mm&quot; ),
+                    &quot;30 Minute Slot&quot;, FORMAT ( __StartTimeSlotRounded, &quot;hh:mm&quot; ) &amp; &quot;-&quot;
+                        &amp; FORMAT ( __EndTimeSlotRounded, &quot;hh:mm&quot; ),
+                    &quot;Working Hours&quot;, IF (
+                        ( __Minutes / 60 ) &gt;= Opening
+                            &amp;&amp; ( __Minutes / 60 ) &lt;= Closing,
+                        &quot;Yes&quot;,
+                        &quot;No&quot;
+                    ),
+                    &quot;Time&quot;, __Time,
+                    &quot;TimeSlot Start&quot;, __StartTimeSlotRounded,
+                    &quot;TimeSlot End&quot;, __EndTimeSlotRounded
+            )
+    )
+</pre>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about GENERATESERIES in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/generating-a-series-of-numbers-in-dax/"  class="low-key"><strong>Generating a series of numbers in DAX</strong></a>
+                                <p>This article describes how to create a table with a series of numbers in DAX by using the new GENERATESERIES function or through a workaround using CALENDAR. <a href="https://www.sqlbi.com/articles/generating-a-series-of-numbers-in-dax/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://dax.do/" target="_top" class="sam-click" data-campaign="dax-do" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/daxdo-58090.png" title="Run your DAX code with DAX.do" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/generateseries-function?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/generateseries-function</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

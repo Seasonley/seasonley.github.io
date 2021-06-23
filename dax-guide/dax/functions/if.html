@@ -1,0 +1,435 @@
+
+            <header>
+                <h1 title="IF"><a href="https://dax.guide/if/" rel="bookmark">IF</a> <span class="smaller">DAX Function (Logical)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                         &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Checks whether a condition is met, and returns one value if TRUE, and another value if FALSE.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    IF ( &lt;LogicalTest&gt;, &lt;ResultIfTrue&gt; [, &lt;ResultIfFalse&gt;] )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        LogicalTest                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>Any value or expression that can be evaluated to TRUE or FALSE.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        ResultIfTrue                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The value that is returned if the logical test is TRUE.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        ResultIfFalse                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Optional<br></td>
+                                    <td class="definition">
+                                        <p>The value that is returned if the logical test is FALSE.<br />
+If omitted, a <a href="https://dax.guide/blank/" class="ajax" data-id="32">BLANK</a> is returned.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single value of any type.</div></p>                    <p>Either ResultIfTrue or ResultIfFalse expression result, depending on LogicalTest.</p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>Using IF can generate multiple branches of code execution that could result in slower performance at query time.<br />
+Then IF can return <a href="https://dax.guide/blank/" class="ajax" data-id="32">BLANK</a> as one of the results, there are cases where using <a href="https://dax.guide/divide/" class="ajax" data-id="78">DIVIDE</a> to obtain the same result could produce a faster query plan.<br />
+The following code returns <a href="https://dax.guide/blank/" class="ajax" data-id="32">BLANK</a> if LogicalTest is false.</p>
+<pre class="brush: dax; title: ; notranslate" title="">
+IF ( &lt;LogicalTest&gt;, &lt;ResultIfTrue&gt; )
+</pre>
+<p>The previous code is semantically equivalent to the following expression:</p>
+<pre class="brush: dax; title: ; notranslate" title="">
+DIVIDE ( &lt;ResultIfTrue&gt;, &lt;LogicalTest&gt; )
+</pre>
+                </section>
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 6 related articles</a><br>
+                                                    <a href="#alt" class="sliding">&raquo; 3 related functions</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/SL35zPybPltPFJ/; notranslate" title="">
+--  IF evaluates one of two branches, depending on the condition
+EVALUATE
+ADDCOLUMNS (
+    VALUES ( 'Product'&#91;Brand] ),
+    &quot;Sales 1&quot;, &#91;Sales Amount],
+    &quot;Sales 2&quot;,
+        VAR SalesAmount = &#91;Sales Amount]
+        RETURN
+            IF ( SalesAmount &gt; 3000000, 3000000, SalesAmount ),
+    &quot;Sales 3&quot;, MIN ( &#91;Sales Amount], 3000000 )
+)
+ORDER BY 'Product'&#91;Brand]
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Brand">Brand</th>
+<th title="Sales 1">Sales 1</th>
+<th title="Sales 2">Sales 2</th>
+<th title="Sales 3">Sales 3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">A. Datum</td>
+<td class="col-float">2,096,184.64</td>
+<td class="col-float">2,096,184.64</td>
+<td class="col-float">2,096,184.64</td>
+</tr>
+<tr>
+<td class="col-string">Adventure Works</td>
+<td class="col-float">4,011,112.28</td>
+<td class="col-float">3,000,000.00</td>
+<td class="col-float">3,000,000.00</td>
+</tr>
+<tr>
+<td class="col-string">Contoso</td>
+<td class="col-float">7,352,399.03</td>
+<td class="col-float">3,000,000.00</td>
+<td class="col-float">3,000,000.00</td>
+</tr>
+<tr>
+<td class="col-string">Fabrikam</td>
+<td class="col-float">5,554,015.73</td>
+<td class="col-float">3,000,000.00</td>
+<td class="col-float">3,000,000.00</td>
+</tr>
+<tr>
+<td class="col-string">Litware</td>
+<td class="col-float">3,255,704.03</td>
+<td class="col-float">3,000,000.00</td>
+<td class="col-float">3,000,000.00</td>
+</tr>
+<tr>
+<td class="col-string">Northwind Traders</td>
+<td class="col-float">1,040,552.13</td>
+<td class="col-float">1,040,552.13</td>
+<td class="col-float">1,040,552.13</td>
+</tr>
+<tr>
+<td class="col-string">Proseware</td>
+<td class="col-float">2,546,144.16</td>
+<td class="col-float">2,546,144.16</td>
+<td class="col-float">2,546,144.16</td>
+</tr>
+<tr>
+<td class="col-string">Southridge Video</td>
+<td class="col-float">1,384,413.85</td>
+<td class="col-float">1,384,413.85</td>
+<td class="col-float">1,384,413.85</td>
+</tr>
+<tr>
+<td class="col-string">Tailspin Toys</td>
+<td class="col-float">325,042.42</td>
+<td class="col-float">325,042.42</td>
+<td class="col-float">325,042.42</td>
+</tr>
+<tr>
+<td class="col-string">The Phone Company</td>
+<td class="col-float">1,123,819.07</td>
+<td class="col-float">1,123,819.07</td>
+<td class="col-float">1,123,819.07</td>
+</tr>
+<tr>
+<td class="col-string">Wide World Importers</td>
+<td class="col-float">1,901,956.66</td>
+<td class="col-float">1,901,956.66</td>
+<td class="col-float">1,901,956.66</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/SSH3un9NFEEW5U/; notranslate" title="">
+--  The &quot;else&quot; branch is optional. 
+--  If not specified, it defaults to BLANK
+EVALUATE
+ADDCOLUMNS (
+    VALUES ( 'Product'&#91;Brand] ),
+    &quot;Sales 1&quot;, &#91;Sales Amount],
+    &quot;Sales 2&quot;,
+        VAR SalesAmount = &#91;Sales Amount]
+        RETURN
+            IF ( SalesAmount &gt; 3000000, 3000000 )
+)
+ORDER BY 'Product'&#91;Brand]
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Brand">Brand</th>
+<th title="Sales 1">Sales 1</th>
+<th title="Sales 2">Sales 2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">A. Datum</td>
+<td class="col-float">2,096,184.64</td>
+<td class="col-int blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Adventure Works</td>
+<td class="col-float">4,011,112.28</td>
+<td class="col-int">3,000,000</td>
+</tr>
+<tr>
+<td class="col-string">Contoso</td>
+<td class="col-float">7,352,399.03</td>
+<td class="col-int">3,000,000</td>
+</tr>
+<tr>
+<td class="col-string">Fabrikam</td>
+<td class="col-float">5,554,015.73</td>
+<td class="col-int">3,000,000</td>
+</tr>
+<tr>
+<td class="col-string">Litware</td>
+<td class="col-float">3,255,704.03</td>
+<td class="col-int">3,000,000</td>
+</tr>
+<tr>
+<td class="col-string">Northwind Traders</td>
+<td class="col-float">1,040,552.13</td>
+<td class="col-int blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Proseware</td>
+<td class="col-float">2,546,144.16</td>
+<td class="col-int blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Southridge Video</td>
+<td class="col-float">1,384,413.85</td>
+<td class="col-int blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Tailspin Toys</td>
+<td class="col-float">325,042.42</td>
+<td class="col-int blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">The Phone Company</td>
+<td class="col-float">1,123,819.07</td>
+<td class="col-int blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Wide World Importers</td>
+<td class="col-float">1,901,956.66</td>
+<td class="col-int blank">(Blank)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/MXAgJC00MAQLor/; notranslate" title="">
+--  The two branches of IF can use different datatypes for
+--  their result. In that case, the IF function returns a
+--  VARIANT datatype
+EVALUATE
+ADDCOLUMNS (
+    VALUES ( 'Product'&#91;Brand] ),
+    &quot;Sales 1&quot;, &#91;Sales Amount],
+    &quot;Sales 2&quot;,
+        VAR SalesAmount = &#91;Sales Amount]
+        RETURN
+            IF ( SalesAmount &gt; 3000000, 3000000, &quot;Less than 3K&quot; )
+)
+ORDER BY 'Product'&#91;Brand]
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Brand">Brand</th>
+<th title="Sales 1">Sales 1</th>
+<th title="Sales 2">Sales 2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">A. Datum</td>
+<td class="col-float">2,096,184.64</td>
+<td class="col-string">Less than 3K</td>
+</tr>
+<tr>
+<td class="col-string">Adventure Works</td>
+<td class="col-float">4,011,112.28</td>
+<td class="col-string">3000000</td>
+</tr>
+<tr>
+<td class="col-string">Contoso</td>
+<td class="col-float">7,352,399.03</td>
+<td class="col-string">3000000</td>
+</tr>
+<tr>
+<td class="col-string">Fabrikam</td>
+<td class="col-float">5,554,015.73</td>
+<td class="col-string">3000000</td>
+</tr>
+<tr>
+<td class="col-string">Litware</td>
+<td class="col-float">3,255,704.03</td>
+<td class="col-string">3000000</td>
+</tr>
+<tr>
+<td class="col-string">Northwind Traders</td>
+<td class="col-float">1,040,552.13</td>
+<td class="col-string">Less than 3K</td>
+</tr>
+<tr>
+<td class="col-string">Proseware</td>
+<td class="col-float">2,546,144.16</td>
+<td class="col-string">Less than 3K</td>
+</tr>
+<tr>
+<td class="col-string">Southridge Video</td>
+<td class="col-float">1,384,413.85</td>
+<td class="col-string">Less than 3K</td>
+</tr>
+<tr>
+<td class="col-string">Tailspin Toys</td>
+<td class="col-float">325,042.42</td>
+<td class="col-string">Less than 3K</td>
+</tr>
+<tr>
+<td class="col-string">The Phone Company</td>
+<td class="col-float">1,123,819.07</td>
+<td class="col-string">Less than 3K</td>
+</tr>
+<tr>
+<td class="col-string">Wide World Importers</td>
+<td class="col-float">1,901,956.66</td>
+<td class="col-string">Less than 3K</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>IF returns a scalar value, it cannot be used to return a table.<br />
+DAX tries to convert the table to a scalar value, and it fails if there are multiple rows. The following code query an error.</p>
+<pre class="brush: dax; title: ; notranslate" title="">
+EVALUATE
+VAR SelectedYear = SELECTEDVALUE ( 'Date'&#91;Calendar Year Number] )
+VAR CurrentYear = YEAR ( TODAY () )
+VAR Period = 
+    IF ( 
+        SelectedYear = CurrentYear,
+        DATESYTD ( 'Date'&#91;Date] ),      -- Table
+        VALUES ( 'Date'&#91;Date] )         -- Table
+    )
+VAR Result = CALCULATE ( &#91;Sales Amount], Period ) 
+RETURN { Result }
+</pre>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about IF in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/optimizing-if-conditions-using-variables/"  class="low-key"><strong>Optimizing IF conditions by using variables</strong></a>
+                                <p>This article describes a very common optimization pattern that relies on variables to optimize conditional expressions in DAX. <a href="https://www.sqlbi.com/articles/optimizing-if-conditions-using-variables/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/understanding-eager-vs-strict-evaluation-in-dax/"  class="low-key"><strong>Understanding eager vs. strict evaluation in DAX</strong></a>
+                                <p>This article describes the differences between eager evaluation and strict evaluation in DAX, empowering you to choose the best evaluation type for your data models. <a href="https://www.sqlbi.com/articles/understanding-eager-vs-strict-evaluation-in-dax/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/optimizing-if-and-switch-expressions-using-variables/"  class="low-key"><strong>Optimizing IF and SWITCH expressions using variables</strong></a>
+                                <p>This article describes how variables should be used in DAX expressions involving IF and SWITCH statements in order to improve performance. <a href="https://www.sqlbi.com/articles/optimizing-if-and-switch-expressions-using-variables/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/from-sql-to-dax-implementing-nullif-and-coalesce-in-dax/"  class="low-key"><strong>From SQL to DAX: Implementing NULLIF and COALESCE in DAX</strong></a>
+                                <p>This article describes how to implement a syntax equivalent to the T-SQL function NULLIF and the ANSI SQL function COALESCE, in DAX. <a href="https://www.sqlbi.com/articles/from-sql-to-dax-implementing-nullif-and-coalesce-in-dax/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/optimizing-mutually-exclusive-calculations/"  class="low-key"><strong>Optimizing mutually exclusive calculations</strong></a>
+                                <p>This article describes how to optimize DAX expressions with mutually exclusive calculations that might cause slow query performance. <a href="https://www.sqlbi.com/articles/optimizing-mutually-exclusive-calculations/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/optimizing-conditions-involving-blank-values-in-dax/"  class="low-key"><strong>Optimizing conditions involving blank values in DAX</strong></a>
+                                <p>This article describes how blank values considered in a DAX conditional expression can affect its query plan and how to apply possible optimizations to improve performance in these cases. <a href="https://www.sqlbi.com/articles/optimizing-conditions-involving-blank-values-in-dax/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/coalesce/" class="ajax" data-id="613">COALESCE</a></li>
+                                                    <li><a href="https://dax.guide/if-eager/" class="ajax" data-id="607">IF.EAGER</a></li>
+                                                    <li><a href="https://dax.guide/switch/" class="ajax" data-id="223">SWITCH</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://dax.guide/" target="_top" class="sam-click" data-campaign="dax-guide" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/daxguide-58090.png" title="DAX Guide" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/if-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/if-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

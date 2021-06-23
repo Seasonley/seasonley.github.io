@@ -1,0 +1,362 @@
+
+            <header>
+                <h1 title="DATESYTD"><a href="https://dax.guide/datesytd/" rel="bookmark">DATESYTD</a> <span class="smaller">DAX Function (Time Intelligence)                    &nbsp;<a href="https://www.sqlbi.com/articles/understanding-context-transition/" class="feature icon icon-rinfo tooltip" data-tooltip-content="#contexttransition">Context Transition</a></span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                         &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns a set of dates in the year up to the last date visible in the filter context.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    DATESYTD ( &lt;Dates&gt; [, &lt;YearEndDate&gt;] )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Dates                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The name of a column containing dates or a one column table containing dates.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        YearEndDate                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Optional<br></td>
+                                    <td class="definition">
+                                        <p>End of year date.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="table-ret">Table</span> A table with a single column.</div></p>                    <p>A table containing a single column of date values.</p>
+                </section>
+            
+                            <!--googleoff: snippet-->
+                <section id="notes" class="notes">
+                    <h2>Notes</h2>
+                    <p>In order to use any time intelligence calculation, you need a well-formed date table. The <i>Date</i> table must satisfy the following requirements:
+<ul>
+<li>All dates need to be present for the years required. The <i>Date</i> table must always start on January 1 and end on December 31, including all the days in this range. If the report only references fiscal years, then the date table must include all the dates from the first to the last day of a fiscal year. For example, if the fiscal year 2008 starts on July 1, 2007, then the <i>Date</i> table must include all the days from July 1, 2007 to June 30, 2008.</li>
+<li>There needs to be a column with a <i>DateTime</i> or <i>Date</i> data type containing unique values. This column is usually called <i>Date</i>. Even though the <i>Date</i> column is often used to define relationships with other tables, this is not required. Still, the <i>Date</i> column must contain unique values and should be referenced by the Mark as Date Table feature. In case the column also contains a time part, no time should be used – for example, the time should always be 12:00 am.</li>
+<li>The <i>Date</i> table must be marked as a date table in the model, in case the relationship between the <i>Date</i> table and any other table is not based on the <i>Date</i>.</li>
+</ul></p>
+                </section>
+                <!--googleon: snippet-->
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>The dates argument can be any of the following:</p>
+<ul>
+<li>A reference to a date/time column. Only in this case a context transition applies because the column reference is replaced by
+<ul>
+<li><a href="https://dax.guide/calculatetable/" class="ajax" data-id="34">CALCULATETABLE</a> ( <a href="https://dax.guide/distinct/" class="ajax" data-id="76">DISTINCT</a> ( &lt;Dates&gt; ) )</li>
+</ul>
+</li>
+<li>A table expression that returns a single column of date/time values.</li>
+<li>A Boolean expression that defines a single-column table of date/time values.</li>
+</ul>
+<p>The result table includes only dates that exist in the dates column.</p>
+<p>The syntax:</p>
+<pre class="brush: dax; gutter: false; title: ; notranslate" title="">
+DATESYTD ( &lt;Dates&gt;&#91;, &lt;YearEndDate&gt;] ) 
+</pre>
+<p>corresponds to:</p>
+<pre class="brush: dax; gutter: false; title: ; notranslate" title="">
+DATESBETWEEN ( 
+    &lt;Dates&gt;, 
+    STARTOFYEAR ( LASTDATE ( &lt;Dates&gt; )&#91;, &lt;YearEndDate&gt;] ),
+    LASTDATE ( &lt;Dates&gt; ) 
+)
+</pre>
+                </section>
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 3 related articles</a><br>
+                                                    <a href="#alt" class="sliding">&raquo; 2 related functions</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/47jSYNlsNDC9DP/; notranslate" title="">
+--  DATESYTD returns the dates from the first of January of the currently selected date 
+EVALUATE
+CALCULATETABLE (
+    DATESYTD ( 'Date'&#91;Date] ),
+    'Date'&#91;Date] = DATE ( 2007, 5, 12 )
+)
+ORDER BY &#91;Date] ASC
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Date">Date</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-date">2007-01-01</td>
+</tr>
+<tr>
+<td class="col-date">2007-01-02</td>
+</tr>
+<tr>
+<td class="col-date">&#8230;</td>
+</tr>
+<tr>
+<td class="col-date">2007-05-11</td>
+</tr>
+<tr>
+<td class="col-date">2007-05-12</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/K0GE2IsrbzmdED/; notranslate" title="">
+--  If the selection contains larger periods, it returns the YTD using
+--  the end of the entire period.
+--  The result is always a single-row table.
+EVALUATE
+    CALCULATETABLE ( 
+        DATESYTD ( 'Date'&#91;Date] ),
+        'Date'&#91;Date] &gt;= DATE ( 2007, 2, 5 ) 
+            &amp;&amp; 'Date'&#91;Date] &lt;= DATE ( 2007, 5, 12 ) 
+    )
+ORDER BY &#91;Date] ASC
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Date">Date</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-date">2007-01-01</td>
+</tr>
+<tr>
+<td class="col-date">2007-01-02</td>
+</tr>
+<tr>
+<td class="col-date">&#8230;</td>
+</tr>
+<tr>
+<td class="col-date">2007-05-11</td>
+</tr>
+<tr>
+<td class="col-date">2007-05-12</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/153jRFWzXaoxHY/; notranslate" title="">
+--  All time intelligence function are designed to return a table
+--  to be easily used in CALCULATE as a filter.
+EVALUATE
+{
+    CALCULATE (
+        CALCULATE (
+            &#91;Sales Amount],
+            DATESYTD ( 'Date'&#91;Date] )       -- 2007-01-01 : 2007-05-12
+        ),
+        'Date'&#91;Date] = DATE ( 2007, 5, 12 )
+    )
+}
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Value">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-float">4,038,742.76</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/ztDogaRP8jEE7c/; notranslate" title="">
+--  This example shows the sales in the current and both the
+--  quarter-to-date and year-to-date sales.
+DEFINE
+    MEASURE Sales&#91;Sales QTD] =
+        CALCULATE (
+            &#91;Sales Amount],
+            DATESQTD ( 'Date'&#91;Date] )
+        )
+    MEASURE Sales&#91;Sales YTD] =
+        CALCULATE (
+            &#91;Sales Amount],
+            DATESYTD ( 'Date'&#91;Date] )
+        )
+EVALUATE
+SUMMARIZECOLUMNS (
+    'Date'&#91;Calendar Year Month Number],
+    'Date'&#91;Calendar Year Month],
+    &quot;Sales Amount&quot;, &#91;Sales Amount],
+    &quot;Sales QTD&quot;, &#91;Sales QTD],
+    &quot;Sales YTD&quot;, &#91;Sales YTD]
+)
+ORDER BY &#91;Calendar Year Month Number]
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Calendar Year Month Number">Calendar Year Month Number</th>
+<th title="Calendar Year Month">Calendar Year Month</th>
+<th title="Sales Amount">Sales Amount</th>
+<th title="Sales QTD">Sales QTD</th>
+<th title="Sales YTD">Sales YTD</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-key">200701</td>
+<td class="col-date">2007-01-01</td>
+<td class="col-float">794,248.24</td>
+<td class="col-float">794,248.24</td>
+<td class="col-float">794,248.24</td>
+</tr>
+<tr>
+<td class="col-key">200702</td>
+<td class="col-date">2007-02-01</td>
+<td class="col-float">891,135.91</td>
+<td class="col-float">1,685,384.15</td>
+<td class="col-float">1,685,384.15</td>
+</tr>
+<tr>
+<td class="col-key">200703</td>
+<td class="col-date">2007-03-01</td>
+<td class="col-float">961,289.24</td>
+<td class="col-float">2,646,673.39</td>
+<td class="col-float">2,646,673.39</td>
+</tr>
+<tr>
+<td class="col-key">200704</td>
+<td class="col-date">2007-04-01</td>
+<td class="col-float">1,128,104.82</td>
+<td class="col-float">1,128,104.82</td>
+<td class="col-float">3,774,778.20</td>
+</tr>
+<tr>
+<td class="col-key">&#8230;</td>
+<td class="col-date">&#8230;</td>
+<td class="col-float">&#8230;</td>
+<td class="col-float">&#8230;</td>
+<td class="col-float">&#8230;</td>
+</tr>
+<tr>
+<td class="col-key">200909</td>
+<td class="col-date">2009-09-01</td>
+<td class="col-float">709,610.40</td>
+<td class="col-float">2,613,714.44</td>
+<td class="col-float">6,931,979.13</td>
+</tr>
+<tr>
+<td class="col-key">200910</td>
+<td class="col-date">2009-10-01</td>
+<td class="col-float">806,738.22</td>
+<td class="col-float">806,738.22</td>
+<td class="col-float">7,738,717.35</td>
+</tr>
+<tr>
+<td class="col-key">200911</td>
+<td class="col-date">2009-11-01</td>
+<td class="col-float">868,164.01</td>
+<td class="col-float">1,674,902.23</td>
+<td class="col-float">8,606,881.36</td>
+</tr>
+<tr>
+<td class="col-key">200912</td>
+<td class="col-date">2009-12-01</td>
+<td class="col-float">746,933.50</td>
+<td class="col-float">2,421,835.73</td>
+<td class="col-float">9,353,814.87</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about DATESYTD in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/time-intelligence-in-power-bi-desktop/"  class="low-key"><strong>Time Intelligence in Power BI Desktop</strong></a>
+                                <p>In Power BI Desktop (as of February 2016) you have to use DAX to apply calculations over dates (such as year-to-date, year-over-year, and others), but you do not have the Mark as Date Table feature. This article describes which scenarios are impacted and the possible workarounds. <a href="https://www.sqlbi.com/articles/time-intelligence-in-power-bi-desktop/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/blog/marco/2018/04/06/international-year-end-date-for-ytd-functions-in-dax/"  class="low-key"><strong>International year_end_date for YTD functions in DAX</strong></a>
+                                <p>If you used the DATESYTD and TOTALYTD functions in DAX, you might have noticed that the optional parameter year_end_date is a string defining the last day of the year. This article describes what are the formats allowed in that parameter. <a href="https://www.sqlbi.com/blog/marco/2018/04/06/international-year-end-date-for-ytd-functions-in-dax/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/year-to-date-filtering-weekdays-in-dax/"  class="low-key"><strong>Year-to-date filtering weekdays in DAX</strong></a>
+                                <p>Time intelligence functions oftentimes hide an automatic ALL statement meant to make time intelligence calculations easier. This article describes this behavior and what to do in case it ends up breaking your calculation. <a href="https://www.sqlbi.com/articles/year-to-date-filtering-weekdays-in-dax/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/datesmtd/" class="ajax" data-id="69">DATESMTD</a></li>
+                                                    <li><a href="https://dax.guide/datesqtd/" class="ajax" data-id="70">DATESQTD</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/mastering-dax-video-course/?aff=mdax-promo" target="_top" class="sam-click" data-campaign="mdax-video-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/mdax-58090.jpg" title="Mastering DAX Video Course" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/datesytd-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/datesytd-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

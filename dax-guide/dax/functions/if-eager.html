@@ -1,0 +1,198 @@
+
+            <header>
+                <h1 title="IF.EAGER"><a href="https://dax.guide/if-eager/" rel="bookmark">IF.EAGER</a> <span class="smaller">DAX Function (Logical)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                         &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Checks whether a condition is met, and returns one value if TRUE, and another value if FALSE. Uses eager execution plan.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    IF.EAGER ( &lt;LogicalTest&gt;, &lt;ResultIfTrue&gt; [, &lt;ResultIfFalse&gt;] )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        LogicalTest                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>Any value or expression that can be evaluated to TRUE or FALSE.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        ResultIfTrue                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The value that is returned if the logical test is TRUE.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        ResultIfFalse                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Optional<br></td>
+                                    <td class="definition">
+                                        <p>The value that is returned if the logical test is FALSE; if omitted, <a href="https://dax.guide/blank/" class="ajax" data-id="32">BLANK</a> is returned.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single value of any type.</div></p>                    <p>Either ResultIfTrue or ResultIfFalse expression result, depending on LogicalTest.<br />
+The result data type can be variant if ResultIfTrue and ResultIfFalse are of different data types.  The function attempts to return a single data type if both ResultIfTrue and ResultIfFalse are of numeric data types. In the latter case, the IF.EAGER function will implicitly convert data types to accommodate both values.</p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>IF.EAGER has the same functional behavior as the <a href="https://dax.guide/if/" class="ajax" data-id="111">IF</a> function, but performance may differ due to differences in execution plans. IF.EAGER has the same execution plan as the following DAX expression:</p>
+<pre class="brush: dax; title: ; notranslate" title="">
+VAR _value_if_true = &lt;ResultIfTrue&gt;
+VAR _value_if_false = &lt;ResultIfFalse&gt;
+RETURN
+    IF ( &lt;LogicalTest&gt;, _value_if_true, _value_if_false )
+</pre>
+<p><strong>Note</strong>: The two branch expressions are evaluated regardless of the condition expression.</p>
+<p>Calling IF.EAGER enforce eager evaluation of the conditional expression, instead of relying on choice between strict and eager evaluation made by the DAX engine.</p>
+<p>This function should be used only in very particular case of DAX optimization, after verifying that it produces a clear performance advantage compared to the regular <a href="https://dax.guide/if/" class="ajax" data-id="111">IF</a> function.</p>
+                </section>
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 1 related article</a><br>
+                                                    <a href="#alt" class="sliding">&raquo; 3 related functions</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/jj0yYPzBGXzvVo/; notranslate" title="">
+--  The engine can use either STRICT or EAGER evaluation. 
+--  The choice is up to the optimizer.
+--  Using IF.EAGER you can force eager evaluation of IF statements.
+--  Useful in some optimization scenarios.
+DEFINE
+    MEASURE Sales&#91;GrossAmount] = SUMX ( Sales, Sales&#91;Quantity] * Sales&#91;Unit Price] )
+    MEASURE Sales&#91;NetAmount]   = SUMX ( Sales, Sales&#91;Quantity] * Sales&#91;Net Price] )
+EVALUATE
+ADDCOLUMNS (
+    VALUES ( 'Product'&#91;Brand] ),
+    &quot;Sales&quot;,
+        IF ( 'Product'&#91;Brand] = &quot;Contoso&quot;, &#91;GrossAmount], &#91;NetAmount] * 1.5 )
+)
+ORDER BY 'Product'&#91;Brand]
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Brand">Brand</th>
+<th title="Sales">Sales</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">A. Datum</td>
+<td class="col-float">3,144,276.96</td>
+</tr>
+<tr>
+<td class="col-string">Adventure Works</td>
+<td class="col-float">6,016,668.41</td>
+</tr>
+<tr>
+<td class="col-string">Contoso</td>
+<td class="col-float">8,098,022.18</td>
+</tr>
+<tr>
+<td class="col-string">Fabrikam</td>
+<td class="col-float">8,331,023.59</td>
+</tr>
+<tr>
+<td class="col-string">Litware</td>
+<td class="col-float">4,883,556.04</td>
+</tr>
+<tr>
+<td class="col-string">Northwind Traders</td>
+<td class="col-float">1,560,828.19</td>
+</tr>
+<tr>
+<td class="col-string">Proseware</td>
+<td class="col-float">3,819,216.24</td>
+</tr>
+<tr>
+<td class="col-string">Southridge Video</td>
+<td class="col-float">2,076,620.77</td>
+</tr>
+<tr>
+<td class="col-string">Tailspin Toys</td>
+<td class="col-float">487,563.63</td>
+</tr>
+<tr>
+<td class="col-string">The Phone Company</td>
+<td class="col-float">1,685,728.60</td>
+</tr>
+<tr>
+<td class="col-string">Wide World Importers</td>
+<td class="col-float">2,852,934.98</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about IF.EAGER in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/understanding-eager-vs-strict-evaluation-in-dax/"  class="low-key"><strong>Understanding eager vs. strict evaluation in DAX</strong></a>
+                                <p>This article describes the differences between eager evaluation and strict evaluation in DAX, empowering you to choose the best evaluation type for your data models. <a href="https://www.sqlbi.com/articles/understanding-eager-vs-strict-evaluation-in-dax/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/coalesce/" class="ajax" data-id="613">COALESCE</a></li>
+                                                    <li><a href="https://dax.guide/if/" class="ajax" data-id="111">IF</a></li>
+                                                    <li><a href="https://dax.guide/switch/" class="ajax" data-id="223">SWITCH</a></li>
+                                                </ul>
+                                    </section>
+                        
+            
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/if-eager-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/if-eager-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

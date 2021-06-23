@@ -1,0 +1,236 @@
+
+            <header>
+                <h1 title="GENERATEALL"><a href="https://dax.guide/generateall/" rel="bookmark">GENERATEALL</a> <span class="smaller">DAX Function (Table manipulation)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                         &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>The second table expression will be evaluated for each row in the first table. Returns the crossjoin of the first table with these results, including rows for which the second table expression is empty.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    GENERATEALL ( &lt;Table1&gt;, &lt;Table2&gt; )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Table1                                                                                                                            <br><a href="https://www.sqlbi.com/articles/row-context-and-filter-context-in-dax/" class="feature2 icon icon-rinfo tooltip"  data-tooltip-content="#iterator">Iterator</section>
+                                                                                                                                                            </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The base table in Generate.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Table2                                                                                    <br><a href="https://www.sqlbi.com/articles/row-context-and-filter-context-in-dax/" class="feature icon icon-rinfo tooltip"  data-tooltip-content="#rowcontext">Row Context</a>
+                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>A table expression that will be evaluated for each row in the first table.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="table-ret">Table</span> An entire table or a table with one or more columns.</div></p>                                    </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <ul>
+<li>If the evaluation of <em>table2</em> for the current row in <em>table1</em> returns an empty table, then the current row from <em>table1</em> will be included in the results and columns corresponding to <em>table2</em> will have null values for that row. This is different than <a href="https://dax.guide/generate/" class="ajax" data-id="102">GENERATE</a>() where the current row from <em>table1</em> will <strong>not</strong> be included in the results.</li>
+<li>All column names from <em>table1</em> and <em>table2</em> must be different or an error is returned.</li>
+</ul>
+                </section>
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 2 related articles</a><br>
+                                                    <a href="#alt" class="sliding">&raquo; 1 related function</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/jvs5Rgn7C4lRxJ/; notranslate" title="">
+--  If the second argument returns an empty table, GENERATE skips the row.
+--  GENERATEALL returns ALL the rows of the first argument, even 
+--  though the second expression returns an empty table.
+--  GENERATE is similar to CROSS APPLY in SQL
+--  GENERATEALL is similar to OUTER APPLY in SQL
+DEFINE
+VAR Dates = 
+    UNION ( 
+        ROW ( &quot;FirstDate&quot;, DATE ( 2007, 1, 6 ), &quot;LastDate&quot;, DATE ( 2007, 1, 3 ) ),
+        ROW ( &quot;FirstDate&quot;, DATE ( 2007, 1, 9 ), &quot;LastDate&quot;, DATE ( 2007, 1, 12 ) )
+    )
+VAR DatesExpanded = 
+    GENERATE ( 
+        Dates,
+        DATESBETWEEN ( 'Date'&#91;Date], &#91;FirstDate], &#91;LastDate] )
+    )
+
+VAR DatesExpandedAll = 
+    GENERATEALL ( 
+        Dates,
+        DATESBETWEEN ( 'Date'&#91;Date], &#91;FirstDate], &#91;LastDate] )
+    )
+
+EVALUATE Dates
+
+EVALUATE DatesExpanded
+
+EVALUATE DatesExpandedAll
+    
+
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="FirstDate">FirstDate</th>
+<th title="LastDate">LastDate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-date">2007-01-06</td>
+<td class="col-date">2007-01-03</td>
+</tr>
+<tr>
+<td class="col-date">2007-01-09</td>
+<td class="col-date">2007-01-12</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th title="FirstDate">FirstDate</th>
+<th title="LastDate">LastDate</th>
+<th title="Date">Date</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-date">2007-01-09</td>
+<td class="col-date">2007-01-12</td>
+<td class="col-date">2007-01-09</td>
+</tr>
+<tr>
+<td class="col-date">2007-01-09</td>
+<td class="col-date">2007-01-12</td>
+<td class="col-date">2007-01-10</td>
+</tr>
+<tr>
+<td class="col-date">2007-01-09</td>
+<td class="col-date">2007-01-12</td>
+<td class="col-date">2007-01-11</td>
+</tr>
+<tr>
+<td class="col-date">2007-01-09</td>
+<td class="col-date">2007-01-12</td>
+<td class="col-date">2007-01-12</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th title="FirstDate">FirstDate</th>
+<th title="LastDate">LastDate</th>
+<th title="Date">Date</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-date">2007-01-06</td>
+<td class="col-date">2007-01-03</td>
+<td class="col-date blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-date">2007-01-09</td>
+<td class="col-date">2007-01-12</td>
+<td class="col-date">2007-01-09</td>
+</tr>
+<tr>
+<td class="col-date">2007-01-09</td>
+<td class="col-date">2007-01-12</td>
+<td class="col-date">2007-01-10</td>
+</tr>
+<tr>
+<td class="col-date">2007-01-09</td>
+<td class="col-date">2007-01-12</td>
+<td class="col-date">2007-01-11</td>
+</tr>
+<tr>
+<td class="col-date">2007-01-09</td>
+<td class="col-date">2007-01-12</td>
+<td class="col-date">2007-01-12</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about GENERATEALL in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/transition-matrix-using-calculated-tables/"  class="low-key"><strong>Transition Matrix Using Calculated Tables</strong></a>
+                                <p>In the 2015 September update, Power BI introduced calculated tables, which are computed using DAX expressions instead of being loaded from a data source. This article shows the usage of calculated tables to solve the pattern of transition matrix for&hellip; <a href="https://www.sqlbi.com/articles/transition-matrix-using-calculated-tables/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/lookup-multiple-values-in-dax/"  class="low-key"><strong>Lookup multiple values in DAX</strong></a>
+                                <p>This article describes different techniques to retrieve multiple values from a lookup table in DAX, improving code readability and performance. <a href="https://www.sqlbi.com/articles/lookup-multiple-values-in-dax/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/generate/" class="ajax" data-id="102">GENERATE</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/guides/dax/?aff=learn-dax-promo" target="_top" class="sam-click" data-campaign="learn-dax-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/learn-dax-58090.png" title="Become a DAX guru" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/generateall-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/generateall-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

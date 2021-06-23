@@ -1,0 +1,480 @@
+
+            <header>
+                <h1 title="BETA.INV"><a href="https://dax.guide/beta-inv/" rel="bookmark">BETA.INV</a> <span class="smaller">DAX Function (Statistical)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                                                 &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns the inverse of the beta cumulative probability density function (<a href="https://dax.guide/beta.dist/" class="ajax" data-id="327">BETA.DIST</a>). If probability = <a href="https://dax.guide/beta.dist/" class="ajax" data-id="327">BETA.DIST</a>(x,&#8230;TRUE), then BETA.INV(probability,&#8230;) = x. The beta distribution can be used in project planning to model probable completion times given an expected completion time and variability.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    BETA.INV ( &lt;Probability&gt;, &lt;Alpha&gt;, &lt;Beta&gt; [, &lt;A&gt;] [, &lt;B&gt;] )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Probability                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>A probability associated with the beta distribution.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Alpha                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>A parameter of the distribution.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Beta                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>A parameter the distribution.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        A                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Optional<br></td>
+                                    <td class="definition">
+                                        <p>A lower bound to the interval of x.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        B                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Optional<br></td>
+                                    <td class="definition">
+                                        <p>An upper bound to the interval of x.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single <a href="https://dax.guide/dt/decimal/" class="ajax" data-id="258">decimal</a> value.</div></p>                    <p>Returns the inverse of the beta cumulative probability density function (<a href="https://dax.guide/beta.dist/" class="ajax" data-id="327">BETA.DIST</a>). </p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>If any argument is nonnumeric, BETA.INV returns the #<a href="https://dax.guide/value/" class="ajax" data-id="247">VALUE</a>! error value.</p>
+<p>If any argument is not an integer, it is rounded.</p>
+<p>If alpha ≤ 0 or beta ≤ 0, BETA.INV returns the #NUM! error value.</p>
+<p>If probability ≤ 0 or probability &gt; 1, BETA.INV returns the #NUM! error value.</p>
+<p>If you omit values for A and B, BETA.INV uses the standard cumulative beta distribution, so that A = 0 and B = 1.</p>
+                </section>
+            
+            
+                                                    <a href="#alt" class="sliding">&raquo; 1 related function</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/UUyU4LsduwS2yQ/; notranslate" title="">
+--
+--  Given the parameters of Alpha and Beta to define the shape of
+--  the distribution, BETA.DIST returns the value of the probability
+--  density function or the cumulative distribution function, depending
+--  on the fourth argument.
+--
+--      BETA.DIST ( &#91;Value], Alpha, Beta, Cumulative, LowerBound, UpperBound )
+--
+--  BETA.INV returns the inverse of BETA.DIST
+--
+--  https://en.wikipedia.org/wiki/Beta_distribution
+--
+DEFINE
+    VAR Vals            = GENERATESERIES ( 0.01, 1, 0.02 )
+    VAR Alpha           = 3.51
+    VAR Beta            = 4.02
+    VAR CumulativeTrue  = TRUE   -- Cumulative distribution function
+    VAR CumulativeFalse = FALSE  -- Probability density function
+    VAR LowerBound      = 0
+    VAR UpperBound      = 1
+EVALUATE
+ADDCOLUMNS ( 
+    Vals, 
+    &quot;Beta Dist&quot;,             -- Probability density function
+        FORMAT ( 
+            BETA.DIST ( &#91;Value], Alpha, Beta, CumulativeFalse, LowerBound, UpperBound ),
+            &quot;#,0.0####&quot;
+        ),
+    &quot;Beta Dist Cumulative&quot;,  -- Cumulative distribution function
+        FORMAT ( 
+            BETA.DIST ( &#91;Value], Alpha, Beta, CumulativeTrue, LowerBound, UpperBound ),
+            &quot;#,0.0####&quot;
+        ),
+    &quot;Beta Inv Cumulative&quot;,
+        BETA.INV (  
+            BETA.DIST ( &#91;Value], Alpha, Beta, CumulativeTrue, LowerBound, UpperBound ),
+            Alpha,
+            Beta,
+            LowerBound,
+            UpperBound 
+        )           
+    )
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Value">Value</th>
+<th title="Beta Dist">Beta Dist</th>
+<th title="Beta Dist Cumulative">Beta Dist Cumulative</th>
+<th title="Beta Inv Cumulative">Beta Inv Cumulative</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-float">0.01</td>
+<td class="col-string">0.00089</td>
+<td class="col-string">0.0</td>
+<td class="col-float">0.01</td>
+</tr>
+<tr>
+<td class="col-float">0.03</td>
+<td class="col-string">0.01317</td>
+<td class="col-string">0.00011</td>
+<td class="col-float">0.03</td>
+</tr>
+<tr>
+<td class="col-float">0.05</td>
+<td class="col-string">0.04459</td>
+<td class="col-string">0.00066</td>
+<td class="col-float">0.05</td>
+</tr>
+<tr>
+<td class="col-float">0.07</td>
+<td class="col-string">0.09729</td>
+<td class="col-string">0.00204</td>
+<td class="col-float">0.07</td>
+</tr>
+<tr>
+<td class="col-float">0.09</td>
+<td class="col-string">0.17121</td>
+<td class="col-string">0.00469</td>
+<td class="col-float">0.09</td>
+</tr>
+<tr>
+<td class="col-float">0.11</td>
+<td class="col-string">0.26492</td>
+<td class="col-string">0.00902</td>
+<td class="col-float">0.11</td>
+</tr>
+<tr>
+<td class="col-float">0.13</td>
+<td class="col-string">0.37619</td>
+<td class="col-string">0.01541</td>
+<td class="col-float">0.13</td>
+</tr>
+<tr>
+<td class="col-float">0.15</td>
+<td class="col-string">0.50222</td>
+<td class="col-string">0.02417</td>
+<td class="col-float">0.15</td>
+</tr>
+<tr>
+<td class="col-float">0.17</td>
+<td class="col-string">0.63989</td>
+<td class="col-string">0.03557</td>
+<td class="col-float">0.17</td>
+</tr>
+<tr>
+<td class="col-float">0.19</td>
+<td class="col-string">0.78589</td>
+<td class="col-string">0.04982</td>
+<td class="col-float">0.19</td>
+</tr>
+<tr>
+<td class="col-float">0.21</td>
+<td class="col-string">0.93685</td>
+<td class="col-string">0.06704</td>
+<td class="col-float">0.21</td>
+</tr>
+<tr>
+<td class="col-float">0.23</td>
+<td class="col-string">1.08944</td>
+<td class="col-string">0.0873</td>
+<td class="col-float">0.23</td>
+</tr>
+<tr>
+<td class="col-float">0.25</td>
+<td class="col-string">1.24045</td>
+<td class="col-string">0.11061</td>
+<td class="col-float">0.25</td>
+</tr>
+<tr>
+<td class="col-float">0.27</td>
+<td class="col-string">1.38683</td>
+<td class="col-string">0.13689</td>
+<td class="col-float">0.27</td>
+</tr>
+<tr>
+<td class="col-float">0.29</td>
+<td class="col-string">1.52575</td>
+<td class="col-string">0.16603</td>
+<td class="col-float">0.29</td>
+</tr>
+<tr>
+<td class="col-float">0.31</td>
+<td class="col-string">1.65465</td>
+<td class="col-string">0.19785</td>
+<td class="col-float">0.31</td>
+</tr>
+<tr>
+<td class="col-float">0.33</td>
+<td class="col-string">1.77125</td>
+<td class="col-string">0.23213</td>
+<td class="col-float">0.33</td>
+</tr>
+<tr>
+<td class="col-float">0.35</td>
+<td class="col-string">1.87358</td>
+<td class="col-string">0.26861</td>
+<td class="col-float">0.35</td>
+</tr>
+<tr>
+<td class="col-float">0.37</td>
+<td class="col-string">1.96001</td>
+<td class="col-string">0.30697</td>
+<td class="col-float">0.37</td>
+</tr>
+<tr>
+<td class="col-float">0.39</td>
+<td class="col-string">2.02923</td>
+<td class="col-string">0.34689</td>
+<td class="col-float">0.39</td>
+</tr>
+<tr>
+<td class="col-float">0.41</td>
+<td class="col-string">2.08029</td>
+<td class="col-string">0.38802</td>
+<td class="col-float">0.41</td>
+</tr>
+<tr>
+<td class="col-float">0.43</td>
+<td class="col-string">2.11257</td>
+<td class="col-string">0.42998</td>
+<td class="col-float">0.43</td>
+</tr>
+<tr>
+<td class="col-float">0.45</td>
+<td class="col-string">2.1258</td>
+<td class="col-string">0.4724</td>
+<td class="col-float">0.45</td>
+</tr>
+<tr>
+<td class="col-float">0.47</td>
+<td class="col-string">2.12003</td>
+<td class="col-string">0.51489</td>
+<td class="col-float">0.47</td>
+</tr>
+<tr>
+<td class="col-float">0.49</td>
+<td class="col-string">2.09565</td>
+<td class="col-string">0.55707</td>
+<td class="col-float">0.49</td>
+</tr>
+<tr>
+<td class="col-float">0.51</td>
+<td class="col-string">2.05332</td>
+<td class="col-string">0.59859</td>
+<td class="col-float">0.51</td>
+</tr>
+<tr>
+<td class="col-float">0.53</td>
+<td class="col-string">1.99403</td>
+<td class="col-string">0.63909</td>
+<td class="col-float">0.53</td>
+</tr>
+<tr>
+<td class="col-float">0.55</td>
+<td class="col-string">1.919</td>
+<td class="col-string">0.67825</td>
+<td class="col-float">0.55</td>
+</tr>
+<tr>
+<td class="col-float">0.57</td>
+<td class="col-string">1.82972</td>
+<td class="col-string">0.71576</td>
+<td class="col-float">0.57</td>
+</tr>
+<tr>
+<td class="col-float">0.59</td>
+<td class="col-string">1.72786</td>
+<td class="col-string">0.75135</td>
+<td class="col-float">0.59</td>
+</tr>
+<tr>
+<td class="col-float">0.61</td>
+<td class="col-string">1.61531</td>
+<td class="col-string">0.7848</td>
+<td class="col-float">0.61</td>
+</tr>
+<tr>
+<td class="col-float">0.63</td>
+<td class="col-string">1.49409</td>
+<td class="col-string">0.81591</td>
+<td class="col-float">0.63</td>
+</tr>
+<tr>
+<td class="col-float">0.65</td>
+<td class="col-string">1.36635</td>
+<td class="col-string">0.84452</td>
+<td class="col-float">0.65</td>
+</tr>
+<tr>
+<td class="col-float">0.67</td>
+<td class="col-string">1.23431</td>
+<td class="col-string">0.87053</td>
+<td class="col-float">0.67</td>
+</tr>
+<tr>
+<td class="col-float">0.69</td>
+<td class="col-string">1.10024</td>
+<td class="col-string">0.89388</td>
+<td class="col-float">0.69</td>
+</tr>
+<tr>
+<td class="col-float">0.71</td>
+<td class="col-string">0.96642</td>
+<td class="col-string">0.91454</td>
+<td class="col-float">0.71</td>
+</tr>
+<tr>
+<td class="col-float">0.73</td>
+<td class="col-string">0.83507</td>
+<td class="col-string">0.93255</td>
+<td class="col-float">0.73</td>
+</tr>
+<tr>
+<td class="col-float">0.75</td>
+<td class="col-string">0.70835</td>
+<td class="col-string">0.94798</td>
+<td class="col-float">0.75</td>
+</tr>
+<tr>
+<td class="col-float">0.77</td>
+<td class="col-string">0.58827</td>
+<td class="col-string">0.96093</td>
+<td class="col-float">0.77</td>
+</tr>
+<tr>
+<td class="col-float">0.79</td>
+<td class="col-string">0.47666</td>
+<td class="col-string">0.97157</td>
+<td class="col-float">0.79</td>
+</tr>
+<tr>
+<td class="col-float">0.81</td>
+<td class="col-string">0.37514</td>
+<td class="col-string">0.98007</td>
+<td class="col-float">0.81</td>
+</tr>
+<tr>
+<td class="col-float">0.83</td>
+<td class="col-string">0.28504</td>
+<td class="col-string">0.98665</td>
+<td class="col-float">0.83</td>
+</tr>
+<tr>
+<td class="col-float">0.85</td>
+<td class="col-string">0.20735</td>
+<td class="col-string">0.99155</td>
+<td class="col-float">0.85</td>
+</tr>
+<tr>
+<td class="col-float">0.87</td>
+<td class="col-string">0.14268</td>
+<td class="col-string">0.99503</td>
+<td class="col-float">0.87</td>
+</tr>
+<tr>
+<td class="col-float">0.89</td>
+<td class="col-string">0.09121</td>
+<td class="col-string">0.99735</td>
+<td class="col-float">0.89</td>
+</tr>
+<tr>
+<td class="col-float">0.91</td>
+<td class="col-string">0.05261</td>
+<td class="col-string">0.99876</td>
+<td class="col-float">0.91</td>
+</tr>
+<tr>
+<td class="col-float">0.93</td>
+<td class="col-string">0.02601</td>
+<td class="col-string">0.99953</td>
+<td class="col-float">0.93</td>
+</tr>
+<tr>
+<td class="col-float">0.95</td>
+<td class="col-string">0.00993</td>
+<td class="col-string">0.99987</td>
+<td class="col-float">0.95</td>
+</tr>
+<tr>
+<td class="col-float">0.97</td>
+<td class="col-string">0.00224</td>
+<td class="col-string">0.99998</td>
+<td class="col-float">0.97</td>
+</tr>
+<tr>
+<td class="col-float">0.99</td>
+<td class="col-string">0.00009</td>
+<td class="col-string">1.0</td>
+<td class="col-float">0.99</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/beta-dist/" class="ajax" data-id="327">BETA.DIST</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/mastering-dax-video-course/?aff=mdax-promo" target="_top" class="sam-click" data-campaign="mdax-video-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/mdax-58090.jpg" title="Mastering DAX Video Course" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/beta-inv-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/beta-inv-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

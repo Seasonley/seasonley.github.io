@@ -1,0 +1,214 @@
+
+            <header>
+                <h1 title="CONCATENATEX"><a href="https://dax.guide/concatenatex/" rel="bookmark">CONCATENATEX</a> <span class="smaller">DAX Function (Text)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                         &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Evaluates expression for each row on the table, then return the concatenation of those values in a single string result, seperated by the specified delimiter.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    CONCATENATEX ( &lt;Table&gt;, &lt;Expression&gt; [, &lt;Delimiter&gt;] [, &lt;OrderBy_Expression&gt; [, [&lt;Order&gt;] [, &lt;OrderBy_Expression&gt; [, [&lt;Order&gt;] [, … ] ] ] ] ] )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Table                                                                                                                            <br><a href="https://www.sqlbi.com/articles/row-context-and-filter-context-in-dax/" class="feature2 icon icon-rinfo tooltip"  data-tooltip-content="#iterator">Iterator</section>
+                                                                                                                                                            </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The table containing the rows for which the expression will be evaluated.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Expression                                                                                    <br><a href="https://www.sqlbi.com/articles/row-context-and-filter-context-in-dax/" class="feature icon icon-rinfo tooltip"  data-tooltip-content="#rowcontext">Row Context</a>
+                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The expression to be evaluated for each row of the table.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Delimiter                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Optional<br></td>
+                                    <td class="definition">
+                                        <p>The delimiter to be concatenated with expression.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        OrderBy_Expression                                                                                    <br><a href="https://www.sqlbi.com/articles/row-context-and-filter-context-in-dax/" class="feature icon icon-rinfo tooltip"  data-tooltip-content="#rowcontext">Row Context</a>
+                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Optional<br>Repeatable<br></td>
+                                    <td class="definition">
+                                        <p>Expression to be used for sorting the table.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Order                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Optional<br>Repeatable<br></td>
+                                    <td class="definition">
+                                        <p>The order to be applied. 0/FALSE/DESC &#8211; descending; 1/TRUE/ASC &#8211; ascending.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single <a href="https://dax.guide/dt/string/" class="ajax" data-id="261">string</a> value.</div></p>                    <p>A text string with the concatenated values.</p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>This function iterates the rows in the table provided by the first argument and for each row it executes the expression provided in the second argument. All the expressions are concatenated using the separator provided as third argument.</p>
+                </section>
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 4 related articles</a><br>
+                                                    <a href="#alt" class="sliding">&raquo; 1 related function</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/DUunqlYJ1cavl6/; notranslate" title="">
+--  CONCATENATEX is an iterator that produces the concatenation
+--  of expressions evaluated during the iteration.
+--  You provide the expression, a separator and optional
+--  sorting expressions.
+EVALUATE
+ADDCOLUMNS (
+    VALUES ( 'Product'&#91;Category] ),
+    &quot;Category colors&quot;, 
+        CONCATENATEX ( 
+            CALCULATETABLE ( VALUES ( 'Product'&#91;Color] ) ),
+            Product&#91;Color],
+            &quot;, &quot;,             -- Separator (optional)
+            Product&#91;Color],   -- Sorting expression (optional)
+            ASC               -- Sorting direction (optional)
+        )
+)
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Category">Category</th>
+<th title="Category colors">Category colors</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Audio</td>
+<td class="col-string">Black, Blue, Green, Orange, Pink, Purple, Red, Silver, White, Yellow</td>
+</tr>
+<tr>
+<td class="col-string">TV and Video</td>
+<td class="col-string">Black, Brown, Silver, White</td>
+</tr>
+<tr>
+<td class="col-string">Computers</td>
+<td class="col-string">Black, Blue, Brown, Gold, Green, Grey, Orange, Pink, Red, Silver, White, Yellow</td>
+</tr>
+<tr>
+<td class="col-string">Cameras and camcorders</td>
+<td class="col-string">Azure, Black, Blue, Gold, Green, Grey, Orange, Pink, Purple, Red, Silver, Silver Grey, White, Yellow</td>
+</tr>
+<tr>
+<td class="col-string">Cell phones</td>
+<td class="col-string">Black, Gold, Grey, Pink, Red, Silver, Transparent, White</td>
+</tr>
+<tr>
+<td class="col-string">Music, Movies and Audio Books</td>
+<td class="col-string">Black, Blue, Gold, Grey, Red, Silver, White, Yellow</td>
+</tr>
+<tr>
+<td class="col-string">Games and Toys</td>
+<td class="col-string">Black, Blue, Gold, Green, Grey, Pink, Purple, Red, Silver, White, Yellow</td>
+</tr>
+<tr>
+<td class="col-string">Home Appliances</td>
+<td class="col-string">Black, Blue, Brown, Gold, Green, Grey, Orange, Pink, Purple, Red, Silver, White, Yellow</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about CONCATENATEX in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/displaying-nth-element-in-dax/"  class="low-key"><strong>Displaying Nth Element in DAX</strong></a>
+                                <p>This article describes how to create a measure displaying the name or value of an element that has a specific ranking, with different option for managing ties. <a href="https://www.sqlbi.com/articles/displaying-nth-element-in-dax/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/displaying-filter-context-in-power-bi-tooltips/"  class="low-key"><strong>Displaying filter context in Power BI Tooltips</strong></a>
+                                <p>This article describes how to display the filter context applied to a calculation using a special DAX measure in Power BI Tooltips. <a href="https://www.sqlbi.com/articles/displaying-filter-context-in-power-bi-tooltips/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/table-and-column-references-using-dax-variables/"  class="low-key"><strong>Table and column references using DAX variables</strong></a>
+                                <p>This article describes how to correctly use column references when manipulating tables assigned to DAX variables, avoiding syntax errors and making the code easier to read and maintain. <a href="https://www.sqlbi.com/articles/table-and-column-references-using-dax-variables/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/using-concatenatex-in-measures/"  class="low-key"><strong>Using CONCATENATEX in measures</strong></a>
+                                <p>This article showcases the use of CONCATENATEX, a handy DAX function to return a list of values in a measure. <a href="https://www.sqlbi.com/articles/using-concatenatex-in-measures/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/concatenate/" class="ajax" data-id="44">CONCATENATE</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.youtube.com/c/sqlbi/" target="_top" class="sam-click" data-campaign="youtube-channel" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/youtube-58090.jpg" title="Subscribe to our Youtube channel" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/concatenatex-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/concatenatex-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

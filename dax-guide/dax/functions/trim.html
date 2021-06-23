@@ -1,0 +1,118 @@
+
+            <header>
+                <h1 title="TRIM"><a href="https://dax.guide/trim/" rel="bookmark">TRIM</a> <span class="smaller">DAX Function (Text)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                                                 &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Removes all spaces from a text string except for single spaces between words.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    TRIM ( &lt;Text&gt; )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Text                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The text from which you want spaces removed.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single <a href="https://dax.guide/dt/string/" class="ajax" data-id="261">string</a> value.</div></p>                    <p>The string with spaces removed. </p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>Use TRIM on text that you have received from another application that may have irregular spacing.</p>
+<p>The TRIM function was originally designed to trim the 7-bit ASCII space character (value 32) from text. In the Unicode character set, there is an additional space character called the nonbreaking space character that has a decimal value of 160. This character is commonly used in Web pages as the HTML entity, &amp;nbsp;. By itself, the TRIM function does not remove this nonbreaking space character.</p>
+                </section>
+            
+            
+                                                    <a href="#alt" class="sliding">&raquo; 1 related function</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/VsXEvScpDYkA2v/; notranslate" title="">
+--  TRIM removes trailing and starting spaces from a string,
+--  including multiple spaces within the string.
+DEFINE 
+    VAR Test = &quot;  DAX is          awesome !!!    &quot;
+EVALUATE
+    {
+        ( &quot;Original&quot;, Test ),
+        ( &quot;Trimmed&quot;,  TRIM ( Test ) )
+    }
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Value1">Value1</th>
+<th title="Value2">Value2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Original</td>
+<td class="col-string">&nbsp;&nbsp;DAX&nbsp;is&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;awesome&nbsp;!!!&nbsp;&nbsp;&nbsp;&nbsp;</td>
+</tr>
+<tr>
+<td class="col-string">Trimmed</td>
+<td class="col-string">DAX is awesome !!!</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/replace/" class="ajax" data-id="190">REPLACE</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/data-modeling-for-power-bi-video-course/?aff=mod-promo" target="_top" class="sam-click" data-campaign="mod-video-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/mod-58090.png" title="Data Modeling for Power BI" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/trim-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/trim-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

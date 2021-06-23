@@ -1,0 +1,276 @@
+
+            <header>
+                <h1 title="TOPNSKIP"><a href="https://dax.guide/topnskip/" rel="bookmark">TOPNSKIP</a> <span class="smaller">DAX Function (Table manipulation)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                                            </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Retrieves a number of rows from a table efficiently, skipping a number of rows. Compared to <a href="https://dax.guide/topn/" class="ajax" data-id="229">TOPN</a>, the TOPNSKIP function is less flexible, but much faster.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    TOPNSKIP ( &lt;Rows&gt;, &lt;Skip&gt;, &lt;Table&gt; [, &lt;OrderBy_Expression&gt; [, [&lt;Order&gt;] [, &lt;OrderBy_Expression&gt; [, [&lt;Order&gt;] [, … ] ] ] ] ] )                </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Rows                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>Number of rows to return</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Skip                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>Number of rows to skip</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Table                                                                                                                            <br><a href="https://www.sqlbi.com/articles/row-context-and-filter-context-in-dax/" class="feature2 icon icon-rinfo tooltip"  data-tooltip-content="#iterator">Iterator</section>
+                                                                            </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>Table expression made by physical columns of the data model that are not grouping the cardinality of the original table they belong to.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        OrderByExpression                                                                                    <br><a href="https://www.sqlbi.com/articles/row-context-and-filter-context-in-dax/" class="feature icon icon-rinfo tooltip"  data-tooltip-content="#rowcontext">Row Context</section>
+                                                                                                                    </td>
+                                    <td class="attributes">Optional<br></td>
+                                    <td class="definition">
+                                        <p>Expression used to define the sort order of the result</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Order                                                                                                                    </td>
+                                    <td class="attributes">Optional<br></td>
+                                    <td class="definition">
+                                        <p>It can be ASC or 1 or TRUE to consider the OrderByExpression in an ascending order.<br />
+It can be DESC or 0 or FALSE to consider the OrderByExpression in a descending order.<br />
+If omitted, the default is descending (DESC).</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="table-ret">Table</span> An entire table or a table with one or more columns.</div></p>                    <p>The table returned is not sorted, it is just filtered according to the required parameters.<br />
+The sort order of the result depends on the ORDER BY condition of EVALUATE.</p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>If Skip is not 0, the Table expression must reference physical columns with lineage and does not support a filter context coming from context transition.</p>
+<p>If there is a tie, in OrderBy_Expression values, at the N-th row of the table, then all tied rows are returned. Then, when there are ties at the N-th row the function might return more than n rows. </p>
+<p>If N_Value is 0 (zero) then <a href="https://dax.guide/topn/" class="ajax" data-id="229">TOPN</a> returns an empty table. </p>
+<p>TOPNSKIP does not guarantee any sort order for the results. </p>
+                </section>
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 1 related article</a><br>
+                                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/0Djfg2oPfRzsye/; notranslate" title="">
+--  TOPNSKIP quickly retrieves rows from a table, skipping a 
+--  certain number of rows.
+--  Mainly used when browsing a table through certains UI.
+EVALUATE 
+TOPNSKIP ( 
+    5,                          -- Rows to return
+    0,                          -- Rows to skip
+    'Product',                  -- Table
+    'Product'&#91;Product Name],    -- Sort order
+    ASC                         -- Sort direction
+)
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="ProductKey">ProductKey</th>
+<th title="Product Code">Product Code</th>
+<th title="Product Name">Product Name</th>
+<th title="Manufacturer">Manufacturer</th>
+<th title="Brand">Brand</th>
+<th title="Subcategory">Subcategory</th>
+<th title="Category">Category</th>
+<th title="Color">Color</th>
+<th title="List Price">List Price</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-key">1037</td>
+<td class="col-string">0401094</td>
+<td class="col-string">A. Datum Advanced Digital Camera M300 Azure</td>
+<td class="col-string">A. Datum Corporation</td>
+<td class="col-string">A. Datum</td>
+<td class="col-string">Digital Cameras</td>
+<td class="col-string">Cameras and camcorders</td>
+<td class="col-string">Azure</td>
+<td class="col-float">188.50</td>
+</tr>
+<tr>
+<td class="col-key">953</td>
+<td class="col-string">0401010</td>
+<td class="col-string">A. Datum Advanced Digital Camera M300 Black</td>
+<td class="col-string">A. Datum Corporation</td>
+<td class="col-string">A. Datum</td>
+<td class="col-string">Digital Cameras</td>
+<td class="col-string">Cameras and camcorders</td>
+<td class="col-string">Black</td>
+<td class="col-float">188.50</td>
+</tr>
+<tr>
+<td class="col-key">1023</td>
+<td class="col-string">0401080</td>
+<td class="col-string">A. Datum Advanced Digital Camera M300 Green</td>
+<td class="col-string">A. Datum Corporation</td>
+<td class="col-string">A. Datum</td>
+<td class="col-string">Digital Cameras</td>
+<td class="col-string">Cameras and camcorders</td>
+<td class="col-string">Green</td>
+<td class="col-float">188.50</td>
+</tr>
+<tr>
+<td class="col-key">967</td>
+<td class="col-string">0401024</td>
+<td class="col-string">A. Datum Advanced Digital Camera M300 Grey</td>
+<td class="col-string">A. Datum Corporation</td>
+<td class="col-string">A. Datum</td>
+<td class="col-string">Digital Cameras</td>
+<td class="col-string">Cameras and camcorders</td>
+<td class="col-string">Grey</td>
+<td class="col-float">188.50</td>
+</tr>
+<tr>
+<td class="col-key">1009</td>
+<td class="col-string">0401066</td>
+<td class="col-string">A. Datum Advanced Digital Camera M300 Orange</td>
+<td class="col-string">A. Datum Corporation</td>
+<td class="col-string">A. Datum</td>
+<td class="col-string">Digital Cameras</td>
+<td class="col-string">Cameras and camcorders</td>
+<td class="col-string">Orange</td>
+<td class="col-float">188.50</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/uLQtpICUGFxq8v/; notranslate" title="">
+--  TOPNSKIP is an iterator, the OrderByExpressions are evaluated
+--  in the row context generated by TOPNSKIP
+EVALUATE
+TOPNSKIP (
+    5,
+    0,
+    ADDCOLUMNS (
+        SUMMARIZE (
+            Sales,
+            'Product'&#91;Category],
+            'Date'&#91;Calendar Year]
+        ),
+        &quot;@Sales&quot;, &#91;Sales Amount]
+    ),
+    &#91;@Sales], DESC,
+    'Product'&#91;Category], ASC
+)
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Category">Category</th>
+<th title="Calendar Year">Calendar Year</th>
+<th title="@Sales">@Sales</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Home Appliances</td>
+<td class="col-date">2007-01-01</td>
+<td class="col-float">2,347,281.80</td>
+</tr>
+<tr>
+<td class="col-string">Cameras and camcorders</td>
+<td class="col-date">2007-01-01</td>
+<td class="col-float">3,274,847.26</td>
+</tr>
+<tr>
+<td class="col-string">Computers</td>
+<td class="col-date">2007-01-01</td>
+<td class="col-float">2,660,318.87</td>
+</tr>
+<tr>
+<td class="col-string">Home Appliances</td>
+<td class="col-date">2009-01-01</td>
+<td class="col-float">3,290,603.00</td>
+</tr>
+<tr>
+<td class="col-string">Home Appliances</td>
+<td class="col-date">2008-01-01</td>
+<td class="col-float">3,962,572.24</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about TOPNSKIP in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/querying-raw-data-to-tabular/"  class="low-key"><strong>Querying raw data to Tabular</strong></a>
+                                <p>This article describes how to extract raw data stored in the Tabular engine, used by Analysis Service Tabular, Power BI, and Power Pivot. <a href="https://www.sqlbi.com/articles/querying-raw-data-to-tabular/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/dax-tools/?aff=tools-promo" target="_top" class="sam-click" data-campaign="dax-tools-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/tools-58090.png" title="DAX Tools Video Course" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Feb 27, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

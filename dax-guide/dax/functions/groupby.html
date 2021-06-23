@@ -1,0 +1,223 @@
+
+            <header>
+                <h1 title="GROUPBY"><a href="https://dax.guide/groupby/" rel="bookmark">GROUPBY</a> <span class="smaller">DAX Function (Table manipulation)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                                                 &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                         &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Creates a summary the input table grouped by the specified columns.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    GROUPBY ( &lt;Table&gt; [, &lt;GroupBy_ColumnName&gt; [, [&lt;Name&gt;] [, [&lt;Expression&gt;] [, &lt;GroupBy_ColumnName&gt; [, [&lt;Name&gt;] [, [&lt;Expression&gt;] [, … ] ] ] ] ] ] ] )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Table                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The input table.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        GroupBy_ColumnName                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Optional<br>Repeatable<br></td>
+                                    <td class="definition">
+                                        <p>A column to group by.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Name                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Optional<br>Repeatable<br></td>
+                                    <td class="definition">
+                                        <p>A column name to be added.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Expression                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Optional<br>Repeatable<br></td>
+                                    <td class="definition">
+                                        <p>The expression of the new column.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="table-ret">Table</span> An entire table or a table with one or more columns.</div></p>                    <p>A table with the selected columns for the GroupBy_columnName arguments and the grouped by columns designated by the name arguments. </p>
+                </section>
+            
+            
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 1 related article</a><br>
+                                                    <a href="#alt" class="sliding">&raquo; 1 related function</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/8vxB5uTlepJwgz/; notranslate" title="">
+--  GROUPBY is useful to group by columns with no lineage
+--  Each column added by GROUPBY must iterate CURRENTGROUP(). 
+--  Moreover, you cannot use CALCULATE inside
+--  a GROUPBY iteration.
+DEFINE
+VAR AverageCustomerSales =
+    AVERAGEX ( Customer, &#91;Sales Amount] )
+VAR TaggedCustomers =
+    SUMMARIZECOLUMNS (
+        Customer&#91;CustomerKey],
+        &quot;Customer Category&quot;,
+            IF ( &#91;Sales Amount] &gt;= AverageCustomerSales, &quot;Above Average&quot;, &quot;Below Average&quot; )
+    )
+VAR Result =
+    GROUPBY (
+        TaggedCustomers,
+        &#91;Customer Category],
+        &quot;# Customers&quot;, COUNTX ( CURRENTGROUP (), 1 )
+    )
+EVALUATE
+    Result
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Customer Category">Customer Category</th>
+<th title="# Customers"># Customers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Below Average</td>
+<td class="col-int">18,062</td>
+</tr>
+<tr>
+<td class="col-string">Above Average</td>
+<td class="col-int">807</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/XQWjNCYDfQags8/; notranslate" title="">
+DEFINE
+VAR CustomersAndCategories = 
+    SUMMARIZE ( Sales, Customer&#91;CustomerKey], 'Product'&#91;Category] )
+VAR CustomersWithNumCategories = 
+    GROUPBY ( 
+        CustomersAndCategories, 
+        'Product'&#91;Category],
+        &quot;@Customers&quot;, SUMX ( CURRENTGROUP(), 1 )
+    )
+EVALUATE
+    CustomersWithNumCategories
+ORDER BY 
+    'Product'&#91;Category]
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Category">Category</th>
+<th title="@Customers">@Customers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Audio</td>
+<td class="col-int">997</td>
+</tr>
+<tr>
+<td class="col-string">Cameras and camcorders</td>
+<td class="col-int">1,873</td>
+</tr>
+<tr>
+<td class="col-string">Cell phones</td>
+<td class="col-int">552</td>
+</tr>
+<tr>
+<td class="col-string">Computers</td>
+<td class="col-int">2,088</td>
+</tr>
+<tr>
+<td class="col-string">Games and Toys</td>
+<td class="col-int">5,785</td>
+</tr>
+<tr>
+<td class="col-string">Home Appliances</td>
+<td class="col-int">1,946</td>
+</tr>
+<tr>
+<td class="col-string">Music, Movies and Audio Books</td>
+<td class="col-int">377</td>
+</tr>
+<tr>
+<td class="col-string">TV and Video</td>
+<td class="col-int">3,421</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about GROUPBY in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/nested-grouping-using-groupby-vs-summarize/"  class="low-key"><strong>Nested grouping using GROUPBY vs SUMMARIZE</strong></a>
+                                <p>DAX introduced a GROUPBY function that should replace SUMMARIZE in some scenarios. This article describes how to use GROUPBY in nested grouping scenarios and other improvements. <a href="https://www.sqlbi.com/articles/nested-grouping-using-groupby-vs-summarize/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/currentgroup/" class="ajax" data-id="61">CURRENTGROUP</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://dax.guide/" target="_top" class="sam-click" data-campaign="dax-guide" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/daxguide-58090.png" title="DAX Guide" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/groupby-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/groupby-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

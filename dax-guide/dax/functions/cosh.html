@@ -1,0 +1,209 @@
+
+            <header>
+                <h1 title="COSH"><a href="https://dax.guide/cosh/" rel="bookmark">COSH</a> <span class="smaller">DAX Function (Math and Trig)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                                                 &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                                                 &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns the hyperbolic cosine of a number.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    COSH ( &lt;Number&gt; )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Number                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>Any real number for which you want to find the hyperbolic cosine.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single <a href="https://dax.guide/dt/decimal/" class="ajax" data-id="258">decimal</a> value.</div></p>                    <p>The hyperbolic cosine of a number. </p>
+                </section>
+            
+            
+            
+            
+                                                    <a href="#alt" class="sliding">&raquo; 1 related function</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/5GcR7R2qBGJCMK/; notranslate" title="">
+--  SINH, COSH, ASINH, ACOSH, TANH, ATANH, COTH, ACOTH
+--  are the standard hyperbolic trigonometrical functions.
+--
+--  Where required, the arguments are specified in radians.
+DEFINE 
+    VAR Vals = GENERATESERIES ( -PI()+0.001, PI(), PI()/4 )
+EVALUATE
+    ADDCOLUMNS ( 
+        Vals,
+        &quot;SINH&quot;,      SINH ( &#91;Value] ),
+        &quot;ASINH&quot;,     ASINH ( SINH ( &#91;Value] ) ),
+        &quot;COSH&quot;,      COSH ( &#91;Value] ),
+        &quot;ACOSH&quot;,     ACOSH ( COSH ( &#91;Value] ) ),
+        &quot;TANH&quot;,      TANH ( &#91;Value] ),
+        &quot;ATANH&quot;,     ATANH ( TANH ( &#91;Value] ) ),
+        &quot;COTH&quot;,      COTH ( &#91;Value] ),
+        &quot;ACOTH&quot;,     ACOTH ( COTH ( &#91;Value] ) )
+    )
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Value">Value</th>
+<th title="SINH">SINH</th>
+<th title="ASINH">ASINH</th>
+<th title="COSH">COSH</th>
+<th title="ACOSH">ACOSH</th>
+<th title="TANH">TANH</th>
+<th title="ATANH">ATANH</th>
+<th title="COTH">COTH</th>
+<th title="ACOTH">ACOTH</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-float">-3.14</td>
+<td class="col-float">-11.54</td>
+<td class="col-float">-3.14</td>
+<td class="col-float">11.58</td>
+<td class="col-float">3.14</td>
+<td class="col-float">-1.00</td>
+<td class="col-float">-3.14</td>
+<td class="col-float">-1.00</td>
+<td class="col-float">-3.14</td>
+</tr>
+<tr>
+<td class="col-float">-2.36</td>
+<td class="col-float">-5.22</td>
+<td class="col-float">-2.36</td>
+<td class="col-float">5.32</td>
+<td class="col-float">2.36</td>
+<td class="col-float">-0.98</td>
+<td class="col-float">-2.36</td>
+<td class="col-float">-1.02</td>
+<td class="col-float">-2.36</td>
+</tr>
+<tr>
+<td class="col-float">-1.57</td>
+<td class="col-float">-2.30</td>
+<td class="col-float">-1.57</td>
+<td class="col-float">2.51</td>
+<td class="col-float">1.57</td>
+<td class="col-float">-0.92</td>
+<td class="col-float">-1.57</td>
+<td class="col-float">-1.09</td>
+<td class="col-float">-1.57</td>
+</tr>
+<tr>
+<td class="col-float">-0.78</td>
+<td class="col-float">-0.87</td>
+<td class="col-float">-0.78</td>
+<td class="col-float">1.32</td>
+<td class="col-float">0.78</td>
+<td class="col-float">-0.66</td>
+<td class="col-float">-0.78</td>
+<td class="col-float">-1.53</td>
+<td class="col-float">-0.78</td>
+</tr>
+<tr>
+<td class="col-float">0.00</td>
+<td class="col-float">0.00</td>
+<td class="col-float">0.00</td>
+<td class="col-float">1.00</td>
+<td class="col-float">0.00</td>
+<td class="col-float">0.00</td>
+<td class="col-float">0.00</td>
+<td class="col-float">1,000.00</td>
+<td class="col-float">0.00</td>
+</tr>
+<tr>
+<td class="col-float">0.79</td>
+<td class="col-float">0.87</td>
+<td class="col-float">0.79</td>
+<td class="col-float">1.33</td>
+<td class="col-float">0.79</td>
+<td class="col-float">0.66</td>
+<td class="col-float">0.79</td>
+<td class="col-float">1.52</td>
+<td class="col-float">0.79</td>
+</tr>
+<tr>
+<td class="col-float">1.57</td>
+<td class="col-float">2.30</td>
+<td class="col-float">1.57</td>
+<td class="col-float">2.51</td>
+<td class="col-float">1.57</td>
+<td class="col-float">0.92</td>
+<td class="col-float">1.57</td>
+<td class="col-float">1.09</td>
+<td class="col-float">1.57</td>
+</tr>
+<tr>
+<td class="col-float">2.36</td>
+<td class="col-float">5.23</td>
+<td class="col-float">2.36</td>
+<td class="col-float">5.33</td>
+<td class="col-float">2.36</td>
+<td class="col-float">0.98</td>
+<td class="col-float">2.36</td>
+<td class="col-float">1.02</td>
+<td class="col-float">2.36</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/cos/" class="ajax" data-id="48">COS</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/data-modeling-for-power-bi-video-course/?aff=mod-promo" target="_top" class="sam-click" data-campaign="mod-video-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/mod-58090.png" title="Data Modeling for Power BI" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/cosh-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/cosh-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

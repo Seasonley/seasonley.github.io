@@ -1,0 +1,251 @@
+
+            <header>
+                <h1 title="VALUES"><a href="https://dax.guide/values/" rel="bookmark">VALUES</a> <span class="smaller">DAX Function (Table manipulation)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                         &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>When a column name is given, returns a single column table of unique values. When a table name is given, returns a table with the same columns and all the rows of the table (including duplicates) with the additional blank row if present.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    VALUES ( &lt;TableNameOrColumnName&gt; )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        TableNameOrColumnName                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>A column name or a table name.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="table-ret">Table</span> An entire table or a table with one or more columns.</div></p>                    <p>A column of unique values if the parameter is a single column.<br />
+If the parameter is a table expression, the result has the same columns and do not remove duplicated rows.</p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>VALUES is similar to <a href="https://dax.guide/distinct/" class="ajax" data-id="76">DISTINCT</a>, but it can have an additional blank row in case the table has at least one one-to-many relationship with other tables where there is a violation of referential integrity.</p>
+                </section>
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 3 related articles</a><br>
+                                                    <a href="#alt" class="sliding">&raquo; 1 related function</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/tU79QLexWPrb2q/; notranslate" title="">
+--  DISTINCT retrieves the distinct values of a column
+--  VALUES does the same.
+--  They differ in the way they handle the blank row, if present
+--  DISTINCT does not return the blank row, VALUES does.
+EVALUATE
+SUMMARIZECOLUMNS (
+    Store&#91;Continent],
+    &quot;#Stores (no blank row)&quot;, COUNTROWS ( DISTINCT ( Store&#91;Store Name] ) ),
+    &quot;#Stores (blank row)&quot;,    COUNTROWS ( VALUES ( Store&#91;Store Name] ) )
+)
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Continent">Continent</th>
+<th title="#Stores (no blank row)">#Stores (no blank row)</th>
+<th title="#Stores (blank row)">#Stores (blank row)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">North America</td>
+<td class="col-int">209</td>
+<td class="col-int">209</td>
+</tr>
+<tr>
+<td class="col-string">Europe</td>
+<td class="col-int">54</td>
+<td class="col-int">54</td>
+</tr>
+<tr>
+<td class="col-string">Asia</td>
+<td class="col-int">41</td>
+<td class="col-int">41</td>
+</tr>
+<tr>
+<td class="col-string blank">(Blank)</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/wWImzMaQJwMa7A/; notranslate" title="">
+--  DISTINCT and VALUES can also be used with a table.
+--  DISTINCT returns the distinct rows in the table.
+--  VALUES returns the table, with the blank row if it exists,
+--  but without performing a distinct.
+--  Worth remembering that a table reference does not return
+--  the blank row if you just use the table name.
+EVALUATE
+SUMMARIZECOLUMNS (
+    Store&#91;Continent],
+    &quot;#Stores&quot;,                COUNTROWS ( Store ),
+    &quot;#Stores (no blank row)&quot;, COUNTROWS ( DISTINCT ( Store ) ),
+    &quot;#Stores (blank row)&quot;,    COUNTROWS ( VALUES ( Store ) )
+)
+
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Continent">Continent</th>
+<th title="#Stores">#Stores</th>
+<th title="#Stores (no blank row)">#Stores (no blank row)</th>
+<th title="#Stores (blank row)">#Stores (blank row)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">North America</td>
+<td class="col-int">209</td>
+<td class="col-int">209</td>
+<td class="col-int">209</td>
+</tr>
+<tr>
+<td class="col-string">Europe</td>
+<td class="col-int">54</td>
+<td class="col-int">54</td>
+<td class="col-int">54</td>
+</tr>
+<tr>
+<td class="col-string">Asia</td>
+<td class="col-int">41</td>
+<td class="col-int">41</td>
+<td class="col-int">41</td>
+</tr>
+<tr>
+<td class="col-string blank">(Blank)</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/DCRyaHw9rK1My1/; notranslate" title="">
+--  DISTINCT can be used with variables.
+--  VALUES requires a table or a column that exists in the model.
+EVALUATE
+VAR Stores = 
+    SELECTCOLUMNS ( Store, &quot;Continent&quot;, Store&#91;Continent] )
+RETURN
+    {
+        ( &quot;#Stores (all rows)&quot;,     COUNTROWS (          ( Stores ) ) ),
+        ( &quot;#Stores (no blank row)&quot;, COUNTROWS ( DISTINCT ( Stores ) ) )
+        --
+        --  The following would produce an error: VALUES cannot be used with variables
+        --
+        -- ( &quot;#Stores (blank row)&quot;,    COUNTROWS ( VALUES ( Stores ) ) )
+    }
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Value1">Value1</th>
+<th title="Value2">Value2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">#Stores (all rows)</td>
+<td class="col-int">304</td>
+</tr>
+<tr>
+<td class="col-string">#Stores (no blank row)</td>
+<td class="col-int">3</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about VALUES in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/physical-and-virtual-relationships-in-dax/"  class="low-key"><strong>Physical and Virtual Relationships in DAX</strong></a>
+                                <p>DAX calculations can leverage relationships present in the data model, but you can obtain the same result without physical relationships, applying equivalent filters using specific DAX patterns. This article show a more efficient technique to apply virtual relationships in DAX&hellip; <a href="https://www.sqlbi.com/articles/physical-and-virtual-relationships-in-dax/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/using-allexcept-versus-all-and-values/"  class="low-key"><strong>Using ALLEXCEPT versus ALL and VALUES</strong></a>
+                                <p>This article describes the semantic difference between ALLEXCEPT and the joint use of ALL and VALUES, showing practical examples of the different results in Power BI and SSAS 2016. <a href="https://www.sqlbi.com/articles/using-allexcept-versus-all-and-values/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/blank-row-in-dax/"  class="low-key"><strong>Blank row in DAX</strong></a>
+                                <p>There are two functions in DAX that return the list of values of a column: VALUES and DISTINCT. This article describes the difference between the two, explaining the details of the blank row added to tables for invalid relationships. <a href="https://www.sqlbi.com/articles/blank-row-in-dax/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/distinct/" class="ajax" data-id="76">DISTINCT</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/dax-patterns/?aff=daxp-promo" target="_top" class="sam-click" data-campaign="dax-patterns-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/daxp-58090.png" title="DAX Patterns" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/values-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/values-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

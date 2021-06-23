@@ -1,0 +1,259 @@
+
+            <header>
+                <h1 title="INTERSECT"><a href="https://dax.guide/intersect/" rel="bookmark">INTERSECT</a> <span class="smaller">DAX Function (Table manipulation)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                         &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns the rows of left-side table which appear in right-side table.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    INTERSECT ( &lt;LeftTable&gt;, &lt;RightTable&gt; )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        LeftTable                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The Left-side table expression to be used for Intersect.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        RightTable                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The Right-side table expression to be used for Intersect.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="table-ret">Table</span> An entire table or a table with one or more columns.</div></p>                    <p>A table that contains all the rows in LeftTable that are also in RightTable. </p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>Intersect is not commutative. In general, Intersect(T1, T2) will have a different result set than Intersect(T2, T1). </p>
+<p>Duplicate rows are retained. If a row appears in table_expression1 and table_expression2, it and all duplicates in table_expression_1 are included in the result set. </p>
+<p>The column names will match the column names in table_expression1. </p>
+<p>The returned table has lineage based on the columns in table_expression1 , regardless of the lineage of the columns in the second table. For example, if the first column of LeftTable has lineage to the base column C1 in the model, the intersect will reduce the rows based on the intersect on first column of RightTable and keep the lineage on base column C1 intact. </p>
+<p>Columns are compared based on positioning, and data comparison with no type coercion. </p>
+<p>The returned table does not include columns from tables related to LeftTable. Therefore, when LeftTable corresponds to a base table, once applied to the filter context it does not involve the expanded table and it only filters columns of he base table. </p>
+                </section>
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 2 related articles</a><br>
+                                                    <a href="#alt" class="sliding">&raquo; 2 related functions</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/PMNJobyasazFI1/; notranslate" title="">
+--  INTERSECT performs set intersection: the second parameter rows 
+--  are intersected with the first.
+--  INTERSECT keeps the data lineage of its first argument only.
+DEFINE
+VAR Days         = VALUES ( 'Date'&#91;Day of Week] )
+VAR WeekendDays  = { &quot;Saturday&quot;, &quot;Sunday&quot; }
+VAR DaysWeekends = INTERSECT ( Days, WeekendDays )
+VAR WeekendsDays = INTERSECT ( WeekendDays, Days )
+
+EVALUATE DaysWeekends
+
+EVALUATE
+ADDCOLUMNS ( 
+    DaysWeekends,
+    &quot;Sales Amount&quot;, &#91;Sales Amount] 
+)
+
+--  In this last result, the data lineage is from WeekendDays, which does not
+--  filter the Sales table and the Sales Amount measure.
+EVALUATE
+ADDCOLUMNS ( 
+    WeekendsDays,
+    &quot;Sales Amount&quot;, &#91;Sales Amount] 
+)
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Day of Week">Day of Week</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Saturday</td>
+</tr>
+<tr>
+<td class="col-string">Sunday</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th title="Day of Week">Day of Week</th>
+<th title="Sales Amount">Sales Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Saturday</td>
+<td class="col-float">4,332,879.26</td>
+</tr>
+<tr>
+<td class="col-string">Sunday</td>
+<td class="col-float">4,255,613.01</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th title="Value">Value</th>
+<th title="Sales Amount">Sales Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Saturday</td>
+<td class="col-float">30,591,343.98</td>
+</tr>
+<tr>
+<td class="col-string">Sunday</td>
+<td class="col-float">30,591,343.98</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/XXC1HwUKnfdGWa/; notranslate" title="">
+--  INTERSECT keeps duplicates, if present in the parameters.
+--  In case of context transition, there are duplicated values 
+--  in the results of the measures, too.
+EVALUATE 
+VAR Days        = SELECTCOLUMNS ( Date, &quot;Day of week&quot;, 'Date'&#91;Day of Week] )
+VAR WeekendDays = { &quot;Saturday&quot;, &quot;Sunday&quot; }
+VAR Result      = INTERSECT ( Days, WeekendDays )
+RETURN 
+    ADDCOLUMNS ( 
+        TOPN ( 5, Result ),
+        &quot;Sales Amount&quot;, &#91;Sales Amount] 
+    )
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Day of week">Day of week</th>
+<th title="Sales Amount">Sales Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Saturday</td>
+<td class="col-float">4,332,879.26</td>
+</tr>
+<tr>
+<td class="col-string">Sunday</td>
+<td class="col-float">4,255,613.01</td>
+</tr>
+<tr>
+<td class="col-string">Saturday</td>
+<td class="col-float">4,332,879.26</td>
+</tr>
+<tr>
+<td class="col-string">Sunday</td>
+<td class="col-float">4,255,613.01</td>
+</tr>
+<tr>
+<td class="col-string">Saturday</td>
+<td class="col-float">4,332,879.26</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>The arguments of INTERSECT must have the same number of columns.<br />
+The following query throws an error because Date contains many more columns than WeekendDays.</p>
+<pre class="brush: dax; title: ; notranslate" title="">
+EVALUATE 
+VAR Days        = Date
+VAR WeekendDays = { &quot;Saturday&quot;, &quot;Sunday&quot; }
+VAR Result      = INTERSECT ( Days, WeekendDays )
+RETURN 
+    ADDCOLUMNS ( 
+        Result,
+        &quot;Sales Amount&quot;, &#91;Sales Amount] 
+    )
+</pre>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about INTERSECT in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/blog/marco/2016/07/26/leverage-intersect-to-apply-relationships-in-dax/"  class="low-key"><strong>Leverage INTERSECT to apply relationships in DAX</strong></a>
+                                <p> <a href="https://www.sqlbi.com/blog/marco/2016/07/26/leverage-intersect-to-apply-relationships-in-dax/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/physical-and-virtual-relationships-in-dax/"  class="low-key"><strong>Physical and Virtual Relationships in DAX</strong></a>
+                                <p>DAX calculations can leverage relationships present in the data model, but you can obtain the same result without physical relationships, applying equivalent filters using specific DAX patterns. This article show a more efficient technique to apply virtual relationships in DAX&hellip; <a href="https://www.sqlbi.com/articles/physical-and-virtual-relationships-in-dax/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/except/" class="ajax" data-id="89">EXCEPT</a></li>
+                                                    <li><a href="https://dax.guide/union/" class="ajax" data-id="239">UNION</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/optimizing-dax-video-course/?aff=odax-promo" target="_top" class="sam-click" data-campaign="odax-video-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/odax-58090.png" title="Optimizing DAX" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/intersect-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/intersect-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

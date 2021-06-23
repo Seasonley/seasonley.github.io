@@ -1,0 +1,305 @@
+
+            <header>
+                <h1 title="T.DIST"><a href="https://dax.guide/t-dist/" rel="bookmark">T.DIST</a> <span class="smaller">DAX Function (Statistical)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                                                 &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns the Student&#8217;s left-tailed t-distribution.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    T.DIST ( &lt;X&gt;, &lt;Deg_freedom&gt;, &lt;Cumulative&gt; )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        X                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The numeric value at which to evaluate the distribution.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Deg_freedom                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>An integer indicating the number of degrees of freedom.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Cumulative                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>A logical value that determines the form of the function. If cumulative is TRUE, T.DIST returns the cumulative distribution function; if FALSE, it returns the probability density function.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single <a href="https://dax.guide/dt/decimal/" class="ajax" data-id="258">decimal</a> value.</div></p>                    <p>The Student&#8217;s left-tailed t-distribution. </p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>The Deg_freedom argument cannot be negative.</p>
+                </section>
+            
+            
+                                                    <a href="#alt" class="sliding">&raquo; 4 related functions</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/cNsenX1PA1oABv/; notranslate" title="">
+--  T.DIST    returns the Student's left-tailed t-distribution
+--  T.DIST.2T returns the two-tailed Student's t-distribution
+--  T.DIST.RT returns the right-tailed Student's t-distribution
+--
+--      T.DIST ( Value, DegFreedom, Cumulative )
+--
+--  https://en.wikipedia.org/wiki/Student%27s_t-distribution
+DEFINE
+    VAR Vals            = GENERATESERIES ( 0, 5, 0.25 )
+    VAR DegFreedom      = 4.6
+    VAR CumulativeTrue  = TRUE   -- Cumulative distribution function
+    VAR CumulativeFalse = FALSE  -- Probability density function
+EVALUATE
+ADDCOLUMNS ( 
+    Vals, 
+    &quot;T Dist&quot;,            -- Probability density function
+        FORMAT ( 
+            T.DIST ( &#91;Value], DegFreedom, CumulativeFalse ),
+            &quot;#,0.0####&quot;
+        ),
+    &quot;T Dist Cumulative&quot;, -- Cumulative distribution function
+        FORMAT ( 
+            T.DIST ( &#91;Value], DegFreedom, CumulativeTrue ),
+            &quot;#,0.0####&quot;
+        ),
+    &quot;2T Dist&quot;,            -- Probability density function
+        FORMAT ( 
+            T.DIST.2T ( &#91;Value], DegFreedom ),
+            &quot;#,0.0####&quot;
+        ),
+    &quot;RT Dist&quot;, -- Cumulative distribution function
+        FORMAT ( 
+            T.DIST.RT ( &#91;Value], DegFreedom ),
+            &quot;#,0.0####&quot;
+        )
+    )
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Value">Value</th>
+<th title="T Dist">T Dist</th>
+<th title="T Dist Cumulative">T Dist Cumulative</th>
+<th title="2T Dist">2T Dist</th>
+<th title="RT Dist">RT Dist</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-float">0.0000000000</td>
+<td class="col-string">0.37961</td>
+<td class="col-string">0.5</td>
+<td class="col-string">1.0</td>
+<td class="col-string">0.5</td>
+</tr>
+<tr>
+<td class="col-float">0.2500000000</td>
+<td class="col-string">0.36572</td>
+<td class="col-string">0.59373</td>
+<td class="col-string">0.81253</td>
+<td class="col-string">0.40627</td>
+</tr>
+<tr>
+<td class="col-float">0.5000000000</td>
+<td class="col-string">0.32792</td>
+<td class="col-string">0.68085</td>
+<td class="col-string">0.6383</td>
+<td class="col-string">0.31915</td>
+</tr>
+<tr>
+<td class="col-float">0.7500000000</td>
+<td class="col-string">0.2757</td>
+<td class="col-string">0.75649</td>
+<td class="col-string">0.48702</td>
+<td class="col-string">0.24351</td>
+</tr>
+<tr>
+<td class="col-float">1.0000000000</td>
+<td class="col-string">0.21968</td>
+<td class="col-string">0.81839</td>
+<td class="col-string">0.36322</td>
+<td class="col-string">0.18161</td>
+</tr>
+<tr>
+<td class="col-float">1.2500000000</td>
+<td class="col-string">0.16789</td>
+<td class="col-string">0.86669</td>
+<td class="col-string">0.26662</td>
+<td class="col-string">0.13331</td>
+</tr>
+<tr>
+<td class="col-float">1.5000000000</td>
+<td class="col-string">0.12452</td>
+<td class="col-string">0.90305</td>
+<td class="col-string">0.1939</td>
+<td class="col-string">0.09695</td>
+</tr>
+<tr>
+<td class="col-float">1.7500000000</td>
+<td class="col-string">0.09054</td>
+<td class="col-string">0.92974</td>
+<td class="col-string">0.14052</td>
+<td class="col-string">0.07026</td>
+</tr>
+<tr>
+<td class="col-float">2.0000000000</td>
+<td class="col-string">0.06509</td>
+<td class="col-string">0.94903</td>
+<td class="col-string">0.10194</td>
+<td class="col-string">0.05097</td>
+</tr>
+<tr>
+<td class="col-float">2.2500000000</td>
+<td class="col-string">0.04657</td>
+<td class="col-string">0.96286</td>
+<td class="col-string">0.07428</td>
+<td class="col-string">0.03714</td>
+</tr>
+<tr>
+<td class="col-float">2.5000000000</td>
+<td class="col-string">0.03333</td>
+<td class="col-string">0.97275</td>
+<td class="col-string">0.05449</td>
+<td class="col-string">0.02725</td>
+</tr>
+<tr>
+<td class="col-float">2.7500000000</td>
+<td class="col-string">0.02393</td>
+<td class="col-string">0.97984</td>
+<td class="col-string">0.04031</td>
+<td class="col-string">0.02016</td>
+</tr>
+<tr>
+<td class="col-float">3.0000000000</td>
+<td class="col-string">0.01729</td>
+<td class="col-string">0.98495</td>
+<td class="col-string">0.0301</td>
+<td class="col-string">0.01505</td>
+</tr>
+<tr>
+<td class="col-float">3.2500000000</td>
+<td class="col-string">0.01259</td>
+<td class="col-string">0.98865</td>
+<td class="col-string">0.0227</td>
+<td class="col-string">0.01135</td>
+</tr>
+<tr>
+<td class="col-float">3.5000000000</td>
+<td class="col-string">0.00924</td>
+<td class="col-string">0.99136</td>
+<td class="col-string">0.01728</td>
+<td class="col-string">0.00864</td>
+</tr>
+<tr>
+<td class="col-float">3.7500000000</td>
+<td class="col-string">0.00685</td>
+<td class="col-string">0.99335</td>
+<td class="col-string">0.01329</td>
+<td class="col-string">0.00665</td>
+</tr>
+<tr>
+<td class="col-float">4.0000000000</td>
+<td class="col-string">0.00512</td>
+<td class="col-string">0.99484</td>
+<td class="col-string">0.01032</td>
+<td class="col-string">0.00516</td>
+</tr>
+<tr>
+<td class="col-float">4.2500000000</td>
+<td class="col-string">0.00387</td>
+<td class="col-string">0.99595</td>
+<td class="col-string">0.00809</td>
+<td class="col-string">0.00405</td>
+</tr>
+<tr>
+<td class="col-float">4.5000000000</td>
+<td class="col-string">0.00295</td>
+<td class="col-string">0.9968</td>
+<td class="col-string">0.0064</td>
+<td class="col-string">0.0032</td>
+</tr>
+<tr>
+<td class="col-float">4.7500000000</td>
+<td class="col-string">0.00227</td>
+<td class="col-string">0.99745</td>
+<td class="col-string">0.0051</td>
+<td class="col-string">0.00255</td>
+</tr>
+<tr>
+<td class="col-float">5.0000000000</td>
+<td class="col-string">0.00176</td>
+<td class="col-string">0.99795</td>
+<td class="col-string">0.0041</td>
+<td class="col-string">0.00205</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/t-dist-2t/" class="ajax" data-id="359">T.DIST.2T</a></li>
+                                                    <li><a href="https://dax.guide/t-dist-rt/" class="ajax" data-id="360">T.DIST.RT</a></li>
+                                                    <li><a href="https://dax.guide/t-inv/" class="ajax" data-id="361">T.INV</a></li>
+                                                    <li><a href="https://dax.guide/t-inv-2t/" class="ajax" data-id="362">T.INV.2T</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://dax.guide/" target="_top" class="sam-click" data-campaign="dax-guide" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/daxguide-58090.png" title="DAX Guide" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/t-dist-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/t-dist-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

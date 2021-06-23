@@ -1,0 +1,251 @@
+
+            <header>
+                <h1 title="BLANK"><a href="https://dax.guide/blank/" rel="bookmark">BLANK</a> <span class="smaller">DAX Function</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                                            </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns a blank.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    BLANK (  )                 </div>
+
+                                    <p>This expression has no parameters.</p>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single value of any type.</div></p>                    <p>The BLANK value does not have a data type.</p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>The BLANK value is automatically converted in case it is compared with other values.<br />
+The right way to check whether a value is BLANK is by using either the <a href="https://dax.guide/op/strictly-equal-to/">operator ==</a> or the <a href="https://dax.guide/isblank/" class="ajax" data-id="116">ISBLANK</a> function. Do not use the operator &#8220;=&#8221;.<br />
+The <a href="https://dax.guide/op/strictly-equal-to/">operator ==</a> is a &#8220;strictly equal to&#8221; operator that consider BLANK as a different value other than 0 or an empty string.<br />
+See related articles for more details.</p>
+                </section>
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 5 related articles</a><br>
+                                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/HIVw0v53LhgjdY/; notranslate" title="">
+--  BLANK returns the BLANK value
+--
+--  It is mostly useful to blank out the result of a calculation
+--  toor  perform comparisons.
+DEFINE
+    MEASURE Customer&#91;EmptyNames] =
+        CALCULATE (
+            COUNTROWS ( Customer ),
+            Customer&#91;Customer Name] == BLANK ()
+        )
+EVALUATE
+SUMMARIZECOLUMNS (
+    Customer&#91;Continent],
+    &quot;Customers&quot;, COUNTROWS ( Customer ),
+    &quot;Customers with blank name&quot;, &#91;EmptyNames]
+)
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Continent">Continent</th>
+<th title="Customers">Customers</th>
+<th title="Customers with blank name">Customers with blank name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Asia</td>
+<td class="col-int">3,658</td>
+<td class="col-int">34</td>
+</tr>
+<tr>
+<td class="col-string">North America</td>
+<td class="col-int">9,665</td>
+<td class="col-int">138</td>
+</tr>
+<tr>
+<td class="col-string">Europe</td>
+<td class="col-int">5,546</td>
+<td class="col-int">21</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/CB8vDkVwxc1RTk/; notranslate" title="">
+--  BLANK is useful also to provide BLANK arguments to some functions
+--  like DATESBETWEEN.
+EVALUATE
+    DATESBETWEEN ( 
+        'Date'&#91;Date],
+        DATE ( 2011, 12, 20 ),
+        BLANK ()
+    )
+ORDER BY 'Date'&#91;Date]
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Date">Date</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-date">2011-12-20</td>
+</tr>
+<tr>
+<td class="col-date">2011-12-21</td>
+</tr>
+<tr>
+<td class="col-date">2011-12-22</td>
+</tr>
+<tr>
+<td class="col-date">2011-12-23</td>
+</tr>
+<tr>
+<td class="col-date">2011-12-24</td>
+</tr>
+<tr>
+<td class="col-date">2011-12-25</td>
+</tr>
+<tr>
+<td class="col-date">2011-12-26</td>
+</tr>
+<tr>
+<td class="col-date">2011-12-27</td>
+</tr>
+<tr>
+<td class="col-date">2011-12-28</td>
+</tr>
+<tr>
+<td class="col-date">2011-12-29</td>
+</tr>
+<tr>
+<td class="col-date">2011-12-30</td>
+</tr>
+<tr>
+<td class="col-date">2011-12-31</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/cs8AqRlgRo6Tpk/; notranslate" title="">
+--  BLANK is equal to 0 and to an empty string in DAX.
+--  You need to use == to check for &quot;strictly equal to&quot;
+EVALUATE
+    { 
+        ( &quot;Blank = 0&quot;, BLANK () = 0 ),
+        ( &quot;Blank = &quot;&quot;&quot;&quot;&quot;, BLANK () = &quot;&quot; ),
+        ( &quot;Blank == 0&quot;, BLANK () == 0 ),
+        ( &quot;Blank == &quot;&quot;&quot;&quot;&quot;, BLANK () == &quot;&quot; ) 
+    }
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Value1">Value1</th>
+<th title="Value2">Value2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Blank = 0</td>
+<td class="col-string">true</td>
+</tr>
+<tr>
+<td class="col-string">Blank = &#8220;&#8221;</td>
+<td class="col-string">true</td>
+</tr>
+<tr>
+<td class="col-string">Blank == 0</td>
+<td class="col-string">false</td>
+</tr>
+<tr>
+<td class="col-string">Blank == &#8220;&#8221;</td>
+<td class="col-string">false</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about BLANK in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/how-to-handle-blank-in-dax-measures/"  class="low-key"><strong>How to handle BLANK in DAX measures</strong></a>
+                                <p>This article describes a counterintuitive behavior of BLANK in DAX measures affecting Power BI, Analysis Services, and Power Pivot. That behavior could cause mistakes in a report using alternate expressions of the same calculation. Indeed, these expressions are not equivalent when BLANK is involved. <a href="https://www.sqlbi.com/articles/how-to-handle-blank-in-dax-measures/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/blank-handling-in-dax/"  class="low-key"><strong>Handling BLANK in DAX</strong></a>
+                                <p>The blank value in DAX is a special value requiring particular attention in comparisons. It is not like the special null value in SQL, and it could appear in any conversion from a table expression. This article explores in details the behavior of the blank value in DAX, highlighting a common error in DAX expressions […] <a href="https://www.sqlbi.com/articles/blank-handling-in-dax/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/blank-row-in-dax/"  class="low-key"><strong>Blank row in DAX</strong></a>
+                                <p>There are two functions in DAX that return the list of values of a column: VALUES and DISTINCT. This article describes the difference between the two, explaining the details of the blank row added to tables for invalid relationships. <a href="https://www.sqlbi.com/articles/blank-row-in-dax/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/optimizing-conditions-involving-blank-values-in-dax/"  class="low-key"><strong>Optimizing conditions involving blank values in DAX</strong></a>
+                                <p>This article describes how blank values considered in a DAX conditional expression can affect its query plan and how to apply possible optimizations to improve performance in these cases. <a href="https://www.sqlbi.com/articles/optimizing-conditions-involving-blank-values-in-dax/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/from-sql-to-dax-implementing-nullif-and-coalesce-in-dax/"  class="low-key"><strong>From SQL to DAX: Implementing NULLIF and COALESCE in DAX</strong></a>
+                                <p>This article describes how to implement a syntax equivalent to the T-SQL function NULLIF and the ANSI SQL function COALESCE, in DAX. <a href="https://www.sqlbi.com/articles/from-sql-to-dax-implementing-nullif-and-coalesce-in-dax/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/mastering-dax-video-course/?aff=mdax-promo" target="_top" class="sam-click" data-campaign="mdax-video-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/mdax-58090.jpg" title="Mastering DAX Video Course" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/blank-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/blank-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

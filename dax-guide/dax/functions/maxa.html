@@ -1,0 +1,631 @@
+
+            <header>
+                <h1 title="MAXA"><a href="https://dax.guide/maxa/" rel="bookmark">MAXA</a> <span class="smaller">DAX Function (Aggregation)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                                                 &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns the largest value in a column. Does not ignore logical values and text.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    MAXA ( &lt;ColumnName&gt; )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        ColumnName                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The column in which you want to find the largest value.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single value of any type.</div></p>                    <p>Largest value found in the column.</p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>The function MAXA corresponds to <a href="https://dax.guide/max/" class="ajax" data-id="142">MAX</a> used with a single column as an argument for all the data types except Boolean.<br />
+When MAXA operates with a Boolean data type, it consider TRUE as 1 and FALSE as 0.</p>
+<p>For arguments that are not Boolean, the MAXA function internally executes <a href="https://dax.guide/maxx/" class="ajax" data-id="144">MAXX</a>, without any performance difference.<br />
+The following MAXA call:</p>
+<pre class="brush: dax; gutter: false; title: ; notranslate" title="">
+MAXA ( table&#91;column] )
+</pre>
+<p>corresponds to the following <a href="https://dax.guide/maxx/" class="ajax" data-id="144">MAXX</a> call:</p>
+<pre class="brush: dax; gutter: false; title: ; notranslate" title="">
+MAXX (
+    table,
+    table&#91;column] 
+)
+</pre>
+<p>The result is blank in case there are no rows in the table with a non-blank value.</p>
+                </section>
+            
+            
+                                                    <a href="#alt" class="sliding">&raquo; 2 related functions</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <p>More examples available for the <a href="https://dax.guide/max/" class="ajax" data-id="142">MAX</a> and <a href="https://dax.guide/maxx/" class="ajax" data-id="144">MAXX</a> functions.</p>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/xt1oS4rVgmtyTH/; notranslate" title="">
+--  MAXA required to aggregate boolean columns
+--      FALSE is 0
+--      TRUE  is 1
+DEFINE
+    MEASURE Customer&#91;Group Large Family 1] = MAXA ( Customer&#91;LargeFamily] )
+    MEASURE Customer&#91;Group Large Family 2] = 
+        MAXX ( Customer, 1 * Customer&#91;LargeFamily] )
+EVALUATE
+SUMMARIZECOLUMNS ( 
+    Customer&#91;State], 
+    &quot;State has large families 1&quot;, &#91;Group Large Family 1],
+    &quot;State has large families 2&quot;, &#91;Group Large Family 2] 
+)
+ORDER BY customer&#91;State]
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="State">State</th>
+<th title="State has large families 1">State has large families 1</th>
+<th title="State has large families 2">State has large families 2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Ahal Province</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">Alabama</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">Alaska</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">Alberta</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Alpes-Maritimes</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">Arizona</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">Armenia</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">Baden-Wuerttemberg</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Bavaria</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Beijing</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">Berlin</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Bern</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">British Columbia</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">California</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Central Greece and Evvoia</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">Chubu</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">Chuy Province</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">Colorado</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">Connecticut</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">Damascus</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">England</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Essonne</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Florida</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Garonne (Haute)</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Georgia</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">GuangDong</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">Hamburg</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Hauts de Seine</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Hesse</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Hokkaido</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">Hong Kong</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">Illinois</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">Islamabad Capital Territory</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">Kansai</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">Kanto</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">Kentucky</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">Krung Thep</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">Leinster</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">Lisboa Region</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">Loiret</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Lombardia</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">Lower Saxony</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Madrid</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">Maharashtra</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">Maine</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">Maryland</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">Massachusetts</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">Minnesota</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">Mississippi</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">Missouri</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Molonglo</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">Montana</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Moselle</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Moskovskaya oblast</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">National Capital Territory of Delhi</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">New Jersey</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">New South Wales</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">New York</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">Noord-Holland</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">Nord</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">North Carolina</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">North Rhine-Westphalia</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Northwestern</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">Ohio</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">Ontario</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">Oregon</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Pas de Calais</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Queensland</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Saar</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Saxony</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Schleswig-Holstein</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Scotland</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">Seine (Paris)</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Seine et Marne</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Seine Saint Denis</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Seoul-jikhalsi</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">Shanghai</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">Singapore</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">Somme</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">South Australia</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">South Carolina</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">Taiwan</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">Tasmania</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Tehran</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">Texas</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Thimphu District</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">Tohoku</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">Utah</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">Val de Marne</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Val d&#8217;Oise</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Victoria</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Virginia</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Warszawa</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">Washington</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">West Bengal</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">Wisconsin</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">Wyoming</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Xinjiang</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">Yeongnam</td>
+<td class="col-int">0</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">Yveline</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/max/" class="ajax" data-id="142">MAX</a></li>
+                                                    <li><a href="https://dax.guide/maxx/" class="ajax" data-id="144">MAXX</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/dax-tools/?aff=tools-promo" target="_top" class="sam-click" data-campaign="dax-tools-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/tools-58090.png" title="DAX Tools Video Course" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo, Kenneth Barber</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/maxa-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/maxa-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

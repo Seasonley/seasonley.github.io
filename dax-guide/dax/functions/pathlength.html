@@ -1,0 +1,320 @@
+
+            <header>
+                <h1 title="PATHLENGTH"><a href="https://dax.guide/pathlength/" rel="bookmark">PATHLENGTH</a> <span class="smaller">DAX Function (Parent-child)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                                                 &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                         &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns returns the number of items in a particular path string. This function returns 1 for the path generated for an ID at the top/root of a hierarchy.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    PATHLENGTH ( &lt;Path&gt; )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Path                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>A string which contains a delimited list of IDs.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single <a href="https://dax.guide/dt/integer/" class="ajax" data-id="257">integer</a> value.</div></p>                    <p>The number of items that are parents to the specified item in a given <a href="https://dax.guide/path/" class="ajax" data-id="169">PATH</a> result, including the specified item. </p>
+                </section>
+            
+            
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 1 related article</a><br>
+                                                    <a href="#alt" class="sliding">&raquo; 4 related functions</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/euRE81Vvp6cjml/; notranslate" title="">
+--  PATH generates a column containing the path of each node in a 
+--  parent/child hierarchy
+--
+--  PATHLENGTH returns the length of a path column
+--  PATHCONTAINS checks if a path column contains a value
+DEFINE
+    COLUMN Account&#91;AccountPath] = PATH ( Account&#91;AccountKey], Account&#91;ParentAccountKey] )
+    COLUMN Account&#91;PathLength] = PATHLENGTH ( Account&#91;AccountPath] )
+    COLUMN Account&#91;PathContains2] = PATHCONTAINS ( Account&#91;AccountPath], 2 )
+EVALUATE
+    Account
+ORDER BY &#91;AccountPath]
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="AccountKey">AccountKey</th>
+<th title="ParentAccountKey">ParentAccountKey</th>
+<th title="AccountName">AccountName</th>
+<th title="AccountPath">AccountPath</th>
+<th title="PathLength">PathLength</th>
+<th title="PathContains2">PathContains2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-key">1</td>
+<td class="col-key blank">(Blank)</td>
+<td class="col-string">Profit and Loss after tax</td>
+<td class="col-string">1</td>
+<td class="col-int">1</td>
+<td class="col-string">false</td>
+</tr>
+<tr>
+<td class="col-key">19</td>
+<td class="col-key">1</td>
+<td class="col-string">Taxation</td>
+<td class="col-string">1|19</td>
+<td class="col-int">2</td>
+<td class="col-string">false</td>
+</tr>
+<tr>
+<td class="col-key">24</td>
+<td class="col-key">1</td>
+<td class="col-string">Profit and Loss before tax</td>
+<td class="col-string">1|24</td>
+<td class="col-int">2</td>
+<td class="col-string">false</td>
+</tr>
+<tr>
+<td class="col-key">2</td>
+<td class="col-key">24</td>
+<td class="col-string">Income</td>
+<td class="col-string">1|24|2</td>
+<td class="col-int">3</td>
+<td class="col-string">true</td>
+</tr>
+<tr>
+<td class="col-key">4</td>
+<td class="col-key">2</td>
+<td class="col-string">Sale Revenue</td>
+<td class="col-string">1|24|2|4</td>
+<td class="col-int">4</td>
+<td class="col-string">true</td>
+</tr>
+<tr>
+<td class="col-key">3</td>
+<td class="col-key">24</td>
+<td class="col-string">Expense</td>
+<td class="col-string">1|24|3</td>
+<td class="col-int">3</td>
+<td class="col-string">false</td>
+</tr>
+<tr>
+<td class="col-key">5</td>
+<td class="col-key">3</td>
+<td class="col-string">Cost of Goods Sold</td>
+<td class="col-string">1|24|3|5</td>
+<td class="col-int">4</td>
+<td class="col-string">false</td>
+</tr>
+<tr>
+<td class="col-key">6</td>
+<td class="col-key">3</td>
+<td class="col-string">Selling, General &#038; Administrative Expenses</td>
+<td class="col-string">1|24|3|6</td>
+<td class="col-int">4</td>
+<td class="col-string">false</td>
+</tr>
+<tr>
+<td class="col-key">10</td>
+<td class="col-key">6</td>
+<td class="col-string">Light, Heat, Communication Cost</td>
+<td class="col-string">1|24|3|6|10</td>
+<td class="col-int">5</td>
+<td class="col-string">false</td>
+</tr>
+<tr>
+<td class="col-key">11</td>
+<td class="col-key">6</td>
+<td class="col-string">Property Costs</td>
+<td class="col-string">1|24|3|6|11</td>
+<td class="col-int">5</td>
+<td class="col-string">false</td>
+</tr>
+<tr>
+<td class="col-key">12</td>
+<td class="col-key">6</td>
+<td class="col-string">Other Expenses</td>
+<td class="col-string">1|24|3|6|12</td>
+<td class="col-int">5</td>
+<td class="col-string">false</td>
+</tr>
+<tr>
+<td class="col-key">13</td>
+<td class="col-key">6</td>
+<td class="col-string">Marketing Cost</td>
+<td class="col-string">1|24|3|6|13</td>
+<td class="col-int">5</td>
+<td class="col-string">false</td>
+</tr>
+<tr>
+<td class="col-key">14</td>
+<td class="col-key">13</td>
+<td class="col-string">Holiday Ad Cost</td>
+<td class="col-string">1|24|3|6|13|14</td>
+<td class="col-int">6</td>
+<td class="col-string">false</td>
+</tr>
+<tr>
+<td class="col-key">20</td>
+<td class="col-key">14</td>
+<td class="col-string">Radio &#038; TV</td>
+<td class="col-string">1|24|3|6|13|14|20</td>
+<td class="col-int">7</td>
+<td class="col-string">false</td>
+</tr>
+<tr>
+<td class="col-key">21</td>
+<td class="col-key">14</td>
+<td class="col-string">Print</td>
+<td class="col-string">1|24|3|6|13|14|21</td>
+<td class="col-int">7</td>
+<td class="col-string">false</td>
+</tr>
+<tr>
+<td class="col-key">22</td>
+<td class="col-key">14</td>
+<td class="col-string">Internet</td>
+<td class="col-string">1|24|3|6|13|14|22</td>
+<td class="col-int">7</td>
+<td class="col-string">false</td>
+</tr>
+<tr>
+<td class="col-key">23</td>
+<td class="col-key">14</td>
+<td class="col-string">Other</td>
+<td class="col-string">1|24|3|6|13|14|23</td>
+<td class="col-int">7</td>
+<td class="col-string">false</td>
+</tr>
+<tr>
+<td class="col-key">15</td>
+<td class="col-key">13</td>
+<td class="col-string">Spring Ad Cost</td>
+<td class="col-string">1|24|3|6|13|15</td>
+<td class="col-int">6</td>
+<td class="col-string">false</td>
+</tr>
+<tr>
+<td class="col-key">16</td>
+<td class="col-key">13</td>
+<td class="col-string">Back-to-School Ad Cost</td>
+<td class="col-string">1|24|3|6|13|16</td>
+<td class="col-int">6</td>
+<td class="col-string">false</td>
+</tr>
+<tr>
+<td class="col-key">17</td>
+<td class="col-key">13</td>
+<td class="col-string">Business Ad Cost</td>
+<td class="col-string">1|24|3|6|13|17</td>
+<td class="col-int">6</td>
+<td class="col-string">false</td>
+</tr>
+<tr>
+<td class="col-key">18</td>
+<td class="col-key">13</td>
+<td class="col-string">Tax Time / Summer Ad Cost</td>
+<td class="col-string">1|24|3|6|13|18</td>
+<td class="col-int">6</td>
+<td class="col-string">false</td>
+</tr>
+<tr>
+<td class="col-key">7</td>
+<td class="col-key">6</td>
+<td class="col-string">Administration Expense</td>
+<td class="col-string">1|24|3|6|7</td>
+<td class="col-int">5</td>
+<td class="col-string">false</td>
+</tr>
+<tr>
+<td class="col-key">8</td>
+<td class="col-key">6</td>
+<td class="col-string">IT Cost</td>
+<td class="col-string">1|24|3|6|8</td>
+<td class="col-int">5</td>
+<td class="col-string">false</td>
+</tr>
+<tr>
+<td class="col-key">9</td>
+<td class="col-key">6</td>
+<td class="col-string">Human Capital</td>
+<td class="col-string">1|24|3|6|9</td>
+<td class="col-int">5</td>
+<td class="col-string">false</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about PATHLENGTH in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/daxpatterns/parent-child-hierarchies/"  class="low-key"><strong>Parent-Child Hierarchies</strong></a>
+                                <p>DAX does not directly support parent-child hierarchies. To obtain a browsable hierarchy in the data model, you have to naturalize a parent-child hierarchy. DAX provides specific functions to naturalize a parent-child hierarchy using calculated columns. The complete pattern also includes measures that improve the visualization of ragged hierarchies in Power Pivot. <a href="https://www.sqlbi.com/daxpatterns/parent-child-hierarchies/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/path/" class="ajax" data-id="169">PATH</a></li>
+                                                    <li><a href="https://dax.guide/pathcontains/" class="ajax" data-id="170">PATHCONTAINS</a></li>
+                                                    <li><a href="https://dax.guide/pathitem/" class="ajax" data-id="171">PATHITEM</a></li>
+                                                    <li><a href="https://dax.guide/pathitemreverse/" class="ajax" data-id="172">PATHITEMREVERSE</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/dax-tools/?aff=tools-promo" target="_top" class="sam-click" data-campaign="dax-tools-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/tools-58090.png" title="DAX Tools Video Course" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/pathlength-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/pathlength-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

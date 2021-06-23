@@ -1,0 +1,452 @@
+
+            <header>
+                <h1 title="CHISQ.INV"><a href="https://dax.guide/chisq-inv/" rel="bookmark">CHISQ.INV</a> <span class="smaller">DAX Function (Statistical)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                                                 &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns the inverse of the left-tailed probability of the chi-squared distribution. The chi-squared distribution is commonly used to study variation in the percentage of something across samples, such as the fraction of the day people spend watching television.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    CHISQ.INV ( &lt;Probability&gt;, &lt;Deg_freedom&gt; )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Probability                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>A probability associated with the chi-squared distribution.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Deg_freedom                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The number of degrees of freedom.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single <a href="https://dax.guide/dt/decimal/" class="ajax" data-id="258">decimal</a> value.</div></p>                    <p>Returns the inverse of the left-tailed probability of the chi-squared distribution. </p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>If argument is nonnumeric, CHISQ.INV returns the #<a href="https://dax.guide/value/" class="ajax" data-id="247">VALUE</a>! error value.<br />
+If probability < 0 or probability > 1, CHISQ.INV returns the #NUM! error value.<br />
+If deg_freedom is not an integer, it is rounded.<br />
+If deg_freedom < 1 or deg_freedom > 10^10, CHISQ.INV returns the #NUM! error value. </p>
+                </section>
+            
+            
+                                                    <a href="#alt" class="sliding">&raquo; 3 related functions</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/cbyhEa58SWhEtT/; notranslate" title="">
+--  Given the degrees of freedom, CHISQ.DIST returns the value
+--  of the probability density function using the chi-square
+--  distribution, or the cumulative distribution depending on the
+--  third argument.
+--
+--      CHISQ.DIST ( &#91;Value], DegFreedom, Cumulative )
+--
+--  The .INV functions provide the inverse calculation
+--  The .RT functions return the right tail of the chi-square, they
+--  do not need the Cumulative argument, which is always TRUE
+--  CHISQ.DIST.RT = (1 - CHISQ.DIST)
+--
+--  https://en.wikipedia.org/wiki/Chi-square_distribution
+DEFINE
+    VAR Vals            = GENERATESERIES ( 0, 10, 0.28 )
+    VAR DegFreedom      = 5
+    VAR CumulativeTrue  = TRUE   -- Cumulative distribution function
+    VAR CumulativeFalse = FALSE  -- Probability density function
+EVALUATE
+ADDCOLUMNS ( 
+    Vals, 
+    &quot;ChiSquare Dist&quot;,            -- Probability density function
+        FORMAT ( 
+            CHISQ.DIST ( &#91;Value], DegFreedom, CumulativeFalse ),
+            &quot;#,0.0####&quot;
+        ),
+    &quot;ChiSquare Dist Cumulative&quot;, -- Cumulative distribution function
+        FORMAT ( 
+            CHISQ.DIST ( &#91;Value], DegFreedom, CumulativeTrue ),
+            &quot;#,0.0####&quot;
+        ),
+    &quot;ChiSquare Inv Cumulative&quot;,
+        CHISQ.INV (  
+            CHISQ.DIST ( &#91;Value], DegFreedom, CumulativeTrue ),
+            DegFreedom
+        ),
+    &quot;ChiSquare Dist RT&quot;, 
+        FORMAT ( 
+            CHISQ.DIST.RT ( &#91;Value], DegFreedom ),
+            &quot;#,0.0####&quot;
+        ),
+    &quot;ChiSquare RT Inv&quot;,
+        CHISQ.INV.RT (  
+            CHISQ.DIST.RT ( &#91;Value], DegFreedom ),
+            DegFreedom
+        )
+    )
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Value">Value</th>
+<th title="ChiSquare Dist">ChiSquare Dist</th>
+<th title="ChiSquare Dist Cumulative">ChiSquare Dist Cumulative</th>
+<th title="ChiSquare Inv Cumulative">ChiSquare Inv Cumulative</th>
+<th title="ChiSquare Dist RT">ChiSquare Dist RT</th>
+<th title="ChiSquare RT Inv">ChiSquare RT Inv</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-float">0.00</td>
+<td class="col-string">0.0</td>
+<td class="col-string">0.0</td>
+<td class="col-float">0.00</td>
+<td class="col-string">1.0</td>
+<td class="col-float">0.00</td>
+</tr>
+<tr>
+<td class="col-float">0.28</td>
+<td class="col-string">0.01713</td>
+<td class="col-string">0.002</td>
+<td class="col-float">0.28</td>
+<td class="col-string">0.998</td>
+<td class="col-float">0.28</td>
+</tr>
+<tr>
+<td class="col-float">0.56</td>
+<td class="col-string">0.04212</td>
+<td class="col-string">0.01024</td>
+<td class="col-float">0.56</td>
+<td class="col-string">0.98976</td>
+<td class="col-float">0.56</td>
+</tr>
+<tr>
+<td class="col-float">0.84</td>
+<td class="col-string">0.06727</td>
+<td class="col-string">0.02559</td>
+<td class="col-float">0.84</td>
+<td class="col-string">0.97441</td>
+<td class="col-float">0.84</td>
+</tr>
+<tr>
+<td class="col-float">1.12</td>
+<td class="col-string">0.09003</td>
+<td class="col-string">0.04768</td>
+<td class="col-float">1.12</td>
+<td class="col-string">0.95232</td>
+<td class="col-float">1.12</td>
+</tr>
+<tr>
+<td class="col-float">1.40</td>
+<td class="col-string">0.10939</td>
+<td class="col-string">0.07569</td>
+<td class="col-float">1.40</td>
+<td class="col-string">0.92431</td>
+<td class="col-float">1.40</td>
+</tr>
+<tr>
+<td class="col-float">1.68</td>
+<td class="col-string">0.12501</td>
+<td class="col-string">0.10859</td>
+<td class="col-float">1.68</td>
+<td class="col-string">0.89141</td>
+<td class="col-float">1.68</td>
+</tr>
+<tr>
+<td class="col-float">1.96</td>
+<td class="col-string">0.13695</td>
+<td class="col-string">0.14535</td>
+<td class="col-float">1.96</td>
+<td class="col-string">0.85465</td>
+<td class="col-float">1.96</td>
+</tr>
+<tr>
+<td class="col-float">2.24</td>
+<td class="col-string">0.14546</td>
+<td class="col-string">0.18496</td>
+<td class="col-float">2.24</td>
+<td class="col-string">0.81504</td>
+<td class="col-float">2.24</td>
+</tr>
+<tr>
+<td class="col-float">2.52</td>
+<td class="col-string">0.1509</td>
+<td class="col-string">0.22652</td>
+<td class="col-float">2.52</td>
+<td class="col-string">0.77348</td>
+<td class="col-float">2.52</td>
+</tr>
+<tr>
+<td class="col-float">2.80</td>
+<td class="col-string">0.15364</td>
+<td class="col-string">0.26921</td>
+<td class="col-float">2.80</td>
+<td class="col-string">0.73079</td>
+<td class="col-float">2.80</td>
+</tr>
+<tr>
+<td class="col-float">3.08</td>
+<td class="col-string">0.1541</td>
+<td class="col-string">0.31235</td>
+<td class="col-float">3.08</td>
+<td class="col-string">0.68765</td>
+<td class="col-float">3.08</td>
+</tr>
+<tr>
+<td class="col-float">3.36</td>
+<td class="col-string">0.15265</td>
+<td class="col-string">0.35533</td>
+<td class="col-float">3.36</td>
+<td class="col-string">0.64467</td>
+<td class="col-float">3.36</td>
+</tr>
+<tr>
+<td class="col-float">3.64</td>
+<td class="col-string">0.14963</td>
+<td class="col-string">0.39768</td>
+<td class="col-float">3.64</td>
+<td class="col-string">0.60232</td>
+<td class="col-float">3.64</td>
+</tr>
+<tr>
+<td class="col-float">3.92</td>
+<td class="col-string">0.14538</td>
+<td class="col-string">0.43901</td>
+<td class="col-float">3.92</td>
+<td class="col-string">0.56099</td>
+<td class="col-float">3.92</td>
+</tr>
+<tr>
+<td class="col-float">4.20</td>
+<td class="col-string">0.14017</td>
+<td class="col-string">0.47901</td>
+<td class="col-float">4.20</td>
+<td class="col-string">0.52099</td>
+<td class="col-float">4.20</td>
+</tr>
+<tr>
+<td class="col-float">4.48</td>
+<td class="col-string">0.13424</td>
+<td class="col-string">0.51744</td>
+<td class="col-float">4.48</td>
+<td class="col-string">0.48256</td>
+<td class="col-float">4.48</td>
+</tr>
+<tr>
+<td class="col-float">4.76</td>
+<td class="col-string">0.12781</td>
+<td class="col-string">0.55413</td>
+<td class="col-float">4.76</td>
+<td class="col-string">0.44587</td>
+<td class="col-float">4.76</td>
+</tr>
+<tr>
+<td class="col-float">5.04</td>
+<td class="col-string">0.12106</td>
+<td class="col-string">0.58898</td>
+<td class="col-float">5.04</td>
+<td class="col-string">0.41102</td>
+<td class="col-float">5.04</td>
+</tr>
+<tr>
+<td class="col-float">5.32</td>
+<td class="col-string">0.11414</td>
+<td class="col-string">0.62191</td>
+<td class="col-float">5.32</td>
+<td class="col-string">0.37809</td>
+<td class="col-float">5.32</td>
+</tr>
+<tr>
+<td class="col-float">5.60</td>
+<td class="col-string">0.10716</td>
+<td class="col-string">0.65289</td>
+<td class="col-float">5.60</td>
+<td class="col-string">0.34711</td>
+<td class="col-float">5.60</td>
+</tr>
+<tr>
+<td class="col-float">5.88</td>
+<td class="col-string">0.10024</td>
+<td class="col-string">0.68193</td>
+<td class="col-float">5.88</td>
+<td class="col-string">0.31807</td>
+<td class="col-float">5.88</td>
+</tr>
+<tr>
+<td class="col-float">6.16</td>
+<td class="col-string">0.09344</td>
+<td class="col-string">0.70904</td>
+<td class="col-float">6.16</td>
+<td class="col-string">0.29096</td>
+<td class="col-float">6.16</td>
+</tr>
+<tr>
+<td class="col-float">6.44</td>
+<td class="col-string">0.08683</td>
+<td class="col-string">0.73427</td>
+<td class="col-float">6.44</td>
+<td class="col-string">0.26573</td>
+<td class="col-float">6.44</td>
+</tr>
+<tr>
+<td class="col-float">6.72</td>
+<td class="col-string">0.08047</td>
+<td class="col-string">0.75769</td>
+<td class="col-float">6.72</td>
+<td class="col-string">0.24231</td>
+<td class="col-float">6.72</td>
+</tr>
+<tr>
+<td class="col-float">7.00</td>
+<td class="col-string">0.07437</td>
+<td class="col-string">0.77936</td>
+<td class="col-float">7.00</td>
+<td class="col-string">0.22064</td>
+<td class="col-float">7.00</td>
+</tr>
+<tr>
+<td class="col-float">7.28</td>
+<td class="col-string">0.06857</td>
+<td class="col-string">0.79936</td>
+<td class="col-float">7.28</td>
+<td class="col-string">0.20064</td>
+<td class="col-float">7.28</td>
+</tr>
+<tr>
+<td class="col-float">7.56</td>
+<td class="col-string">0.06309</td>
+<td class="col-string">0.81779</td>
+<td class="col-float">7.56</td>
+<td class="col-string">0.18221</td>
+<td class="col-float">7.56</td>
+</tr>
+<tr>
+<td class="col-float">7.84</td>
+<td class="col-string">0.05792</td>
+<td class="col-string">0.83472</td>
+<td class="col-float">7.84</td>
+<td class="col-string">0.16528</td>
+<td class="col-float">7.84</td>
+</tr>
+<tr>
+<td class="col-float">8.12</td>
+<td class="col-string">0.05307</td>
+<td class="col-string">0.85025</td>
+<td class="col-float">8.12</td>
+<td class="col-string">0.14975</td>
+<td class="col-float">8.12</td>
+</tr>
+<tr>
+<td class="col-float">8.40</td>
+<td class="col-string">0.04855</td>
+<td class="col-string">0.86447</td>
+<td class="col-float">8.40</td>
+<td class="col-string">0.13553</td>
+<td class="col-float">8.40</td>
+</tr>
+<tr>
+<td class="col-float">8.68</td>
+<td class="col-string">0.04433</td>
+<td class="col-string">0.87747</td>
+<td class="col-float">8.68</td>
+<td class="col-string">0.12253</td>
+<td class="col-float">8.68</td>
+</tr>
+<tr>
+<td class="col-float">8.96</td>
+<td class="col-string">0.04042</td>
+<td class="col-string">0.88933</td>
+<td class="col-float">8.96</td>
+<td class="col-string">0.11067</td>
+<td class="col-float">8.96</td>
+</tr>
+<tr>
+<td class="col-float">9.24</td>
+<td class="col-string">0.0368</td>
+<td class="col-string">0.90013</td>
+<td class="col-float">9.24</td>
+<td class="col-string">0.09987</td>
+<td class="col-float">9.24</td>
+</tr>
+<tr>
+<td class="col-float">9.52</td>
+<td class="col-string">0.03346</td>
+<td class="col-string">0.90996</td>
+<td class="col-float">9.52</td>
+<td class="col-string">0.09004</td>
+<td class="col-float">9.52</td>
+</tr>
+<tr>
+<td class="col-float">9.80</td>
+<td class="col-string">0.03038</td>
+<td class="col-string">0.9189</td>
+<td class="col-float">9.80</td>
+<td class="col-string">0.0811</td>
+<td class="col-float">9.80</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/chisq-dist/" class="ajax" data-id="329">CHISQ.DIST</a></li>
+                                                    <li><a href="https://dax.guide/chisq-dist-rt/" class="ajax" data-id="330">CHISQ.DIST.RT</a></li>
+                                                    <li><a href="https://dax.guide/chisq-inv-rt/" class="ajax" data-id="332">CHISQ.INV.RT</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/dax-tools/?aff=tools-promo" target="_top" class="sam-click" data-campaign="dax-tools-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/tools-58090.png" title="DAX Tools Video Course" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/chisq-inv-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/chisq-inv-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

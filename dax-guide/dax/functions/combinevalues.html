@@ -1,0 +1,198 @@
+
+            <header>
+                <h1 title="COMBINEVALUES"><a href="https://dax.guide/combinevalues/" rel="bookmark">COMBINEVALUES</a> <span class="smaller">DAX Function (Text)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                                            </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Combines the given set of operands using a specified delimiter.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    COMBINEVALUES ( &lt;Delimiter&gt;, &lt;Expression1&gt;, &lt;Expression2&gt; [, &lt;Expression2&gt; [, … ] ] )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Delimiter                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>Delimiter which is used to join the expressions into a single string.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Expression1                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>First Expression to be evaluated and joined with other strings using the Separator.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Expression2                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Repeatable<br></td>
+                                    <td class="definition">
+                                        <p>Second Expression to be evaluated and joined with other strings using the Separator.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single <a href="https://dax.guide/dt/string/" class="ajax" data-id="261">string</a> value.</div></p>                    <p>The concatenated string. </p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>The COMBINEVALUES function assumes, but does not validate, that when the input values are different, the output strings are also different. Based on this assumption, when COMBINEVALUES is used to create calculated columns in order to build a relationship that joins multiple columns from two DirectQuery tables, an optimized join condition is generated at query time.</p>
+<p>For example, if users want to create a relationship between Table1(Column1, Column2) and Table2(Column1, Column2), they can create two calculated columns, one on each table, as: </p>
+<pre class="brush: dax; gutter: false; title: ; notranslate" title="">
+Table1&#91;CalcColumn] = COMBINEVALUES ( &quot;,&quot;, Table1&#91;Column1], Table1&#91;Column2] )
+</pre>
+<p>and </p>
+<pre class="brush: dax; gutter: false; title: ; notranslate" title="">
+Table2&#91;CalcColumn] = COMBINEVALUES ( &quot;,&quot;, Table2&#91;Column1], Table2&#91;Column2] )
+</pre>
+<p>And then create a relationship between Table1[CalcColumn] and Table2[CalcColumn]. Unlike other DAX functions and operators, which are translated literally to the corresponding SQL operators and functions, the above relationship generates a SQL join predicate as: </p>
+<pre class="brush: sql; gutter: false; title: ; notranslate" title="">
+(Table1.Column1 = Table2.Column1 OR Table1.Column1 IS NULL AND Table2.Column1 IS NULL)
+</pre>
+<p>and </p>
+<pre class="brush: sql; gutter: false; title: ; notranslate" title="">
+(Table1.Column2 = Table2.Column2 OR Table1.Column2 IS NULL AND Table2.Column2 IS NULL).
+</pre>
+<p>The join predicate can potentially deliver much better query performance than one that involves complex SQL operators and functions.</p>
+<p>The COMBINEVALUES function relies on users to choose the appropriate delimiter to ensure that unique combinations of input values produce distinct output strings but it does not validate that the assumption is true. For example, if users choose &#8220;| &#8221; as the delimiter, but one row in Table1 has Table1[Column1] = &#8220;| &#8221; and Table2 [Column2] = &#8221; &#8220;, while one row in Table2 has Table2[Column1] = &#8221; &#8221; and Table2[Column2] = &#8220;| &#8220;, the two concatenated outputs will be the same &#8220;|| &#8220;, which seem to indicate that the two rows are a match in the join operation. The two rows are not joined together if both tables are from the same DirectQuery source although they are joined together if both tables are imported.</p>
+                </section>
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 2 related articles</a><br>
+                                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/paWz1XXRBBYEv1/; notranslate" title="">
+--  COMBINEVALUES concatenates columns using a separator. 
+--  The result is a simple string concatenation.
+--  Its usage is in DirectQuery over SQL models. The DAX engine can 
+--  generate optimized JOIN conditions for calculated columns created 
+--  with COMBINEVALUES, in contrast with simple string concatenation.
+EVALUATE
+ADDCOLUMNS (
+    SUMMARIZE (
+        TOPN ( 5, Customer ),
+        Customer&#91;Customer Code],
+        Customer&#91;Customer Name],
+        Customer&#91;CountryRegion]
+    ),
+    &quot;Name, Code, and Country combined&quot;,
+        COMBINEVALUES (
+            &quot; | &quot;,
+            Customer&#91;Customer Name],
+            Customer&#91;Customer Code],
+            Customer&#91;CountryRegion]
+        )
+)
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Customer Code">Customer Code</th>
+<th title="Customer Name">Customer Name</th>
+<th title="CountryRegion">CountryRegion</th>
+<th title="Name, Code, and Country combined">Name, Code, and Country combined</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">11024</td>
+<td class="col-string">Xie, Russell</td>
+<td class="col-string">United States</td>
+<td class="col-string">Xie, Russell | 11024 | United States</td>
+</tr>
+<tr>
+<td class="col-string">11036</td>
+<td class="col-string">Russell, Jennifer</td>
+<td class="col-string">United States</td>
+<td class="col-string">Russell, Jennifer | 11036 | United States</td>
+</tr>
+<tr>
+<td class="col-string">11041</td>
+<td class="col-string">Carter, Amanda</td>
+<td class="col-string">United States</td>
+<td class="col-string">Carter, Amanda | 11041 | United States</td>
+</tr>
+<tr>
+<td class="col-string">11043</td>
+<td class="col-string">Simmons, Nathan</td>
+<td class="col-string">United States</td>
+<td class="col-string">Simmons, Nathan | 11043 | United States</td>
+</tr>
+<tr>
+<td class="col-string">11928</td>
+<td class="col-string">Morris, Isabella</td>
+<td class="col-string">United States</td>
+<td class="col-string">Morris, Isabella | 11928 | United States</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about COMBINEVALUES in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/using-combinevalues-to-optimize-directquery-performance/"  class="low-key"><strong>Using COMBINEVALUES to optimize DirectQuery performance</strong></a>
+                                <p>This article describes the behavior of the COMBINEVALUES function in DAX, and how it can optimize the performance of DirectQuery with multi-column relationships. <a href="https://www.sqlbi.com/articles/using-combinevalues-to-optimize-directquery-performance/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/creating-a-slicer-that-filters-multiple-columns-in-power-bi/"  class="low-key"><strong>Creating a slicer that filters multiple columns in Power BI</strong></a>
+                                <p>This article describes how to create a slicer showing the values of multiple columns, applying the filter on any of the underlying columns. <a href="https://www.sqlbi.com/articles/creating-a-slicer-that-filters-multiple-columns-in-power-bi/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/guides/dax/?aff=learn-dax-promo" target="_top" class="sam-click" data-campaign="learn-dax-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/learn-dax-58090.png" title="Become a DAX guru" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/combinevalues-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/combinevalues-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

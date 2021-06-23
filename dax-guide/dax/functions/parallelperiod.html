@@ -1,0 +1,365 @@
+
+            <header>
+                <h1 title="PARALLELPERIOD"><a href="https://dax.guide/parallelperiod/" rel="bookmark">PARALLELPERIOD</a> <span class="smaller">DAX Function (Time Intelligence)                    &nbsp;<a href="https://www.sqlbi.com/articles/understanding-context-transition/" class="feature icon icon-rinfo tooltip" data-tooltip-content="#contexttransition">Context Transition</a></span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                                                 &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns a parallel period of dates by the given set of dates and a specified interval.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    PARALLELPERIOD ( &lt;Dates&gt;, &lt;NumberOfIntervals&gt;, &lt;Interval&gt; )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Dates                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The name of a column containing dates or a one column table containing dates.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        NumberOfIntervals                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The number of the intervals.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Interval                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>One of: <a href="https://dax.guide/month/" class="ajax" data-id="153">MONTH</a>, <a href="https://dax.guide/quarter/" class="ajax" data-id="589">QUARTER</a>, <a href="https://dax.guide/year/" class="ajax" data-id="253">YEAR</a>. </p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="table-ret">Table</span> A table with a single column.</div></p>                    <p>A table containing a single column of date values.</p>
+                </section>
+            
+                            <!--googleoff: snippet-->
+                <section id="notes" class="notes">
+                    <h2>Notes</h2>
+                    <p>In order to use any time intelligence calculation, you need a well-formed date table. The <i>Date</i> table must satisfy the following requirements:
+<ul>
+<li>All dates need to be present for the years required. The <i>Date</i> table must always start on January 1 and end on December 31, including all the days in this range. If the report only references fiscal years, then the date table must include all the dates from the first to the last day of a fiscal year. For example, if the fiscal year 2008 starts on July 1, 2007, then the <i>Date</i> table must include all the days from July 1, 2007 to June 30, 2008.</li>
+<li>There needs to be a column with a <i>DateTime</i> or <i>Date</i> data type containing unique values. This column is usually called <i>Date</i>. Even though the <i>Date</i> column is often used to define relationships with other tables, this is not required. Still, the <i>Date</i> column must contain unique values and should be referenced by the Mark as Date Table feature. In case the column also contains a time part, no time should be used – for example, the time should always be 12:00 am.</li>
+<li>The <i>Date</i> table must be marked as a date table in the model, in case the relationship between the <i>Date</i> table and any other table is not based on the <i>Date</i>.</li>
+</ul></p>
+                </section>
+                <!--googleon: snippet-->
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>The dates argument can be any of the following:</p>
+<ul>
+<li>A reference to a date/time column. Only in this case a context transition applies because the &lt;Dates&gt; column reference is replaced by
+<ul>
+<li><a href="https://dax.guide/calculatetable/" class="ajax" data-id="34">CALCULATETABLE</a> ( <a href="https://dax.guide/distinct/" class="ajax" data-id="76">DISTINCT</a> ( &lt;Dates&gt; ) )</li>
+</ul>
+</li>
+<li>A table expression that returns a single column of date/time values.</li>
+<li>A Boolean expression that defines a single-column table of date/time values.</li>
+</ul>
+<p>This function takes the current set of dates in the column specified by Dates, shifts the first date and the last date the specified number of intervals, and then returns all contiguous dates between the two shifted dates. If the interval is a partial range of month, quarter, or year then any partial months in the result are also filled out to complete the entire interval. </p>
+<p>The result table includes only dates that exist in the dates column.</p>
+                </section>
+            
+            
+                                                    <a href="#alt" class="sliding">&raquo; 1 related function</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/jNnznSUqlE2hcP/; notranslate" title="">
+--  PARALLELPERIOD returns a full period shifted in time
+EVALUATE
+    CALCULATETABLE (
+        PARALLELPERIOD ( 'Date'&#91;Date], -1, YEAR ),
+        'Date'&#91;Date] = DATE ( 2008, 08, 15 )
+    )
+
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Date">Date</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-date">2007-01-01</td>
+</tr>
+<tr>
+<td class="col-date">2007-01-02</td>
+</tr>
+<tr>
+<td class="col-date">&#8230;</td>
+</tr>
+<tr>
+<td class="col-date">2007-12-30</td>
+</tr>
+<tr>
+<td class="col-date">2007-12-31</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/HlqDLQ5g2N4nuI/; notranslate" title="">
+--  A common usage of PARALLELPERIOD is to use zero for the offset,
+--  in that case PARALLELPERIOD extends the selection to the period
+EVALUATE
+    CALCULATETABLE (
+        PARALLELPERIOD ( 'Date'&#91;Date], 0, MONTH ),
+        'Date'&#91;Date] = DATE ( 2008, 08, 15 )
+    )
+
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Date">Date</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-date">2008-08-01</td>
+</tr>
+<tr>
+<td class="col-date">2008-08-02</td>
+</tr>
+<tr>
+<td class="col-date">&#8230;</td>
+</tr>
+<tr>
+<td class="col-date">2008-08-30</td>
+</tr>
+<tr>
+<td class="col-date">2008-08-31</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/Kl7EvPahpyMEkk/; notranslate" title="">
+--
+--  When used with a period PARALLELPERIOD:
+--      Computes the min and max dates in the selection
+--      Extends min and max to the entire period defined
+--      Shifts the result according to the offset
+--
+--  In the example:
+--      Starting period: 2008-08-15, 2008-09-20
+--      Extended period: 2008-08-01 : 2008-09-30
+--      Shifted period:  2008-09-01 : 2008-10-31
+EVALUATE
+    CALCULATETABLE (
+        PARALLELPERIOD ( 'Date'&#91;Date], +1, MONTH ),
+        OR (
+            'Date'&#91;Date] = DATE ( 2008, 08, 15 ), 
+            'Date'&#91;Date] = DATE ( 2008, 09, 20 )
+        )
+    )
+
+
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Date">Date</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-date">2008-09-01</td>
+</tr>
+<tr>
+<td class="col-date">2008-09-02</td>
+</tr>
+<tr>
+<td class="col-date">&#8230;</td>
+</tr>
+<tr>
+<td class="col-date">2008-10-30</td>
+</tr>
+<tr>
+<td class="col-date">2008-10-31</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/p3lpfXvgY8hScc/; notranslate" title="">
+--  Report showing the result of sales in the current month,
+--  current quarter and previous quarter
+DEFINE
+    MEASURE Sales&#91;Sales Current Quarter] =
+        CALCULATE ( 
+            &#91;Sales Amount], 
+            PARALLELPERIOD ( 'Date'&#91;Date], 0, QUARTER ) 
+        )
+    MEASURE Sales&#91;Sales Prev Quarter] =
+        CALCULATE ( 
+            &#91;Sales Amount], 
+            PARALLELPERIOD ( 'Date'&#91;Date], -1, QUARTER ) 
+        )
+EVALUATE
+CALCULATETABLE (
+    ADDCOLUMNS (
+        SUMMARIZE ( Sales, 'Date'&#91;Calendar Year], 'Date'&#91;Month], 'Date'&#91;Month Number] ),
+        &quot;Current Sales&quot;, &#91;Sales Amount],
+        &quot;Sales Current Quarter&quot;, &#91;Sales Current Quarter],
+        &quot;Sales Prev Quarter&quot;, &#91;Sales Prev Quarter]
+    ),
+    'Date'&#91;Calendar Year] = &quot;CY 2007&quot;,
+    'Date'&#91;Month Number] &lt;= 9
+)
+ORDER BY
+    &#91;Calendar Year], &#91;Month Number]
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Calendar Year">Calendar Year</th>
+<th title="Month">Month</th>
+<th title="Month Number">Month Number</th>
+<th title="Current Sales">Current Sales</th>
+<th title="Sales Current Quarter">Sales Current Quarter</th>
+<th title="Sales Prev Quarter">Sales Prev Quarter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-date">2007-01-01</td>
+<td class="col-string">January</td>
+<td class="col-key">1</td>
+<td class="col-float">794,248.24</td>
+<td class="col-float">2,646,673.39</td>
+<td class="col-float blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-date">2007-01-01</td>
+<td class="col-string">February</td>
+<td class="col-key">2</td>
+<td class="col-float">891,135.91</td>
+<td class="col-float">2,646,673.39</td>
+<td class="col-float blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-date">2007-01-01</td>
+<td class="col-string">March</td>
+<td class="col-key">3</td>
+<td class="col-float">961,289.24</td>
+<td class="col-float">2,646,673.39</td>
+<td class="col-float blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-date">2007-01-01</td>
+<td class="col-string">April</td>
+<td class="col-key">4</td>
+<td class="col-float">1,128,104.82</td>
+<td class="col-float">3,046,602.02</td>
+<td class="col-float">2,646,673.39</td>
+</tr>
+<tr>
+<td class="col-date">2007-01-01</td>
+<td class="col-string">May</td>
+<td class="col-key">5</td>
+<td class="col-float">936,192.74</td>
+<td class="col-float">3,046,602.02</td>
+<td class="col-float">2,646,673.39</td>
+</tr>
+<tr>
+<td class="col-date">2007-01-01</td>
+<td class="col-string">June</td>
+<td class="col-key">6</td>
+<td class="col-float">982,304.46</td>
+<td class="col-float">3,046,602.02</td>
+<td class="col-float">2,646,673.39</td>
+</tr>
+<tr>
+<td class="col-date">2007-01-01</td>
+<td class="col-string">July</td>
+<td class="col-key">7</td>
+<td class="col-float">922,542.98</td>
+<td class="col-float">2,885,246.55</td>
+<td class="col-float">3,046,602.02</td>
+</tr>
+<tr>
+<td class="col-date">2007-01-01</td>
+<td class="col-string">August</td>
+<td class="col-key">8</td>
+<td class="col-float">952,834.58</td>
+<td class="col-float">2,885,246.55</td>
+<td class="col-float">3,046,602.02</td>
+</tr>
+<tr>
+<td class="col-date">2007-01-01</td>
+<td class="col-string">September</td>
+<td class="col-key">9</td>
+<td class="col-float">1,009,868.98</td>
+<td class="col-float">2,885,246.55</td>
+<td class="col-float">3,046,602.02</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/dateadd/" class="ajax" data-id="65">DATEADD</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://dax.guide/" target="_top" class="sam-click" data-campaign="dax-guide" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/daxguide-58090.png" title="DAX Guide" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/parallelperiod-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/parallelperiod-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

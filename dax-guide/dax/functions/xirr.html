@@ -1,0 +1,100 @@
+
+            <header>
+                <h1 title="XIRR"><a href="https://dax.guide/xirr/" rel="bookmark">XIRR</a> <span class="smaller">DAX Function (Financial)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                                                                                                 &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns the internal rate of return for a schedule of cash flows that is not necessarily periodic.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    XIRR ( &lt;Table&gt;, &lt;Values&gt;, &lt;Dates&gt; [, &lt;Guess&gt;] )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Table                                                                                                                            <br><a href="https://www.sqlbi.com/articles/row-context-and-filter-context-in-dax/" class="feature2 icon icon-rinfo tooltip"  data-tooltip-content="#iterator">Iterator</section>
+                                                                                                                                                            </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The table containing the rows for which the Values and Dates expressions will be evaluated.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Values                                                                                    <br><a href="https://www.sqlbi.com/articles/row-context-and-filter-context-in-dax/" class="feature icon icon-rinfo tooltip"  data-tooltip-content="#rowcontext">Row Context</a>
+                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>An expression to be evaluated for each row of the table, which will yield a series of cash flows.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Dates                                                                                    <br><a href="https://www.sqlbi.com/articles/row-context-and-filter-context-in-dax/" class="feature icon icon-rinfo tooltip"  data-tooltip-content="#rowcontext">Row Context</a>
+                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>An expression to be evaluated for each row of the table, which will yield a schedule of payment dates.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Guess                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Optional<br></td>
+                                    <td class="definition">
+                                        <p>Optional. A number that you guess is close to the result of XIRR.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single <a href="https://dax.guide/dt/decimal/" class="ajax" data-id="258">decimal</a> value.</div></p>                    <p>Internal rate of return for the given inputs. If the calculation fails to return a valid result, an error is returned. </p>
+                </section>
+            
+            
+            
+                        
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/xnpv/" class="ajax" data-id="252">XNPV</a></li>
+                                                </ul>
+                                    </section>
+                        
+            
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/xirr-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/xirr-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

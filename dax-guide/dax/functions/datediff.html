@@ -1,0 +1,148 @@
+
+            <header>
+                <h1 title="DATEDIFF"><a href="https://dax.guide/datediff/" rel="bookmark">DATEDIFF</a> <span class="smaller">DAX Function (Date and Time)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                                                                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns the number of units (unit specified in Interval) between the input two dates.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    DATEDIFF ( &lt;Date1&gt;, &lt;Date2&gt;, &lt;Interval&gt; )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Date1                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>A date in datetime format that represents the start date.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Date2                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>A date in datetime format that represents the end date.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Interval                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The unit that will be used to calculate, between the two dates. It can be <a href="https://dax.guide/second/" class="ajax" data-id="204">SECOND</a>, <a href="https://dax.guide/minute/" class="ajax" data-id="150">MINUTE</a>, <a href="https://dax.guide/hour/" class="ajax" data-id="110">HOUR</a>, <a href="https://dax.guide/day/" class="ajax" data-id="73">DAY</a>, WEEK, <a href="https://dax.guide/month/" class="ajax" data-id="153">MONTH</a>, <a href="https://dax.guide/quarter/" class="ajax" data-id="589">QUARTER</a>, <a href="https://dax.guide/year/" class="ajax" data-id="253">YEAR</a>.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single <a href="https://dax.guide/dt/integer/" class="ajax" data-id="257">integer</a> value.</div></p>                    <p>The count of interval boundaries crossed between two dates. </p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>The result is positive if Date2 is larger than Date1.<br />
+The result is negative if Date1 is larger than Date2.</p>
+<p>Previous versions of the DAX engine (earlier than 2018) could provide an error if Date1 is larger than Date2.</p>
+                </section>
+            
+            
+                                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/tEsAPbIRk0vStU/; notranslate" title="">
+--  DATEDIFF computes the delta between two dates, using different units of measure
+--  YEAFRAC returns the delta as a fraction (in years) 
+EVALUATE
+VAR StartDate =  DATE ( 2011, 01, 01 )
+VAR EndDate =    DATE ( 2012, 12, 15 )
+RETURN
+    { 
+        ( &quot;DATEDIFF Year&quot;,     DATEDIFF ( StartDate, EndDate, YEAR ) ),
+        ( &quot;DATEDIFF Quarter&quot;,  DATEDIFF ( StartDate, EndDate, QUARTER ) ),
+        ( &quot;DATEDIFF Month&quot;,    DATEDIFF ( StartDate, EndDate, MONTH ) ),
+        ( &quot;DATEDIFF Day&quot;,      DATEDIFF ( StartDate, EndDate, DAY ) ),
+        ( &quot;Subtraction&quot;,       INT ( EndDate - StartDate ) ),
+        ( &quot;YEARFRAC&quot;,          YEARFRAC ( StartDate, EndDate ) )
+    }    
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Value1">Value1</th>
+<th title="Value2">Value2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">DATEDIFF Year</td>
+<td class="col-float">1.00</td>
+</tr>
+<tr>
+<td class="col-string">DATEDIFF Quarter</td>
+<td class="col-float">7.00</td>
+</tr>
+<tr>
+<td class="col-string">DATEDIFF Month</td>
+<td class="col-float">23.00</td>
+</tr>
+<tr>
+<td class="col-string">DATEDIFF Day</td>
+<td class="col-float">714.00</td>
+</tr>
+<tr>
+<td class="col-string">Subtraction</td>
+<td class="col-float">714.00</td>
+</tr>
+<tr>
+<td class="col-string">YEARFRAC</td>
+<td class="col-float">1.96</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+            
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/dax-patterns/?aff=daxp-promo" target="_top" class="sam-click" data-campaign="dax-patterns-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/daxp-58090.png" title="DAX Patterns" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/datediff-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/datediff-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

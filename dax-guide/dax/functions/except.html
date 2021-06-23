@@ -1,0 +1,275 @@
+
+            <header>
+                <h1 title="EXCEPT"><a href="https://dax.guide/except/" rel="bookmark">EXCEPT</a> <span class="smaller">DAX Function (Table manipulation)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                         &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns the rows of left-side table which do not appear in right-side table.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    EXCEPT ( &lt;LeftTable&gt;, &lt;RightTable&gt; )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        LeftTable                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The Left-side table expression to be used for Except.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        RightTable                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The Right-side table expression to be used for Except.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="table-ret">Table</span> An entire table or a table with one or more columns.</div></p>                    <p>A table that contains the rows of the LeftTable minus all the rows of the RightTable. </p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>If a row appears at all in both tables, it and its duplicates are not present in the result set. If a row appears in only LeftTable, it and its duplicates will appear in the result set. </p>
+<p>The column names will match the column names in LeftTable. </p>
+<p>The returned table has lineage based on the columns in LeftTable, regardless of the lineage of the columns in the second table. For example, if the first column of first table_expression has lineage to the base column C1 in the model, the Except will reduce the rows based on the availability of values in the first column of second table_expression and keep the lineage on base column C1 intact. </p>
+<p>The two tables must have the same number of columns.</p>
+<p>Columns are compared based on positioning, and data comparison with no type coercion.</p>
+<p>The set of rows returned depends on the order of the two expressions. </p>
+<p>The returned table does not include columns from tables related to LeftTable. Therefore, when LeftTable corresponds to a base table, once applied to the filter context it does not involve the expanded table and it only filters columns of he base table.  </p>
+<p>The returned table is never an expanded table when applied to the filter context, it only includes the base table.</p>
+                </section>
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 1 related article</a><br>
+                                                    <a href="#alt" class="sliding">&raquo; 2 related functions</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/4VGa38LB2BbMHM/; notranslate" title="">
+--  EXCEPT performs set subtraction: the second parameter rows are removed
+--  from the first.
+EVALUATE 
+VAR Days        = VALUES ( 'Date'&#91;Day of Week] )
+VAR WeekendDays = { &quot;Saturday&quot;, &quot;Sunday&quot; }
+VAR WorkingDays = EXCEPT ( Days, WeekendDays )
+RETURN 
+    WorkingDays
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Day of Week">Day of Week</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Monday</td>
+</tr>
+<tr>
+<td class="col-string">Tuesday</td>
+</tr>
+<tr>
+<td class="col-string">Wednesday</td>
+</tr>
+<tr>
+<td class="col-string">Thursday</td>
+</tr>
+<tr>
+<td class="col-string">Friday</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/lJvQNN4t72at3w/; notranslate" title="">
+--  EXCEPT keeps the data lineage of its first argument only.
+EVALUATE 
+VAR Days        = VALUES ( 'Date'&#91;Day of Week] )
+VAR WeekendDays = { &quot;Saturday&quot;, &quot;Sunday&quot; }
+VAR WorkingDays = EXCEPT ( Days, WeekendDays )
+RETURN 
+    ADDCOLUMNS ( 
+        WorkingDays,
+        &quot;Sales Amount&quot;, &#91;Sales Amount] 
+    )
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Day of Week">Day of Week</th>
+<th title="Sales Amount">Sales Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Monday</td>
+<td class="col-float">4,251,342.00</td>
+</tr>
+<tr>
+<td class="col-string">Tuesday</td>
+<td class="col-float">4,643,891.92</td>
+</tr>
+<tr>
+<td class="col-string">Wednesday</td>
+<td class="col-float">4,021,583.39</td>
+</tr>
+<tr>
+<td class="col-string">Thursday</td>
+<td class="col-float">4,653,030.30</td>
+</tr>
+<tr>
+<td class="col-string">Friday</td>
+<td class="col-float">4,433,004.10</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/F7uVpkVX0Lg9Xb/; notranslate" title="">
+--  EXCEPT keeps duplicates, if present in the first parameter.
+EVALUATE 
+VAR Days        = SELECTCOLUMNS ( Date, &quot;Day of week&quot;, 'Date'&#91;Day of Week] )
+VAR WeekendDays = { &quot;Saturday&quot;, &quot;Sunday&quot; }
+VAR WorkingDays = EXCEPT ( Days, WeekendDays )
+RETURN 
+    ADDCOLUMNS ( 
+        TOPN ( 10, WorkingDays ),
+        &quot;Sales Amount&quot;, &#91;Sales Amount] 
+    )
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Day of week">Day of week</th>
+<th title="Sales Amount">Sales Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Friday</td>
+<td class="col-float">4,433,004.10</td>
+</tr>
+<tr>
+<td class="col-string">Monday</td>
+<td class="col-float">4,251,342.00</td>
+</tr>
+<tr>
+<td class="col-string">Tuesday</td>
+<td class="col-float">4,643,891.92</td>
+</tr>
+<tr>
+<td class="col-string">Wednesday</td>
+<td class="col-float">4,021,583.39</td>
+</tr>
+<tr>
+<td class="col-string">Thursday</td>
+<td class="col-float">4,653,030.30</td>
+</tr>
+<tr>
+<td class="col-string">Friday</td>
+<td class="col-float">4,433,004.10</td>
+</tr>
+<tr>
+<td class="col-string">Monday</td>
+<td class="col-float">4,251,342.00</td>
+</tr>
+<tr>
+<td class="col-string">Tuesday</td>
+<td class="col-float">4,643,891.92</td>
+</tr>
+<tr>
+<td class="col-string">Wednesday</td>
+<td class="col-float">4,021,583.39</td>
+</tr>
+<tr>
+<td class="col-string">Thursday</td>
+<td class="col-float">4,653,030.30</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>The arguments of EXCEPT must have the same number of columns. The following query throws an error because Date contains many more columns than WeekendDays.</p>
+<pre class="brush: dax; title: ; notranslate" title="">
+EVALUATE 
+VAR Days        = Date
+VAR WeekendDays = { &quot;Saturday&quot;, &quot;Sunday&quot; }
+VAR WorkingDays = EXCEPT ( Days, WeekendDays )
+RETURN 
+    ADDCOLUMNS ( 
+        WorkingDays,
+        &quot;Sales Amount&quot;, &#91;Sales Amount] 
+    )
+</pre>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about EXCEPT in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/computing-new-customers-in-dax/"  class="low-key"><strong>Computing New Customers in DAX</strong></a>
+                                <p>In this article, Alberto Ferrari describes a new efficient way to compute returning customers in DAX thanks to an idea suggested by a student attending an Optimizing DAX workshop. <a href="https://www.sqlbi.com/articles/computing-new-customers-in-dax/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/intersect/" class="ajax" data-id="115">INTERSECT</a></li>
+                                                    <li><a href="https://dax.guide/union/" class="ajax" data-id="239">UNION</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/dax-tools/?aff=tools-promo" target="_top" class="sam-click" data-campaign="dax-tools-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/tools-58090.png" title="DAX Tools Video Course" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/except-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/except-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

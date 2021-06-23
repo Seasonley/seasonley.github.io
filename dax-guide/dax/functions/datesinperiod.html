@@ -1,0 +1,467 @@
+
+            <header>
+                <h1 title="DATESINPERIOD"><a href="https://dax.guide/datesinperiod/" rel="bookmark">DATESINPERIOD</a> <span class="smaller">DAX Function (Time Intelligence)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                                            </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns the dates from the given period.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    DATESINPERIOD ( &lt;Dates&gt;, &lt;StartDate&gt;, &lt;NumberOfIntervals&gt;, &lt;Interval&gt; )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Dates                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>A column reference containing dates.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        StartDate                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>Start date.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        NumberOfIntervals                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The number of intervals.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Interval                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>One of: Day, Month, Quarter, Year.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="table-ret">Table</span> A table with a single column.</div></p>                    <p>A table containing a single column of unique date values.</p>
+                </section>
+            
+                            <!--googleoff: snippet-->
+                <section id="notes" class="notes">
+                    <h2>Notes</h2>
+                    <p>In order to use any time intelligence calculation, you need a well-formed date table. The <i>Date</i> table must satisfy the following requirements:
+<ul>
+<li>All dates need to be present for the years required. The <i>Date</i> table must always start on January 1 and end on December 31, including all the days in this range. If the report only references fiscal years, then the date table must include all the dates from the first to the last day of a fiscal year. For example, if the fiscal year 2008 starts on July 1, 2007, then the <i>Date</i> table must include all the days from July 1, 2007 to June 30, 2008.</li>
+<li>There needs to be a column with a <i>DateTime</i> or <i>Date</i> data type containing unique values. This column is usually called <i>Date</i>. Even though the <i>Date</i> column is often used to define relationships with other tables, this is not required. Still, the <i>Date</i> column must contain unique values and should be referenced by the Mark as Date Table feature. In case the column also contains a time part, no time should be used – for example, the time should always be 12:00 am.</li>
+<li>The <i>Date</i> table must be marked as a date table in the model, in case the relationship between the <i>Date</i> table and any other table is not based on the <i>Date</i>.</li>
+</ul></p>
+                </section>
+                <!--googleon: snippet-->
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>The dates argument must be a reference to a date/time column.<br />
+The result table includes only dates that exist in the dates column.</p>
+                </section>
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 1 related article</a><br>
+                                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <p>The following expression evaluates the measure Sales Amount in the last 12 months starting from the last day of the period in the filter context.</p>
+<pre class="brush: dax; title: ; notranslate" title="">
+Sales Moving Annual Total =
+CALCULATE (
+    &#91;Sales Amount],
+    DATESINPERIOD (
+        'Date'&#91;Date],
+        MAX ( 'Date'&#91;Date] ),
+        -1,
+        YEAR
+    )
+)
+</pre>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/JFkKJoMYQGwQ8n/; notranslate" title="">
+--  DATESINPERIOD returns an entire period, given a reference date and
+--  the period.
+
+--  The first query returns 1 day, starting from August 15, 2008
+EVALUATE
+    DATESINPERIOD ( 
+        'Date'&#91;Date],           -- Return dates in Date&#91;Date]
+        DATE ( 2008, 08, 15 ),  -- Starting from 08/15/2008
+        1,                      -- the set needs to contain 1
+        DAY                     -- day
+    )
+    
+--  The second query returns 3 days, starting from August 15, 2008
+EVALUATE
+    DATESINPERIOD ( 
+        'Date'&#91;Date],           -- Return dates in Date&#91;Date]
+        DATE ( 2008, 08, 15 ),  -- Starting from 08/15/2008
+        3,                      -- the set needs to contain 3
+        DAY                     -- days
+    )
+
+--  The second query returns an empty table because we reques 0 days
+EVALUATE
+    DATESINPERIOD ( 
+        'Date'&#91;Date],           -- Return dates in Date&#91;Date]
+        DATE ( 2008, 08, 15 ),  -- Starting from 08/15/2008
+        0,                      -- the set needs to contain 0
+        DAY                     -- days
+    )
+
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Date">Date</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-date">2008-08-15</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th title="Date">Date</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-date">2008-08-15</td>
+</tr>
+<tr>
+<td class="col-date">2008-08-16</td>
+</tr>
+<tr>
+<td class="col-date">2008-08-17</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/6aBs6Ws4EvdcJg/; notranslate" title="">
+--  When the offset is negative, DATESINPERIOD goes back to find
+--  the dates to use
+
+--  The first query returns 2 days, the last one is August 15, 2008
+EVALUATE
+    DATESINPERIOD ( 
+        'Date'&#91;Date],           -- Return dates in Date&#91;Date]
+        DATE ( 2008, 08, 15 ),  -- Starting from 08/15/2008
+        -2,                     -- the set needs to contain 2
+        DAY                     -- days, going back in time
+    )
+    
+--  The second query returns an entire month (31 days), the last day is August 15, 2008.
+--  The number of days for a month might vary between 28 and 31, depending on the month.
+EVALUATE
+    DATESINPERIOD ( 
+        'Date'&#91;Date],           -- Return dates in Date&#91;Date]
+        DATE ( 2008, 08, 15 ),  -- Starting from 08/15/2008
+        -1,                     -- going back one
+        MONTH                   -- month
+    )
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Date">Date</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-date">2008-08-14</td>
+</tr>
+<tr>
+<td class="col-date">2008-08-15</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th title="Date">Date</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-date">2008-07-16</td>
+</tr>
+<tr>
+<td class="col-date">2008-07-17</td>
+</tr>
+<tr>
+<td class="col-date">2008-07-18</td>
+</tr>
+<tr>
+<td class="col-date">2008-07-19</td>
+</tr>
+<tr>
+<td class="col-date">2008-07-20</td>
+</tr>
+<tr>
+<td class="col-date">2008-07-21</td>
+</tr>
+<tr>
+<td class="col-date">2008-07-22</td>
+</tr>
+<tr>
+<td class="col-date">2008-07-23</td>
+</tr>
+<tr>
+<td class="col-date">2008-07-24</td>
+</tr>
+<tr>
+<td class="col-date">2008-07-25</td>
+</tr>
+<tr>
+<td class="col-date">2008-07-26</td>
+</tr>
+<tr>
+<td class="col-date">2008-07-27</td>
+</tr>
+<tr>
+<td class="col-date">2008-07-28</td>
+</tr>
+<tr>
+<td class="col-date">2008-07-29</td>
+</tr>
+<tr>
+<td class="col-date">2008-07-30</td>
+</tr>
+<tr>
+<td class="col-date">2008-07-31</td>
+</tr>
+<tr>
+<td class="col-date">2008-08-01</td>
+</tr>
+<tr>
+<td class="col-date">2008-08-02</td>
+</tr>
+<tr>
+<td class="col-date">2008-08-03</td>
+</tr>
+<tr>
+<td class="col-date">2008-08-04</td>
+</tr>
+<tr>
+<td class="col-date">2008-08-05</td>
+</tr>
+<tr>
+<td class="col-date">2008-08-06</td>
+</tr>
+<tr>
+<td class="col-date">2008-08-07</td>
+</tr>
+<tr>
+<td class="col-date">2008-08-08</td>
+</tr>
+<tr>
+<td class="col-date">2008-08-09</td>
+</tr>
+<tr>
+<td class="col-date">2008-08-10</td>
+</tr>
+<tr>
+<td class="col-date">2008-08-11</td>
+</tr>
+<tr>
+<td class="col-date">2008-08-12</td>
+</tr>
+<tr>
+<td class="col-date">2008-08-13</td>
+</tr>
+<tr>
+<td class="col-date">2008-08-14</td>
+</tr>
+<tr>
+<td class="col-date">2008-08-15</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/oqtaEwotfI71Kf/; notranslate" title="">
+--
+--  In this example we compute the moving annual average of &#91;Sales Amount]
+--  only when DATESINPERIOD contains 12 months of sales
+--
+DEFINE
+    MEASURE Sales&#91;Sales MAT] =
+        VAR OneYearBack =
+            DATESINPERIOD ( 'Date'&#91;Date], MAX ( 'Date'&#91;Date] ), -1, YEAR )
+        VAR Result =
+            CALCULATE (
+                VAR NumberOfMonths =
+                    COUNTROWS ( SUMMARIZE ( Sales, 'Date'&#91;Calendar Year Month Number] ) )
+                VAR SalesMAT = &#91;Sales Amount]
+                VAR Result   = IF ( NumberOfMonths = 12, SalesMAT / NumberOfMonths )
+                RETURN
+                    Result,
+                OneYearBack
+            )
+        RETURN
+            Result
+EVALUATE
+SUMMARIZECOLUMNS (
+    'Date'&#91;Calendar Year Month Number],
+    'Date'&#91;Calendar Year Month],
+    TREATAS ( { &quot;CY 2008&quot; }, 'Date'&#91;Calendar Year] ),
+    &quot;Sales Amount&quot;, &#91;Sales Amount],
+    &quot;Sales MAT&quot;, &#91;Sales MAT]
+)
+ORDER BY &#91;Calendar Year Month Number]
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Calendar Year Month Number">Calendar Year Month Number</th>
+<th title="Calendar Year Month">Calendar Year Month</th>
+<th title="Sales Amount">Sales Amount</th>
+<th title="Sales MAT">Sales MAT</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-key">200801</td>
+<td class="col-date">2008-01-01</td>
+<td class="col-float">656,766.69</td>
+<td class="col-float">931,038.71</td>
+</tr>
+<tr>
+<td class="col-key">200802</td>
+<td class="col-date">2008-02-01</td>
+<td class="col-float">600,080.00</td>
+<td class="col-float">906,784.06</td>
+</tr>
+<tr>
+<td class="col-key">200803</td>
+<td class="col-date">2008-03-01</td>
+<td class="col-float">559,538.52</td>
+<td class="col-float">873,304.83</td>
+</tr>
+<tr>
+<td class="col-key">200804</td>
+<td class="col-date">2008-04-01</td>
+<td class="col-float">999,667.17</td>
+<td class="col-float">862,601.69</td>
+</tr>
+<tr>
+<td class="col-key">200805</td>
+<td class="col-date">2008-05-01</td>
+<td class="col-float">893,231.96</td>
+<td class="col-float">859,021.63</td>
+</tr>
+<tr>
+<td class="col-key">200806</td>
+<td class="col-date">2008-06-01</td>
+<td class="col-float">845,141.60</td>
+<td class="col-float">847,591.39</td>
+</tr>
+<tr>
+<td class="col-key">200807</td>
+<td class="col-date">2008-07-01</td>
+<td class="col-float">890,547.41</td>
+<td class="col-float">844,925.09</td>
+</tr>
+<tr>
+<td class="col-key">200808</td>
+<td class="col-date">2008-08-01</td>
+<td class="col-float">721,560.95</td>
+<td class="col-float">825,652.29</td>
+</tr>
+<tr>
+<td class="col-key">200809</td>
+<td class="col-date">2008-09-01</td>
+<td class="col-float">963,437.23</td>
+<td class="col-float">821,782.97</td>
+</tr>
+<tr>
+<td class="col-key">200810</td>
+<td class="col-date">2008-10-01</td>
+<td class="col-float">719,792.99</td>
+<td class="col-float">805,576.26</td>
+</tr>
+<tr>
+<td class="col-key">200811</td>
+<td class="col-date">2008-11-01</td>
+<td class="col-float">1,156,109.32</td>
+<td class="col-float">833,118.55</td>
+</tr>
+<tr>
+<td class="col-key">200812</td>
+<td class="col-date">2008-12-01</td>
+<td class="col-float">921,709.14</td>
+<td class="col-float">827,298.58</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about DATESINPERIOD in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/yearly-customer-historical-sales-in-dax/"  class="low-key"><strong>Yearly Customer Historical Sales in DAX</strong></a>
+                                <p>With DAX you can calculate the sales of the first, second and third year of a new customer without any ETL. In this article you see how to implement this calculation with good performance. <a href="https://www.sqlbi.com/articles/yearly-customer-historical-sales-in-dax/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/optimizing-dax-video-course/?aff=odax-promo" target="_top" class="sam-click" data-campaign="odax-video-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/odax-58090.png" title="Optimizing DAX" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/datesinperiod-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/datesinperiod-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

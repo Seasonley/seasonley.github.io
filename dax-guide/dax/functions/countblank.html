@@ -1,0 +1,234 @@
+
+            <header>
+                <h1 title="COUNTBLANK"><a href="https://dax.guide/countblank/" rel="bookmark">COUNTBLANK</a> <span class="smaller">DAX Function (Aggregation)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                                                 &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Counts the number of blanks in a column.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    COUNTBLANK ( &lt;ColumnName&gt; )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        ColumnName                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The column containing the blanks to be counted.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single <a href="https://dax.guide/dt/integer/" class="ajax" data-id="257">integer</a> value.</div></p>                    <p>If no rows are found that meet the blank condition, the function returns blank.</p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>The function never returns 0. If there are no rows or no blanks, it returns always blank.</p>
+<p>Any empty string is considered as a blank for COUNTBLANK purposes, even though <a href="https://dax.guide/isblank/" class="ajax" data-id="116">ISBLANK</a> would return FALSE for an empty string.</p>
+<p>Even though COUNTBLANK is semantically equivalent to the following expressions, it may be slower than corresponding syntax based on <a href="https://dax.guide/calculate/" class="ajax" data-id="33">CALCULATE</a>.</p>
+<pre class="brush: dax; title: ; notranslate" title="">
+-- Example of COUNTBLANK over a column
+COUNTBLANK ( 'Table'&#91;Column] )
+
+-- Semantically equivalent expression that can be faster (only for columns that are not strings):
+CALCULATE (
+    COUNTROWS ( 'Table' ),
+    KEEPFILTERS ( ISBLANK ( 'Table'&#91;Column] ) )
+)
+
+-- Semantically equivalent expression that can be faster (only for columns that are strings):
+CALCULATE ( 
+    COUNTROWS ( 'Table' ), 
+    KEEPFILTERS ( 'Table'&#91;Value] = &quot;&quot; ) 
+)
+</pre>
+                </section>
+            
+            
+                                                    <a href="#alt" class="sliding">&raquo; 2 related functions</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/RptMyjqgQKcVwJ/; notranslate" title="">
+--  COUNTBLANK counts both empty strings and blanks
+--  For numeric columns, COUNTBLANK only considers blanks
+DEFINE
+    MEASURE Customer&#91;# No Name 1] = COUNTBLANK ( Customer&#91;Customer Name] )
+    MEASURE Customer&#91;# No Name 2] = 
+        CALCULATE ( 
+            COUNTROWS ( Customer ), 
+            KEEPFILTERS ( Customer&#91;Customer Name] = &quot;&quot; ) 
+        )
+    MEASURE Customer&#91;# No Birth Date 1] =
+        COUNTBLANK ( Customer&#91;Birth Date] )
+    MEASURE Customer&#91;# No Birth Date 2] =
+        CALCULATE ( 
+            COUNTROWS ( Customer ), 
+            KEEPFILTERS ( ISBLANK ( Customer&#91;Birth Date] ) ) 
+        )
+EVALUATE
+SUMMARIZECOLUMNS (
+    Customer&#91;Continent],
+    &quot;# No Name 1&quot;, &#91;# No Name 1],
+    &quot;# No Name 2&quot;, &#91;# No Name 2],
+    &quot;# No Birth Date 1&quot;, &#91;# No Birth Date 1],
+    &quot;# No Birth Date 2&quot;, &#91;# No Birth Date 2]
+)
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Continent">Continent</th>
+<th title="# No Name 1"># No Name 1</th>
+<th title="# No Name 2"># No Name 2</th>
+<th title="# No Birth Date 1"># No Birth Date 1</th>
+<th title="# No Birth Date 2"># No Birth Date 2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">North America</td>
+<td class="col-int">276</td>
+<td class="col-int">276</td>
+<td class="col-int">276</td>
+<td class="col-int">276</td>
+</tr>
+<tr>
+<td class="col-string">Europe</td>
+<td class="col-int">42</td>
+<td class="col-int">42</td>
+<td class="col-int">42</td>
+<td class="col-int">42</td>
+</tr>
+<tr>
+<td class="col-string">Asia</td>
+<td class="col-int">67</td>
+<td class="col-int">67</td>
+<td class="col-int">67</td>
+<td class="col-int">67</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/l7m2xJoYLznhMB/; notranslate" title="">
+--  COUNTBLANK handles empty strings like blanks
+--  The version with CALCULATE makes the intention of the developer clearer
+DEFINE
+    MEASURE Customer&#91;# COUNTBLANK] =
+        COUNTBLANK ( Customer&#91;Customer Name] )
+    MEASURE Customer&#91;# EMPTY STRING / BLANK] =
+        CALCULATE ( COUNTROWS ( Customer ), Customer&#91;Customer Name] = &quot;&quot; )
+    MEASURE Customer&#91;# EMPTY STRING ONLY] =
+        CALCULATE ( COUNTROWS ( Customer ), Customer&#91;Customer Name] == &quot;&quot; )
+    MEASURE Customer&#91;# BLANK ONLY 1] =
+        CALCULATE ( COUNTROWS ( Customer ), Customer&#91;Customer Name] == BLANK () )
+    MEASURE Customer&#91;# BLANK ONLY 2] =
+        CALCULATE ( COUNTROWS ( Customer ), ISBLANK ( Customer&#91;Customer Name] ) )
+EVALUATE
+SUMMARIZECOLUMNS (
+    Customer&#91;Continent],
+    &quot;# COUNTBLANK&quot;, &#91;# COUNTBLANK],
+    &quot;# EMPTY STRING / BLANK&quot;, &#91;# EMPTY STRING / BLANK],
+    &quot;# EMPTY STRING ONLY&quot;, &#91;# EMPTY STRING ONLY],
+    &quot;# BLANK ONLY 1&quot;, &#91;# BLANK ONLY 1],
+    &quot;# BLANK ONLY 2&quot;, &#91;# BLANK ONLY 2]
+)
+ORDER BY &#91;Continent]
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Continent">Continent</th>
+<th title="# COUNTBLANK"># COUNTBLANK</th>
+<th title="# EMPTY STRING / BLANK"># EMPTY STRING / BLANK</th>
+<th title="# EMPTY STRING ONLY"># EMPTY STRING ONLY</th>
+<th title="# BLANK ONLY 1"># BLANK ONLY 1</th>
+<th title="# BLANK ONLY 2"># BLANK ONLY 2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Asia</td>
+<td class="col-int">67</td>
+<td class="col-int">67</td>
+<td class="col-int">33</td>
+<td class="col-int">34</td>
+<td class="col-int">34</td>
+</tr>
+<tr>
+<td class="col-string">Europe</td>
+<td class="col-int">42</td>
+<td class="col-int">42</td>
+<td class="col-int">21</td>
+<td class="col-int">21</td>
+<td class="col-int">21</td>
+</tr>
+<tr>
+<td class="col-string">North America</td>
+<td class="col-int">276</td>
+<td class="col-int">276</td>
+<td class="col-int">138</td>
+<td class="col-int">138</td>
+<td class="col-int">138</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/count/" class="ajax" data-id="52">COUNT</a></li>
+                                                    <li><a href="https://dax.guide/countrows/" class="ajax" data-id="56">COUNTROWS</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.youtube.com/c/sqlbi/" target="_top" class="sam-click" data-campaign="youtube-channel" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/youtube-58090.jpg" title="Subscribe to our Youtube channel" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/countblank-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/countblank-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

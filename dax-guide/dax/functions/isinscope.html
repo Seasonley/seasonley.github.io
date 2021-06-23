@@ -1,0 +1,513 @@
+
+            <header>
+                <h1 title="ISINSCOPE"><a href="https://dax.guide/isinscope/" rel="bookmark">ISINSCOPE</a> <span class="smaller">DAX Function (Information)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                         &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns true when the specified column is the level in a hierarchy of levels.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    ISINSCOPE ( &lt;ColumnName&gt; )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        ColumnName                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The column of the level.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single <a href="https://dax.guide/dt/boolean/" class="ajax" data-id="264">boolean</a> value.</div></p>                    <p>Returns TRUE if the column is in included in the filter context and it is a grouping column for the current row in the result set.</p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>ISINSCOPE checks if the column has only one value in the current filter context <strong>and</strong> there is a filter placed on the column derived either from context transition or from a group by column placed by <a href="https://dax.guide/summarizecolumns/" class="ajax" data-id="221">SUMMARIZECOLUMNS</a>.</p>
+<p>When ISINSCOPE returns TRUE, then also <a href="https://dax.guide/hasonevalue/" class="ajax" data-id="109">HASONEVALUE</a> returns TRUE.</p>
+                </section>
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 3 related articles</a><br>
+                                                    <a href="#alt" class="sliding">&raquo; 2 related functions</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/SMwzplP02zH6PP/; notranslate" title="">
+--  ISINSCOPE is useful to detect if a column is currently
+--  in the rows or columns of a visual (like groupby columns 
+--  of SUMMARIZECOLUMNS) AND it has only one value visible
+EVALUATE
+TOPN (
+   20,
+    SUMMARIZECOLUMNS (
+        'Product'&#91;Brand],
+        Customer&#91;CountryRegion],
+        &quot;Brand in scope&quot;, ISINSCOPE ( 'Product'&#91;Brand] ),
+        &quot;Country in scope&quot;, ISINSCOPE ( Customer&#91;CountryRegion] ),
+        &quot;Product name in scope&quot;, ISINSCOPE ( 'Product'&#91;Product Name] )
+    )
+)
+
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Brand">Brand</th>
+<th title="CountryRegion">CountryRegion</th>
+<th title="Brand in scope">Brand in scope</th>
+<th title="Country in scope">Country in scope</th>
+<th title="Product name in scope">Product name in scope</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Contoso</td>
+<td class="col-string">Australia</td>
+<td class="col-string">true</td>
+<td class="col-string">true</td>
+<td class="col-string">false</td>
+</tr>
+<tr>
+<td class="col-string">Wide World Importers</td>
+<td class="col-string">Australia</td>
+<td class="col-string">true</td>
+<td class="col-string">true</td>
+<td class="col-string">false</td>
+</tr>
+<tr>
+<td class="col-string">Northwind Traders</td>
+<td class="col-string">Australia</td>
+<td class="col-string">true</td>
+<td class="col-string">true</td>
+<td class="col-string">false</td>
+</tr>
+<tr>
+<td class="col-string">Adventure Works</td>
+<td class="col-string">Australia</td>
+<td class="col-string">true</td>
+<td class="col-string">true</td>
+<td class="col-string">false</td>
+</tr>
+<tr>
+<td class="col-string">Southridge Video</td>
+<td class="col-string">Australia</td>
+<td class="col-string">true</td>
+<td class="col-string">true</td>
+<td class="col-string">false</td>
+</tr>
+<tr>
+<td class="col-string">Litware</td>
+<td class="col-string">Australia</td>
+<td class="col-string">true</td>
+<td class="col-string">true</td>
+<td class="col-string">false</td>
+</tr>
+<tr>
+<td class="col-string">Fabrikam</td>
+<td class="col-string">Australia</td>
+<td class="col-string">true</td>
+<td class="col-string">true</td>
+<td class="col-string">false</td>
+</tr>
+<tr>
+<td class="col-string">Proseware</td>
+<td class="col-string">Australia</td>
+<td class="col-string">true</td>
+<td class="col-string">true</td>
+<td class="col-string">false</td>
+</tr>
+<tr>
+<td class="col-string">A. Datum</td>
+<td class="col-string">Australia</td>
+<td class="col-string">true</td>
+<td class="col-string">true</td>
+<td class="col-string">false</td>
+</tr>
+<tr>
+<td class="col-string">The Phone Company</td>
+<td class="col-string">Australia</td>
+<td class="col-string">true</td>
+<td class="col-string">true</td>
+<td class="col-string">false</td>
+</tr>
+<tr>
+<td class="col-string">Tailspin Toys</td>
+<td class="col-string">Australia</td>
+<td class="col-string">true</td>
+<td class="col-string">true</td>
+<td class="col-string">false</td>
+</tr>
+<tr>
+<td class="col-string">Contoso</td>
+<td class="col-string">United States</td>
+<td class="col-string">true</td>
+<td class="col-string">true</td>
+<td class="col-string">false</td>
+</tr>
+<tr>
+<td class="col-string">Wide World Importers</td>
+<td class="col-string">United States</td>
+<td class="col-string">true</td>
+<td class="col-string">true</td>
+<td class="col-string">false</td>
+</tr>
+<tr>
+<td class="col-string">Northwind Traders</td>
+<td class="col-string">United States</td>
+<td class="col-string">true</td>
+<td class="col-string">true</td>
+<td class="col-string">false</td>
+</tr>
+<tr>
+<td class="col-string">Adventure Works</td>
+<td class="col-string">United States</td>
+<td class="col-string">true</td>
+<td class="col-string">true</td>
+<td class="col-string">false</td>
+</tr>
+<tr>
+<td class="col-string">Southridge Video</td>
+<td class="col-string">United States</td>
+<td class="col-string">true</td>
+<td class="col-string">true</td>
+<td class="col-string">false</td>
+</tr>
+<tr>
+<td class="col-string">Litware</td>
+<td class="col-string">United States</td>
+<td class="col-string">true</td>
+<td class="col-string">true</td>
+<td class="col-string">false</td>
+</tr>
+<tr>
+<td class="col-string">Fabrikam</td>
+<td class="col-string">United States</td>
+<td class="col-string">true</td>
+<td class="col-string">true</td>
+<td class="col-string">false</td>
+</tr>
+<tr>
+<td class="col-string">Proseware</td>
+<td class="col-string">United States</td>
+<td class="col-string">true</td>
+<td class="col-string">true</td>
+<td class="col-string">false</td>
+</tr>
+<tr>
+<td class="col-string">A. Datum</td>
+<td class="col-string">United States</td>
+<td class="col-string">true</td>
+<td class="col-string">true</td>
+<td class="col-string">false</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/6phPf9F1H2uBAc/; notranslate" title="">
+--  In this example we use ISINSCOPE to compute the percentage
+--  over the parent level in a hierarchy over products
+DEFINE
+    MEASURE Sales&#91;Pct over parent] =
+        VAR AllSales =
+            CALCULATE ( &#91;Sales Amount], ALLSELECTED () )
+        VAR CategorySales =
+            CALCULATE ( &#91;Sales Amount], ALLSELECTED (), VALUES ( Product&#91;Category] ) )
+        VAR CurrentSales = &#91;Sales Amount]
+        RETURN
+            SWITCH (
+                TRUE (),
+                ISINSCOPE ( 'Product'&#91;Subcategory] ), DIVIDE ( CurrentSales, CategorySales ),
+                ISINSCOPE ( 'Product'&#91;Category] ),    DIVIDE ( CurrentSales, AllSales )
+            )
+EVALUATE
+CALCULATETABLE (
+    SUMMARIZECOLUMNS (
+        'Product'&#91;Category],
+        ROLLUPADDISSUBTOTAL ( 'Product'&#91;Subcategory], &quot;Category total&quot; ),
+        &quot;Sales Amount&quot;, &#91;Sales Amount],
+        &quot;Pct over parent&quot;, &#91;Pct over parent]
+    ),
+    'Product'&#91;Category] IN { &quot;Audio&quot;, &quot;TV and Video&quot; }
+)
+ORDER BY
+    Product&#91;Category],
+    &#91;Category Total],
+    Product&#91;Subcategory]
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Category">Category</th>
+<th title="Subcategory">Subcategory</th>
+<th title="Category total">Category total</th>
+<th title="Sales Amount">Sales Amount</th>
+<th title="Pct over parent">Pct over parent</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Audio</td>
+<td class="col-string">Bluetooth Headphones</td>
+<td class="col-string">false</td>
+<td class="col-float">124,450.79</td>
+<td class="col-percent">32.37%</td>
+</tr>
+<tr>
+<td class="col-string">Audio</td>
+<td class="col-string">MP4&#038;MP3</td>
+<td class="col-string">false</td>
+<td class="col-float">170,194.00</td>
+<td class="col-percent">44.26%</td>
+</tr>
+<tr>
+<td class="col-string">Audio</td>
+<td class="col-string">Recording Pen</td>
+<td class="col-string">false</td>
+<td class="col-float">89,873.37</td>
+<td class="col-percent">23.37%</td>
+</tr>
+<tr>
+<td class="col-string">Audio</td>
+<td class="col-string blank">(Blank)</td>
+<td class="col-string">true</td>
+<td class="col-float">384,518.16</td>
+<td class="col-percent">8.05%</td>
+</tr>
+<tr>
+<td class="col-string">TV and Video</td>
+<td class="col-string">Car Video</td>
+<td class="col-string">false</td>
+<td class="col-float">604,413.71</td>
+<td class="col-percent">13.76%</td>
+</tr>
+<tr>
+<td class="col-string">TV and Video</td>
+<td class="col-string">Home Theater System</td>
+<td class="col-string">false</td>
+<td class="col-float">1,525,526.26</td>
+<td class="col-percent">34.73%</td>
+</tr>
+<tr>
+<td class="col-string">TV and Video</td>
+<td class="col-string">Televisions</td>
+<td class="col-string">false</td>
+<td class="col-float">1,834,257.05</td>
+<td class="col-percent">41.76%</td>
+</tr>
+<tr>
+<td class="col-string">TV and Video</td>
+<td class="col-string">VCD &#038; DVD</td>
+<td class="col-string">false</td>
+<td class="col-float">428,571.27</td>
+<td class="col-percent">9.76%</td>
+</tr>
+<tr>
+<td class="col-string">TV and Video</td>
+<td class="col-string blank">(Blank)</td>
+<td class="col-string">true</td>
+<td class="col-float">4,392,768.29</td>
+<td class="col-percent">91.95%</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/W5qvyxs0YWylHm/; notranslate" title="">
+--  ISINSCOPE, like ALLSELECTED, deduces the information about
+--  the grouping of a column from a different algorithm:
+--  the column must show only one value in the filter context
+--  and the filter must be coming from either a groupby column 
+--  introduced by SUMMARIZECOLUMNS, or from a context transition.
+--  Besides, the filter must be still active (not overridden)
+EVALUATE
+ADDCOLUMNS (
+    VALUES ( 'Product'&#91;Color] ),
+    &quot;ISINSCOPE 1&quot;,
+	    CALCULATE ( 
+	        INT ( ISINSCOPE ( 'Product'&#91;Color] ) ),
+	        FILTER ( VALUES ( Product&#91;Color] ), TRUE )
+	    ),
+    &quot;ISINSCOPE 2&quot;,
+	    CALCULATE ( 
+	        INT ( ISINSCOPE ( 'Product'&#91;Color] ) ),
+	        KEEPFILTERS ( FILTER ( VALUES ( Product&#91;Color] ), TRUE ) )
+	    )
+)
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Color">Color</th>
+<th title="ISINSCOPE 1">ISINSCOPE 1</th>
+<th title="ISINSCOPE 2">ISINSCOPE 2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Silver</td>
+<td class="col-int">0</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Blue</td>
+<td class="col-int">0</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">White</td>
+<td class="col-int">0</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Red</td>
+<td class="col-int">0</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Black</td>
+<td class="col-int">0</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Green</td>
+<td class="col-int">0</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Orange</td>
+<td class="col-int">0</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Pink</td>
+<td class="col-int">0</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Yellow</td>
+<td class="col-int">0</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Purple</td>
+<td class="col-int">0</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Brown</td>
+<td class="col-int">0</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Grey</td>
+<td class="col-int">0</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Gold</td>
+<td class="col-int">0</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Azure</td>
+<td class="col-int">0</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Silver Grey</td>
+<td class="col-int">0</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Transparent</td>
+<td class="col-int">0</td>
+<td class="col-int">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about ISINSCOPE in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/filtering-the-top-3-products-for-each-category-in-power-bi/"  class="low-key"><strong>Filtering the Top 3 products for each category in Power BI</strong></a>
+                                <p>This article describes different techniques to display the first three products for each category in Power BI. It includes considerations on how to adapt the technique to different models and requirements. <a href="https://www.sqlbi.com/articles/filtering-the-top-3-products-for-each-category-in-power-bi/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/showing-the-top-5-products-and-others-row/"  class="low-key"><strong>Showing the top 5 products and Other row</strong></a>
+                                <p>This article shows how to add an additional “other” row to the selection obtained using the Top N filter in a Power BI report. <a href="https://www.sqlbi.com/articles/showing-the-top-5-products-and-others-row/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/distinguishing-hasonevalue-from-isinscope/"  class="low-key"><strong>Distinguishing HASONEVALUE from ISINSCOPE</strong></a>
+                                <p>This article describes the differences between HASONEVALUE and ISINSCOPE, which are two useful DAX functions to control the filters and the grouping that are active in a report. <a href="https://www.sqlbi.com/articles/distinguishing-hasonevalue-from-isinscope/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/iscrossfiltered/" class="ajax" data-id="117">ISCROSSFILTERED</a></li>
+                                                    <li><a href="https://dax.guide/isfiltered/" class="ajax" data-id="122">ISFILTERED</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/dax-patterns/?aff=daxp-promo" target="_top" class="sam-click" data-campaign="dax-patterns-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/daxp-58090.png" title="DAX Patterns" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/isinscope-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/isinscope-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

@@ -1,0 +1,160 @@
+
+            <header>
+                <h1 title="COMBINA"><a href="https://dax.guide/combina/" rel="bookmark">COMBINA</a> <span class="smaller">DAX Function (Statistical)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                                                 &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns the number of combinations (with repetitions) for a given number of items.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    COMBINA ( &lt;Number&gt;, &lt;Number_chosen&gt; )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Number                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>Must be greater than or equal to 0, and greater than or equal to Number_chosen. Non-integer values are truncated.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Number_chosen                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>Must be greater than or equal to 0. Non-integer values are truncated.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single <a href="https://dax.guide/dt/integer/" class="ajax" data-id="257">integer</a> value.</div></p>                    <p>Returns the number of combinations (with repetitions) for a given number of items. </p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>Numeric arguments are rounded to integers. </p>
+                </section>
+            
+            
+                                                    <a href="#alt" class="sliding">&raquo; 1 related function</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/yjATvjrhrV0MAW/; notranslate" title="">
+--  COMBINA returns the number of possible combinations of
+--  a given number of items WITH repetitions.
+--  The internal order is not relevant.
+--  Use COMBIN to compute combinations WITHOUT repetitions.
+--
+--  For example, consider 3 elements ( A, B, C )
+--  COMBINA ( 3, 2 ) returns 6 counting:
+--       ( A, A )
+--       ( B, B )
+--       ( C, C )
+--       ( A, B )
+--       ( B, C )
+--       ( A, C )
+EVALUATE 
+{
+    ( &quot;COMBINA ( 3, 1 )&quot;, COMBINA ( 3, 1 ) ),
+    ( &quot;COMBINA ( 3, 2 )&quot;, COMBINA ( 3, 2 ) ),
+    ( &quot;COMBINA ( 3, 3 )&quot;, COMBINA ( 3, 3 ) ),
+    ( &quot;COMBINA ( 4, 1 )&quot;, COMBINA ( 4, 1 ) ),
+    ( &quot;COMBINA ( 4, 2 )&quot;, COMBINA ( 4, 2 ) ),
+    ( &quot;COMBINA ( 4, 3 )&quot;, COMBINA ( 4, 3 ) ),
+    ( &quot;COMBINA ( 4, 4 )&quot;, COMBINA ( 4, 4 ) )
+}
+
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Value1">Value1</th>
+<th title="Value2">Value2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">COMBINA ( 3, 1 )</td>
+<td class="col-int">3</td>
+</tr>
+<tr>
+<td class="col-string">COMBINA ( 3, 2 )</td>
+<td class="col-int">6</td>
+</tr>
+<tr>
+<td class="col-string">COMBINA ( 3, 3 )</td>
+<td class="col-int">10</td>
+</tr>
+<tr>
+<td class="col-string">COMBINA ( 4, 1 )</td>
+<td class="col-int">4</td>
+</tr>
+<tr>
+<td class="col-string">COMBINA ( 4, 2 )</td>
+<td class="col-int">10</td>
+</tr>
+<tr>
+<td class="col-string">COMBINA ( 4, 3 )</td>
+<td class="col-int">20</td>
+</tr>
+<tr>
+<td class="col-string">COMBINA ( 4, 4 )</td>
+<td class="col-int">35</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/combin/" class="ajax" data-id="41">COMBIN</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/optimizing-dax-video-course/?aff=odax-promo" target="_top" class="sam-click" data-campaign="odax-video-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/odax-58090.png" title="Optimizing DAX" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/combina-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/combina-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

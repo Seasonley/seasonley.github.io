@@ -1,0 +1,678 @@
+
+            <header>
+                <h1 title="CONTAINSSTRINGEXACT"><a href="https://dax.guide/containsstringexact/" rel="bookmark">CONTAINSSTRINGEXACT</a> <span class="smaller">DAX Function (Information)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                         &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns TRUE if one text string contains another text string. CONTAINSSTRINGEXACT is case-sensitive and accent-sensitive.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    CONTAINSSTRINGEXACT ( &lt;WithinText&gt;, &lt;FindText&gt; )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        WithinText                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The text in which you want to search for FindText.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        FindText                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The text you want to find. Wildcard characters are not allowed.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single <a href="https://dax.guide/dt/boolean/" class="ajax" data-id="264">boolean</a> value.</div></p>                    <p>A value of TRUE if the string WithinText contains the string FindText &#8211; the comparison is case-sensitive.</p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>The CONTAINSSTRINGEXACT function does not accept wildcards to perform the search, whereas <a href="https://dax.guide/containsstring/" class="ajax" data-id="482">CONTAINSSTRING</a> accepts wildcards and is not case-sensitive.</p>
+                </section>
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 1 related article</a><br>
+                                                    <a href="#alt" class="sliding">&raquo; 1 related function</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/MyGjs7A4uHtGqH/; notranslate" title="">
+--  CONTAINSSTRING checks whether a string contains another string, using
+--  case-insensitive match. Therefore, &quot;RED&quot; = &quot;red&quot;.
+--  CONTAINSSTRINGEXACT uses case-sensitive matching
+DEFINE
+    MEASURE Sales&#91;RED Prods (case insensitive)] =
+        COUNTROWS (
+            FILTER ( Product, CONTAINSSTRING ( 'Product'&#91;Product Name], &quot;red&quot; ) )
+        )
+    MEASURE Sales&#91;RED Prods (case sensitive)] =
+        COUNTROWS (
+            FILTER ( Product, CONTAINSSTRINGEXACT ( 'Product'&#91;Product Name], &quot;red&quot; ) )
+        )
+EVALUATE
+FILTER ( 
+    SUMMARIZECOLUMNS (
+        Product&#91;Product Name],
+        &quot;RED Prods (case sensitive)&quot;, &#91;RED Prods (case sensitive)],
+        &quot;RED Prods (case insensitive)&quot;, &#91;RED Prods (case insensitive)]
+    ), 
+    OR ( 
+        &#91;RED Prods (case insensitive)] &lt;&gt; &#91;RED Prods (case sensitive)],
+        &#91;RED Prods (case sensitive)] = 1 
+    ) 
+)
+ORDER BY 
+    &#91;RED Prods (case sensitive)] DESC
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Product Name">Product Name</th>
+<th title="RED Prods (case sensitive)">RED Prods (case sensitive)</th>
+<th title="RED Prods (case insensitive)">RED Prods (case insensitive)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Proseware 23ppm Laser Printer with Wireless and Wired Network Interfaces M680 White</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">The Phone Company Touch Screen Phones Infrared M901 Black</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">The Phone Company Touch Screen Phones Infrared M901 Grey</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Proseware 23ppm Laser Printer with Wireless and Wired Network Interfaces M680 Black</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">The Phone Company Touch Screen Phones Infrared M901 Gold</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Contoso Touch Screen Phones Infrared M901 Black</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Proseware 23ppm Laser Printer with Wireless and Wired Network Interfaces M680 Grey</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">NT Bluetooth Active Headphones E202 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">NT Wireless Bluetooth Stereo Headphones M402 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">NT Wireless Transmitter and Bluetooth Headphones M150 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">WWI Wireless Transmitter and Bluetooth Headphones X250 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Fabrikam Laptop14.1W M4180 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Fabrikam Laptop14.1 E4101 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Fabrikam Laptop8.9 E8002 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Fabrikam Laptop12 M2002 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Fabrikam Laptop13.3 M3000 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Fabrikam Laptop13.3W M3080 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Adventure Works Laptop19W X1980 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Adventure Works Laptop15 M1501 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Adventure Works Laptop12 M1201 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Adventure Works Laptop16 M1601 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Adventure Works Laptop15.4W M1548 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Adventure Works Laptop8.9 E0890 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">WWI Desktop PC1.60 E1600 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">SV 40GB USB2.0 Portable Hard Disk E400 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">SV 80GB USB2.0 Portable Hard Disk E500 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Contoso Mini Battery Charger Kit E320 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">SV DVD 48 DVD Storage Binder M50 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">SV DVD 58 DVD Storage Binder M55 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">SV DVD 38 DVD Storage Binder E25 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">SV DVD 60 DVD Storage Binder L20 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">SV DVD 55DVD Storage Binder M56 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Contoso DVD 48 DVD Storage Binder M50 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Contoso DVD 58 DVD Storage Binder M55 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Contoso DVD 38 DVD Storage Binder E25 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Contoso DVD 60 DVD Storage Binder L20 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Contoso DVD 55DVD Storage Binder M56 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">MGS Hand Games for kids E300 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">MGS Hand Games for students E400 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">MGS Hand Games men M300 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">MGS Hand Games women M400 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">MGS Hand Games for 12-16 boys E600 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">MGS Hand Games for Office worker L299 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">SV Hand Games for kids E30 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">SV Hand Games for students E40 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">SV Hand Games men M30 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">SV Hand Games women M40 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">SV Hand Games for Office worker L28 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Contoso Washer &#038; Dryer 27in L270 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Contoso Washer &#038; Dryer 25.5in M255 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Contoso Washer &#038; Dryer 24in M240 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Contoso Washer &#038; Dryer 21in E210 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Contoso Washer &#038; Dryer 15.5in E155 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Litware Refrigerator 19CuFt M760 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Litware Refrigerator 9.7CuFt M560 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Fabrikam Microwave 1.5CuFt X1100 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Fabrikam Microwave 2.2CuFt M1250 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Fabrikam Microwave 1.6CuFt M1250 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Fabrikam Microwave 1.0CuFt E1100 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Fabrikam Microwave 0.9CuFt E0900 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Fabrikam Microwave 0.8CuFt E0800 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Litware Microwave 1.5CuFt X110 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Litware Microwave 2.2CuFt M125 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Litware Microwave 1.6CuFt M125 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Litware Microwave 1.0CuFt E110 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Litware Microwave 0.9CuFt E090 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Litware Microwave 0.8CuFt E080 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Contoso Microwave 1.5CuFt X0110 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Contoso Microwave 2.2CuFt M0125 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Contoso Microwave 1.6CuFt M0125 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Contoso Microwave 1.0CuFt E0110 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Contoso Microwave 0.9CuFt E0090 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Contoso Microwave 0.8CuFt E0080 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Contoso Water Heater 7.2GPM X1800 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Contoso Water Heater 4.3GPM M1250 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Contoso Water Heater 4.0GPM M1250 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Contoso Water Heater 2.6GPM E0900 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Contoso Water Heater 1.5GPM E0800 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Contoso Air conditioner 25000BTU L1672 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Contoso Air conditioner 12000BTU M0640 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Contoso Air conditioner 10000BTU M0490 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Contoso Air conditioner 8000BTU M0320 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Contoso Air conditioner 7000BTU E0260 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Contoso Air conditioner 6000BTU E0180 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Contoso Air conditioner 5200BTU E0100 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Proseware Air conditioner 25000BTU L167 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Proseware Air conditioner 12000BTU M640 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Proseware Air conditioner 10000BTU M490 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Proseware Air conditioner 8000BTU M320 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Proseware Air conditioner 7000BTU E260 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Proseware Air conditioner 6000BTU E180 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Proseware Air conditioner 5200BTU E100 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Litware USB Foam Fan E1301 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Litware 180 CFM Vertical Discharge Fan X450 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Litware USB Durable Desk Soft Fan E1401 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Litware 80mm LED Dual PCI Slot Fan E1501 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Cigarette Lighter Adapter for Contoso Phones E110 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Contoso Touch Stylus Pen E150 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Contoso Bluetooth Active Headphones L15 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">SV Hand Games for 12-16 boys E60 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Contoso 2G MP3 Player E200 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Contoso 8GB Super-Slim MP3/Video Player M800 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Contoso 16GB Mp5 Player M1600 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Contoso 32GB Video MP3 Player M3200 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">WWI 4GB Video Recording Pen X200 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">WWI 1GB Digital Voice Recorder Pen E100 Red</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about CONTAINSSTRINGEXACT in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/from-sql-to-dax-string-comparison/"  class="low-key"><strong>From SQL to DAX: String Comparison</strong></a>
+                                <p>In DAX string comparison requires you more attention than in SQL, for several reasons: DAX doesn’t offer the same set of features you have in SQL, a few text comparison functions in DAX are only case-sensitive and others only case-insensitive,&hellip; <a href="https://www.sqlbi.com/articles/from-sql-to-dax-string-comparison/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/containsstring/" class="ajax" data-id="482">CONTAINSSTRING</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/dax-patterns/?aff=daxp-promo" target="_top" class="sam-click" data-campaign="dax-patterns-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/daxp-58090.png" title="DAX Patterns" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo, Jes Hansen, Naji El Kotob, Kenneth Barber</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/containsstringexact-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/containsstringexact-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

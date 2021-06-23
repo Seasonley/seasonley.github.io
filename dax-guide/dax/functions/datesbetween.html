@@ -1,0 +1,246 @@
+
+            <header>
+                <h1 title="DATESBETWEEN"><a href="https://dax.guide/datesbetween/" rel="bookmark">DATESBETWEEN</a> <span class="smaller">DAX Function (Time Intelligence)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                                            </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns the dates between two given dates.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    DATESBETWEEN ( &lt;Dates&gt;, &lt;StartDate&gt;, &lt;EndDate&gt; )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Dates                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>A column reference containing dates.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        StartDate                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>Start date.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        EndDate                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>End date.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="table-ret">Table</span> A table with a single column.</div></p>                    <p>A table containing a single column of date values. </p>
+                </section>
+            
+                            <!--googleoff: snippet-->
+                <section id="notes" class="notes">
+                    <h2>Notes</h2>
+                    <p>In order to use any time intelligence calculation, you need a well-formed date table. The <i>Date</i> table must satisfy the following requirements:
+<ul>
+<li>All dates need to be present for the years required. The <i>Date</i> table must always start on January 1 and end on December 31, including all the days in this range. If the report only references fiscal years, then the date table must include all the dates from the first to the last day of a fiscal year. For example, if the fiscal year 2008 starts on July 1, 2007, then the <i>Date</i> table must include all the days from July 1, 2007 to June 30, 2008.</li>
+<li>There needs to be a column with a <i>DateTime</i> or <i>Date</i> data type containing unique values. This column is usually called <i>Date</i>. Even though the <i>Date</i> column is often used to define relationships with other tables, this is not required. Still, the <i>Date</i> column must contain unique values and should be referenced by the Mark as Date Table feature. In case the column also contains a time part, no time should be used – for example, the time should always be 12:00 am.</li>
+<li>The <i>Date</i> table must be marked as a date table in the model, in case the relationship between the <i>Date</i> table and any other table is not based on the <i>Date</i>.</li>
+</ul></p>
+                </section>
+                <!--googleon: snippet-->
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>The dates argument must be a reference to a date/time column.<br />
+The result table includes only dates that exist in the dates column.</p>
+<p>If StartDate is a blank date value, then StartDate will be the earliest value in the dates column.</p>
+<p>If EndDate is a blank date value, then EndDate will be the latest value in the dates column. </p>
+<p>The dates used as the StartDate and EndDate are inclusive: that is, if the sales occurred on September 1 and you use September 1 as the start date, sales on September 1 are counted. </p>
+<p>If StartDate is larger than EndDate, the result is an empty table.</p>
+                </section>
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 1 related article</a><br>
+                                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/afFbdAP0vdLV8h/; notranslate" title="">
+--  DATESBETWEEN returns the dates between the boundaries specified.
+--  The boundaries are both included in the result.
+--  If EndDate is earlier than LastDate, the result is an empty table.
+EVALUATE
+VAR StartDate = DATE ( 2008, 08, 25 )
+VAR EndDate =   DATE ( 2008, 08, 31 )
+RETURN
+    DATESBETWEEN ( 'Date'&#91;Date], StartDate, EndDate )
+ORDER BY &#91;Date]
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Date">Date</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-date">2008-08-25</td>
+</tr>
+<tr>
+<td class="col-date">2008-08-26</td>
+</tr>
+<tr>
+<td class="col-date">2008-08-27</td>
+</tr>
+<tr>
+<td class="col-date">2008-08-28</td>
+</tr>
+<tr>
+<td class="col-date">2008-08-29</td>
+</tr>
+<tr>
+<td class="col-date">2008-08-30</td>
+</tr>
+<tr>
+<td class="col-date">2008-08-31</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<pre class="brush: dax; title: ; try: https://dax.do/bVrK0bboF91C0B/; notranslate" title="">
+--  Using BLANK for one boundary means use MIN/MAX of available dates.
+--  This query returns all the dates from Jan 1, 2005 (first date in the Date table)
+--  and August 31, 2008
+EVALUATE
+VAR StartDate = BLANK ()
+VAR EndDate =   DATE ( 2008, 08, 31 )
+RETURN
+    DATESBETWEEN ( 'Date'&#91;Date], StartDate, EndDate )
+ORDER BY &#91;Date]
+</pre>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/nFwfzrjY0qkHeo/; notranslate" title="">
+--  DATESBETWEEN returns dates that exist in the Date table.
+--  A date lower than the minimum makes DATESEBETWEEN start
+--  from the min value anyway.
+--  The content of the Date table starts from Jan 1, 2005.
+EVALUATE
+VAR StartDate = DATE ( 2004, 01, 01 )   -- Lower than MIN ( 'Date'&#91;Date] )
+VAR EndDate =   DATE ( 2005, 01, 6 )
+RETURN
+    DATESBETWEEN ( 'Date'&#91;Date], StartDate, EndDate )
+ORDER BY &#91;Date]
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Date">Date</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-date">2005-01-01</td>
+</tr>
+<tr>
+<td class="col-date">2005-01-02</td>
+</tr>
+<tr>
+<td class="col-date">2005-01-03</td>
+</tr>
+<tr>
+<td class="col-date">2005-01-04</td>
+</tr>
+<tr>
+<td class="col-date">2005-01-05</td>
+</tr>
+<tr>
+<td class="col-date">2005-01-06</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<pre class="brush: dax; title: ; try: https://dax.do/5KDEzX2gsgVzWW/; notranslate" title="">
+--  In this example we compute the moving average of &#91;Sales Amount] over 30 days
+--  Moving periods are easier to compute using DATESINPERIOD, anyway.
+DEFINE
+    MEASURE Sales&#91;Sales Last 30D] =
+        VAR Last30D =
+            DATESBETWEEN ( 
+                'Date'&#91;Date], 
+                MAX ( 'Date'&#91;Date] ) - 29,  -- boundaries are included, this is why we use 29
+                MAX ( 'Date'&#91;Date] )        -- to obtain 30 days
+            )
+        VAR Result =
+            CALCULATE (
+                &#91;Sales Amount] / 30,
+                Last30D
+            )
+        RETURN
+            Result
+EVALUATE
+SUMMARIZECOLUMNS (
+    'Date'&#91;Date],
+    &quot;Sales Amount&quot;, &#91;Sales Amount],
+    &quot;Sales 30D&quot;, &#91;Sales Last 30D]
+)
+ORDER BY &#91;Date]
+</pre>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about DATESBETWEEN in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/counting-working-days-in-dax/"  class="low-key"><strong>Counting working days in DAX</strong></a>
+                                <p>This article shows a DAX technique to compute the number of working days between two dates. <a href="https://www.sqlbi.com/articles/counting-working-days-in-dax/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/guides/dax/?aff=learn-dax-promo" target="_top" class="sam-click" data-campaign="learn-dax-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/learn-dax-58090.png" title="Become a DAX guru" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/datesbetween-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/datesbetween-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

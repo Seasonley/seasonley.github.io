@@ -1,0 +1,381 @@
+
+            <header>
+                <h1 title="SELECTCOLUMNS"><a href="https://dax.guide/selectcolumns/" rel="bookmark">SELECTCOLUMNS</a> <span class="smaller">DAX Function (Table manipulation)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                         &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns a table with selected columns from the table and new columns specified by the DAX expressions.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    SELECTCOLUMNS ( &lt;Table&gt;, &lt;Name&gt;, &lt;Expression&gt; [, &lt;Name&gt;, &lt;Expression&gt; [, … ] ] )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Table                                                                                                                            <br><a href="https://www.sqlbi.com/articles/row-context-and-filter-context-in-dax/" class="feature2 icon icon-rinfo tooltip"  data-tooltip-content="#iterator">Iterator</section>
+                                                                                                                                                            </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The table from which columns are selected.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Name                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Repeatable<br></td>
+                                    <td class="definition">
+                                        <p>The name of the new column to be added.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Expression                                                                                    <br><a href="https://www.sqlbi.com/articles/row-context-and-filter-context-in-dax/" class="feature icon icon-rinfo tooltip"  data-tooltip-content="#rowcontext">Row Context</a>
+                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Repeatable<br></td>
+                                    <td class="definition">
+                                        <p>The expression for the new column to be added.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="table-ret">Table</span> An entire table or a table with one or more columns.</div></p>                    <p>A table with the same number of rows as the table specified as the first argument. The returned table has one column for each pair of Name, Expression arguments, and each expression is evaluated in the context of a row from the specified Table argument. </p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>SELECTCOLUMNS has the same signature as <a href="https://dax.guide/addcolumns/" class="ajax" data-id="16">ADDCOLUMNS</a>, and has the same behavior except that instead of starting with the &lt;Table&gt; specified, SELECTCOLUMNS starts with an empty table before adding columns.<br />
+SELECTCOLUMNS keep the <a href="https://www.sqlbi.com/articles/understanding-data-lineage-in-dax/">data lineage</a> of the columns assigned to a simple column reference. Any different expression breaks the data lineage.</p>
+                </section>
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 3 related articles</a><br>
+                                                    <a href="#alt" class="sliding">&raquo; 1 related function</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/XMlQ1bvJRcspRD/; notranslate" title="">
+--  SELECTCOLUMNS is an iterator that returns a selection of
+--  columns / expressions evaluated in the row context during
+--  the iteration over its first parameter.
+EVALUATE
+    SELECTCOLUMNS ( 
+        TOPN ( 10, 'Product' ),
+        &quot;Product Category&quot;, 'Product'&#91;Category],
+        &quot;Product Subcategory&quot;, 'Product'&#91;Subcategory],
+        &quot;Product Color&quot;, 'Product'&#91;Color],
+        &quot;Product Name&quot;, 'Product'&#91;Product Name],
+        &quot;#Products&quot;, CALCULATE ( COUNTROWS ( 'Product' ) ),
+        &quot;Sales&quot;, &#91;Sales Amount]
+    )
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Product Category">Product Category</th>
+<th title="Product Subcategory">Product Subcategory</th>
+<th title="Product Color">Product Color</th>
+<th title="Product Name">Product Name</th>
+<th title="#Products">#Products</th>
+<th title="Sales">Sales</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Computers</td>
+<td class="col-string">Computers Accessories</td>
+<td class="col-string">Black</td>
+<td class="col-string">Contoso Rechargeable Battery E100 Black</td>
+<td class="col-int">1</td>
+<td class="col-float">602.30</td>
+</tr>
+<tr>
+<td class="col-string">Computers</td>
+<td class="col-string">Computers Accessories</td>
+<td class="col-string">Black</td>
+<td class="col-string">Contoso Dual USB Power Adapter &#8211; power adapter E300 Black</td>
+<td class="col-int">1</td>
+<td class="col-float">2,655.35</td>
+</tr>
+<tr>
+<td class="col-string">Computers</td>
+<td class="col-string">Computers Accessories</td>
+<td class="col-string">Black</td>
+<td class="col-string">Contoso Car power adapter M90 Black</td>
+<td class="col-int">1</td>
+<td class="col-float">984.53</td>
+</tr>
+<tr>
+<td class="col-string">Computers</td>
+<td class="col-string">Computers Accessories</td>
+<td class="col-string">Black</td>
+<td class="col-string">Contoso Notebook Peripheral Kit M69 Black</td>
+<td class="col-int">1</td>
+<td class="col-float">1,066.73</td>
+</tr>
+<tr>
+<td class="col-string">Computers</td>
+<td class="col-string">Computers Accessories</td>
+<td class="col-string">Black</td>
+<td class="col-string">Contoso Mouse Lock Bundle E200 Black</td>
+<td class="col-int">1</td>
+<td class="col-float">554.26</td>
+</tr>
+<tr>
+<td class="col-string">Computers</td>
+<td class="col-string">Computers Accessories</td>
+<td class="col-string">Black</td>
+<td class="col-string">Contoso Education Supplies Bundle E200 Black</td>
+<td class="col-int">1</td>
+<td class="col-float">1,157.62</td>
+</tr>
+<tr>
+<td class="col-string">Computers</td>
+<td class="col-string">Computers Accessories</td>
+<td class="col-string">Black</td>
+<td class="col-string">Contoso Laptop Starter Bundle M200 Black</td>
+<td class="col-int">1</td>
+<td class="col-float">419.10</td>
+</tr>
+<tr>
+<td class="col-string">Computers</td>
+<td class="col-string">Computers Accessories</td>
+<td class="col-string">Black</td>
+<td class="col-string">Contoso Education Essentials Bundle M300 Black</td>
+<td class="col-int">1</td>
+<td class="col-float">144.40</td>
+</tr>
+<tr>
+<td class="col-string">Computers</td>
+<td class="col-string">Computers Accessories</td>
+<td class="col-string">Black</td>
+<td class="col-string">Contoso Desktop Alternative Bundle E200 Black</td>
+<td class="col-int">1</td>
+<td class="col-float">181.70</td>
+</tr>
+<tr>
+<td class="col-string">Computers</td>
+<td class="col-string">Computers Accessories</td>
+<td class="col-string">Black</td>
+<td class="col-string">Contoso Power Inverter &#8211; DC to AC power inverter E900 Black</td>
+<td class="col-int">1</td>
+<td class="col-float">365.09</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/yctzUTshpq6R55/; notranslate" title="">
+--  SELECTCOLUMNS has a row context that can be used to write 
+--  expressions that navigate through relationships.
+EVALUATE
+CALCULATETABLE (
+    SELECTCOLUMNS (
+        Sales,
+        &quot;Order Number&quot;, Sales&#91;Order Number],
+        &quot;Order Line Number&quot;, Sales&#91;Order Line Number],
+        &quot;Customer&quot;, RELATED ( Customer&#91;Name] ),
+        &quot;Product&quot;, RELATED ( 'Product'&#91;Product Name] ),
+        &quot;Quantity&quot;, Sales&#91;Quantity],
+        &quot;Line Amount&quot;, Sales&#91;Quantity] * Sales&#91;Net Price]
+    ),
+    'Date'&#91;Date] = DATE ( 2007, 9, 19 ),
+    Customer&#91;Customer Type] = &quot;Person&quot;
+)
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Order Number">Order Number</th>
+<th title="Order Line Number">Order Line Number</th>
+<th title="Customer">Customer</th>
+<th title="Product">Product</th>
+<th title="Quantity">Quantity</th>
+<th title="Line Amount">Line Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">20070919123936</td>
+<td class="col-key">1</td>
+<td class="col-string">Vazquez, Monique</td>
+<td class="col-string">Contoso 512MB MP3 Player E51 Blue</td>
+<td class="col-int">4</td>
+<td class="col-float">46.76</td>
+</tr>
+<tr>
+<td class="col-string">20070919525615</td>
+<td class="col-key">1</td>
+<td class="col-string">Hall, Destiny</td>
+<td class="col-string">The Phone Company Touch Screen Phones &#8211; CRT M11 Grey</td>
+<td class="col-int">4</td>
+<td class="col-float">680.40</td>
+</tr>
+<tr>
+<td class="col-string">20070919123935</td>
+<td class="col-key">1</td>
+<td class="col-string">Barnes, Alexis</td>
+<td class="col-string">Contoso 512MB MP3 Player E51 Blue</td>
+<td class="col-int">1</td>
+<td class="col-float">11.69</td>
+</tr>
+<tr>
+<td class="col-string">20070919123937</td>
+<td class="col-key">1</td>
+<td class="col-string">Ruiz, Eddie</td>
+<td class="col-string">Contoso 512MB MP3 Player E51 Blue</td>
+<td class="col-int">1</td>
+<td class="col-float">11.69</td>
+</tr>
+<tr>
+<td class="col-string">20070919123941</td>
+<td class="col-key">1</td>
+<td class="col-string">Anderson, Eduardo</td>
+<td class="col-string">Contoso 512MB MP3 Player E51 Blue</td>
+<td class="col-int">1</td>
+<td class="col-float">11.69</td>
+</tr>
+<tr>
+<td class="col-string">20070919427828</td>
+<td class="col-key">1</td>
+<td class="col-string">Gao, Ernest</td>
+<td class="col-string">Fabrikam Social Videographer 2/3&#8221; 17mm E100 Grey</td>
+<td class="col-int">1</td>
+<td class="col-float">144.00</td>
+</tr>
+<tr>
+<td class="col-string">20070919712464</td>
+<td class="col-key">1</td>
+<td class="col-string">Cook, Jared</td>
+<td class="col-string">MGS Rise of Nations2009 E152</td>
+<td class="col-int">1</td>
+<td class="col-float">38.70</td>
+</tr>
+<tr>
+<td class="col-string">20070919712465</td>
+<td class="col-key">1</td>
+<td class="col-string">Patel, Cassandra</td>
+<td class="col-string">MGS Rise of Nations2009 E152</td>
+<td class="col-int">1</td>
+<td class="col-float">38.70</td>
+</tr>
+<tr>
+<td class="col-string">20070919712466</td>
+<td class="col-key">1</td>
+<td class="col-string">He, Willie</td>
+<td class="col-string">MGS Rise of Nations2009 E152</td>
+<td class="col-int">1</td>
+<td class="col-float">38.70</td>
+</tr>
+<tr>
+<td class="col-string">20070919712467</td>
+<td class="col-key">1</td>
+<td class="col-string">Jones, Jennifer</td>
+<td class="col-string">MGS Rise of Nations2009 E152</td>
+<td class="col-int">1</td>
+<td class="col-float">38.70</td>
+</tr>
+<tr>
+<td class="col-string">20070919525616</td>
+<td class="col-key">1</td>
+<td class="col-string">Rubio, Jésus</td>
+<td class="col-string">The Phone Company Touch Screen Phones &#8211; CRT M11 Grey</td>
+<td class="col-int">1</td>
+<td class="col-float">170.10</td>
+</tr>
+<tr>
+<td class="col-string">20070919525617</td>
+<td class="col-key">1</td>
+<td class="col-string">Shan, Leonard</td>
+<td class="col-string">The Phone Company Touch Screen Phones &#8211; CRT M11 Grey</td>
+<td class="col-int">1</td>
+<td class="col-float">170.10</td>
+</tr>
+<tr>
+<td class="col-string">20070919525618</td>
+<td class="col-key">1</td>
+<td class="col-string">Hernandez, Albert</td>
+<td class="col-string">The Phone Company Touch Screen Phones &#8211; CRT M11 Grey</td>
+<td class="col-int">1</td>
+<td class="col-float">170.10</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about SELECTCOLUMNS in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/using-generate-and-row-instead-of-addcolumns-in-dax/"  class="low-key"><strong>Using GENERATE and ROW instead of ADDCOLUMNS in DAX</strong></a>
+                                <p>This article explains how to improve DAX queries using GENERATE and ROW instead of ADDCOLUMNS when you create table expressions. <a href="https://www.sqlbi.com/articles/using-generate-and-row-instead-of-addcolumns-in-dax/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/querying-raw-data-to-tabular/"  class="low-key"><strong>Querying raw data to Tabular</strong></a>
+                                <p>This article describes how to extract raw data stored in the Tabular engine, used by Analysis Service Tabular, Power BI, and Power Pivot. <a href="https://www.sqlbi.com/articles/querying-raw-data-to-tabular/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/from-sql-to-dax-projection/"  class="low-key"><strong>From SQL to DAX: Projection</strong></a>
+                                <p>This article describes projection functions and techniques in DAX, showing the differences between SELECTCOLUMNS, ADDCOLUMNS, and SUMMARIZE. <a href="https://www.sqlbi.com/articles/from-sql-to-dax-projection/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/addcolumns/" class="ajax" data-id="16">ADDCOLUMNS</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/mastering-dax-video-course/?aff=mdax-promo" target="_top" class="sam-click" data-campaign="mdax-video-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/mdax-58090.jpg" title="Mastering DAX Video Course" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/selectcolumns-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/selectcolumns-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

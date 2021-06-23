@@ -1,0 +1,247 @@
+
+            <header>
+                <h1 title="POISSON.DIST"><a href="https://dax.guide/poisson-dist/" rel="bookmark">POISSON.DIST</a> <span class="smaller">DAX Function (Statistical)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                                                                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns the Poisson distribution. A common application of the Poisson distribution is predicting the number of events over a specific time, such as the number of cars arriving at a toll plaza in 1 minute.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    POISSON.DIST ( &lt;X&gt;, &lt;Mean&gt;, &lt;Cumulative&gt; )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        X                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The number of events.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Mean                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The expected numeric value.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Cumulative                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>A logical value that determines the form of the probability distribution returned. If cumulative is TRUE, POISSON.DIST returns the cumulative Poisson probability that the number of random events occurring will be between zero and x inclusive; if FALSE, it returns the Poisson probability mass function that the number of events occurring will be exactly x.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single <a href="https://dax.guide/dt/decimal/" class="ajax" data-id="258">decimal</a> value.</div></p>                    <p>Returns the Poisson distribution. </p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>If x is not an integer, it is rounded.</p>
+<p>If x or mean is nonnumeric, POISSON.DIST returns the #<a href="https://dax.guide/value/" class="ajax" data-id="247">VALUE</a>! error value. </p>
+<p>If x < 0, POISSON.DIST returns the #NUM! error value. 
+
+If mean < 0, POISSON.DIST returns the #NUM! error value. 
+
+
+
+
+</p>
+                </section>
+            
+            
+                                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/QQQTXarbBC3v9R/; notranslate" title="">
+--  POISSON.DIST returns the Poisson distribution 
+--  Use case: predicting the number of events over
+--  a specific time, such as the number of customers
+--  entering a store in 1 hour
+--      POISSON.DIST ( Value, Mean, Cumulative )
+DEFINE
+    VAR Mean            = 10 -- Expected number of customers in 1 hour
+    VAR Vals            = GENERATESERIES ( 0, 20, 1 )
+    VAR CumulativeTrue  = TRUE   -- Cumulative distribution function
+    VAR CumulativeFalse = FALSE  -- Probability density function
+EVALUATE
+ADDCOLUMNS ( 
+    Vals, 
+    &quot;Poisson Distr.&quot;,             -- Probability density function
+        FORMAT ( 
+            POISSON.DIST ( &#91;Value], Mean, CumulativeFalse ),
+            &quot;#,0.00000&quot;
+        ),
+    &quot;Poisson Distr. Cumulative&quot;,  -- Cumulative distribution function
+        FORMAT ( 
+            POISSON.DIST ( &#91;Value], Mean, CumulativeTrue ),
+            &quot;#,0.00000&quot;
+        )
+)
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Value">Value</th>
+<th title="Poisson Distr.">Poisson Distr.</th>
+<th title="Poisson Distr. Cumulative">Poisson Distr. Cumulative</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-int">0</td>
+<td class="col-string">0.00005</td>
+<td class="col-string">0.00005</td>
+</tr>
+<tr>
+<td class="col-int">1</td>
+<td class="col-string">0.00045</td>
+<td class="col-string">0.00050</td>
+</tr>
+<tr>
+<td class="col-int">2</td>
+<td class="col-string">0.00227</td>
+<td class="col-string">0.00277</td>
+</tr>
+<tr>
+<td class="col-int">3</td>
+<td class="col-string">0.00757</td>
+<td class="col-string">0.01034</td>
+</tr>
+<tr>
+<td class="col-int">4</td>
+<td class="col-string">0.01892</td>
+<td class="col-string">0.02925</td>
+</tr>
+<tr>
+<td class="col-int">5</td>
+<td class="col-string">0.03783</td>
+<td class="col-string">0.06709</td>
+</tr>
+<tr>
+<td class="col-int">6</td>
+<td class="col-string">0.06306</td>
+<td class="col-string">0.13014</td>
+</tr>
+<tr>
+<td class="col-int">7</td>
+<td class="col-string">0.09008</td>
+<td class="col-string">0.22022</td>
+</tr>
+<tr>
+<td class="col-int">8</td>
+<td class="col-string">0.11260</td>
+<td class="col-string">0.33282</td>
+</tr>
+<tr>
+<td class="col-int">9</td>
+<td class="col-string">0.12511</td>
+<td class="col-string">0.45793</td>
+</tr>
+<tr>
+<td class="col-int">10</td>
+<td class="col-string">0.12511</td>
+<td class="col-string">0.58304</td>
+</tr>
+<tr>
+<td class="col-int">11</td>
+<td class="col-string">0.11374</td>
+<td class="col-string">0.69678</td>
+</tr>
+<tr>
+<td class="col-int">12</td>
+<td class="col-string">0.09478</td>
+<td class="col-string">0.79156</td>
+</tr>
+<tr>
+<td class="col-int">13</td>
+<td class="col-string">0.07291</td>
+<td class="col-string">0.86446</td>
+</tr>
+<tr>
+<td class="col-int">14</td>
+<td class="col-string">0.05208</td>
+<td class="col-string">0.91654</td>
+</tr>
+<tr>
+<td class="col-int">15</td>
+<td class="col-string">0.03472</td>
+<td class="col-string">0.95126</td>
+</tr>
+<tr>
+<td class="col-int">16</td>
+<td class="col-string">0.02170</td>
+<td class="col-string">0.97296</td>
+</tr>
+<tr>
+<td class="col-int">17</td>
+<td class="col-string">0.01276</td>
+<td class="col-string">0.98572</td>
+</tr>
+<tr>
+<td class="col-int">18</td>
+<td class="col-string">0.00709</td>
+<td class="col-string">0.99281</td>
+</tr>
+<tr>
+<td class="col-int">19</td>
+<td class="col-string">0.00373</td>
+<td class="col-string">0.99655</td>
+</tr>
+<tr>
+<td class="col-int">20</td>
+<td class="col-string">0.00187</td>
+<td class="col-string">0.99841</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+            
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://dax.do/" target="_top" class="sam-click" data-campaign="dax-do" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/daxdo-58090.png" title="Run your DAX code with DAX.do" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/poisson-dist-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/poisson-dist-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

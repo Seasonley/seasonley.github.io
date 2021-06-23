@@ -1,0 +1,245 @@
+
+            <header>
+                <h1 title="DATESMTD"><a href="https://dax.guide/datesmtd/" rel="bookmark">DATESMTD</a> <span class="smaller">DAX Function (Time Intelligence)                    &nbsp;<a href="https://www.sqlbi.com/articles/understanding-context-transition/" class="feature icon icon-rinfo tooltip" data-tooltip-content="#contexttransition">Context Transition</a></span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                         &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns a set of dates in the month up to the last date visible in the filter context.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    DATESMTD ( &lt;Dates&gt; )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Dates                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The name of a column containing dates or a one column table containing dates.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="table-ret">Table</span> A table with a single column.</div></p>                    <p>A table containing a single column of date values.</p>
+                </section>
+            
+                            <!--googleoff: snippet-->
+                <section id="notes" class="notes">
+                    <h2>Notes</h2>
+                    <p>In order to use any time intelligence calculation, you need a well-formed date table. The <i>Date</i> table must satisfy the following requirements:
+<ul>
+<li>All dates need to be present for the years required. The <i>Date</i> table must always start on January 1 and end on December 31, including all the days in this range. If the report only references fiscal years, then the date table must include all the dates from the first to the last day of a fiscal year. For example, if the fiscal year 2008 starts on July 1, 2007, then the <i>Date</i> table must include all the days from July 1, 2007 to June 30, 2008.</li>
+<li>There needs to be a column with a <i>DateTime</i> or <i>Date</i> data type containing unique values. This column is usually called <i>Date</i>. Even though the <i>Date</i> column is often used to define relationships with other tables, this is not required. Still, the <i>Date</i> column must contain unique values and should be referenced by the Mark as Date Table feature. In case the column also contains a time part, no time should be used – for example, the time should always be 12:00 am.</li>
+<li>The <i>Date</i> table must be marked as a date table in the model, in case the relationship between the <i>Date</i> table and any other table is not based on the <i>Date</i>.</li>
+</ul></p>
+                </section>
+                <!--googleon: snippet-->
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>The dates argument can be any of the following:</p>
+<ul>
+<li>A reference to a date/time column. Only in this case a context transition applies because the column reference is replaced by
+<ul>
+<li><a href="https://dax.guide/calculatetable/" class="ajax" data-id="34">CALCULATETABLE</a> ( <a href="https://dax.guide/distinct/" class="ajax" data-id="76">DISTINCT</a> ( &lt;Dates&gt; ) )</li>
+</ul>
+</li>
+<li>A table expression that returns a single column of date/time values.</li>
+<li>A Boolean expression that defines a single-column table of date/time values.</li>
+</ul>
+<p>The result table includes only dates that exist in the dates column.</p>
+<p>The syntax:</p>
+<pre class="brush: dax; gutter: false; title: ; notranslate" title="">
+DATESMTD ( &lt;Dates&gt; ) 
+</pre>
+<p>corresponds to:</p>
+<pre class="brush: dax; gutter: false; title: ; notranslate" title="">
+DATESBETWEEN ( 
+    &lt;Dates&gt;, 
+    STARTOFMONTH ( LASTDATE ( &lt;Dates&gt; ) ),
+    LASTDATE ( &lt;Dates&gt; ) 
+)
+</pre>
+                </section>
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 1 related article</a><br>
+                                                    <a href="#alt" class="sliding">&raquo; 2 related functions</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/bYHHNGKAnwmL8L/; notranslate" title="">
+--  DATESMTD returns the dates from the first day of the currently selected
+--  month to the last date visible in the filter context.
+EVALUATE
+CALCULATETABLE (
+    DATESMTD ( 'Date'&#91;Date] ),
+    'Date'&#91;Date] = DATE ( 2007, 5, 6 )
+)
+ORDER BY &#91;Date] ASC
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Date">Date</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-date">2007-05-01</td>
+</tr>
+<tr>
+<td class="col-date">2007-05-02</td>
+</tr>
+<tr>
+<td class="col-date">2007-05-03</td>
+</tr>
+<tr>
+<td class="col-date">2007-05-04</td>
+</tr>
+<tr>
+<td class="col-date">2007-05-05</td>
+</tr>
+<tr>
+<td class="col-date">2007-05-06</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/LnuSKPYxYRTytL/; notranslate" title="">
+--  If the selection contains larger periods, it returns the MTD using
+--  the end of the entire period.
+--  The result is always a single-row table.
+EVALUATE
+    CALCULATETABLE ( 
+        DATESMTD ( 'Date'&#91;Date] ),
+        'Date'&#91;Date] &gt;= DATE ( 2007, 2, 5 ) 
+            &amp;&amp; 'Date'&#91;Date] &lt;= DATE ( 2007, 5, 6 ) 
+    )
+ORDER BY &#91;Date] ASC
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Date">Date</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-date">2007-05-01</td>
+</tr>
+<tr>
+<td class="col-date">2007-05-02</td>
+</tr>
+<tr>
+<td class="col-date">2007-05-03</td>
+</tr>
+<tr>
+<td class="col-date">2007-05-04</td>
+</tr>
+<tr>
+<td class="col-date">2007-05-05</td>
+</tr>
+<tr>
+<td class="col-date">2007-05-06</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/7YCrpV5oDNJjRn/; notranslate" title="">
+--  All time intelligence function are designed to return a table
+--  to be easily used in CALCULATE as a filter.
+EVALUATE
+{
+    CALCULATE (
+        CALCULATE (
+            &#91;Sales Amount],
+            DATESMTD ( 'Date'&#91;Date] )       -- 2007-05-01 : 2007-05-06
+        ),
+        'Date'&#91;Date] = DATE ( 2007, 5, 6 )
+    )
+}
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Value">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-float">90,580.47</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about DATESMTD in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/time-intelligence-in-power-bi-desktop/"  class="low-key"><strong>Time Intelligence in Power BI Desktop</strong></a>
+                                <p>In Power BI Desktop (as of February 2016) you have to use DAX to apply calculations over dates (such as year-to-date, year-over-year, and others), but you do not have the Mark as Date Table feature. This article describes which scenarios are impacted and the possible workarounds. <a href="https://www.sqlbi.com/articles/time-intelligence-in-power-bi-desktop/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/datesqtd/" class="ajax" data-id="70">DATESQTD</a></li>
+                                                    <li><a href="https://dax.guide/datesytd/" class="ajax" data-id="71">DATESYTD</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/dax-patterns/?aff=daxp-promo" target="_top" class="sam-click" data-campaign="dax-patterns-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/daxp-58090.png" title="DAX Patterns" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/datesmtd-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/datesmtd-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DAX HELPER</title>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./shCore.css">
+    <link rel="stylesheet" href="./shThemeDefault.css">
+</head>
+<body>
+    <input type="checkbox" checked onclick="localStorage.setItem('dax-checked','');location.reload()"/><input type="search" name="" id="searchInput" placeholder="function name" autofocus>
+    <nav id="nav"></nav>
+    <dialog id="fnDialog"></dialog>
+    <script>
+        
+        function ckboxChangeHandler(e){
+            console.log(e.target.checked)
+            let cklist=new Set((localStorage.getItem('dax-checked')||'').split(','));
+            cklist[e.target.checked?'add':'delete'](e.target.dataset.id);
+            localStorage.setItem('dax-checked',[...cklist].toString())
+        }
+        let fnDialog=document.getElementById('fnDialog');
+        // fnlist
+        fetch('./dax/function.json').then(v=>v.json()).then(arr=>window.daxfns=arr).then(checkFnDialog)
+        // nav
+        fetch('./dax/nav.html').then(v=>v.text())
+        .then(res=>{document.getElementById('nav').innerHTML=res.replace(/https:\/\/dax.guide/g,'#')})
+        .then(()=>{
+            let cklist=new Set((localStorage.getItem('dax-checked')||'').split(','));
+            document.querySelectorAll('.menu-item').forEach((v)=>{
+                let ckbox=document.createElement('input');
+                ckbox.type='checkbox'
+                ckbox.dataset.id=v.dataset.id
+                ckbox.checked=cklist.has(v.dataset.id)
+                ckbox.onchange=ckboxChangeHandler
+                v.insertBefore(ckbox,v.children[0])
+                v.setAttribute('translate','no')
+            })
+        })
+        function checkFnDialog() {
+            let fnName=location.hash.slice(2,-1);
+            if((daxfns||[]).indexOf(fnName)!==-1){
+                fetch('./dax/functions/'+fnName+'.html').then(v=>v.text())
+                .then((str)=>{
+                    let fnDialog=document.getElementById('fnDialog');
+                    fnDialog.close();
+                    fnDialog.innerHTML=str.replace(/https:\/\/dax.guide/g,'#');
+                    fnDialog.querySelectorAll('.ajax,h1,.notation,.dax-do-results,.parameter-name,.attributes').forEach((v)=>{
+                        v.setAttribute('translate','no')
+                    })
+                    fnDialog.scrollTop=0;
+                    fnDialog.showModal();
+            }).then(()=>{
+                SyntaxHighlighter.highlight();
+                fnDialog.innerHTML+='<div id="fnDialogClose" onclick="this.parentNode.close();location.hash=\'\'">×</div>'
+            })
+            }
+        }
+        window.addEventListener('hashchange', checkFnDialog, false);
+    </script>
+    <script type='text/javascript' src='./shCore.js?ver=3.0.9b' id='syntaxhighlighter-core-js'></script>
+    <script type='text/javascript' src='./shbrushdax.js?ver=4270' id='syntaxhighlighter-brush-dax-js'></script>
+    <script>SyntaxHighlighter.highlight();</script>
+</body>
+</html>

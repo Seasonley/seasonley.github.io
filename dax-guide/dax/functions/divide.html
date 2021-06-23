@@ -1,0 +1,177 @@
+
+            <header>
+                <h1 title="DIVIDE"><a href="https://dax.guide/divide/" rel="bookmark">DIVIDE</a> <span class="smaller">DAX Function (Math and Trig)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                         &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Safe Divide function with ability to handle divide by zero case.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    DIVIDE ( &lt;Numerator&gt;, &lt;Denominator&gt; [, &lt;AlternateResult&gt;] )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Numerator                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>Numerator.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Denominator                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>Denominator.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        AlternateResult                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Optional<br></td>
+                                    <td class="definition">
+                                        <p>Optional. The alternate result to return when dividing by zero.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single <a href="https://dax.guide/dt/decimal/" class="ajax" data-id="258">decimal</a> value.</div></p>                    <p>Result of the division between Numerator and Denominator, or AlternateResult in case there is a division by zero.</p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>Alternate result on divide by 0 must be a constant. By default, the AlternateResult argument is <a href="https://dax.guide/blank/" class="ajax" data-id="32">BLANK</a>.<br />
+DIVIDE is faster than an <a href="https://dax.guide/if/" class="ajax" data-id="111">IF</a> statement checking whether the denominator is zero. However, DIVIDE is executed in the formula engine and it is not as fast as a native division.</p>
+                </section>
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 2 related articles</a><br>
+                                                    <a href="#alt" class="sliding">&raquo; 2 related functions</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/n4o9bCzXJ4MQYE/; notranslate" title="">
+--  DIVIDE performs safe division protecting from division by
+--  zero. In case of zero denominator, it returns its third 
+--  argument that defaults to a blank.
+DEFINE
+    MEASURE Sales&#91;Unprotected Growth %] = 
+        VAR CY = &#91;Sales Amount]
+        VAR PY = CALCULATE ( &#91;Sales Amount], SAMEPERIODLASTYEAR( 'Date'&#91;Date] ) )
+        RETURN (CY - PY) / PY
+    MEASURE Sales&#91;Protected Growth %] = 
+        VAR CY = &#91;Sales Amount]
+        VAR PY = CALCULATE ( &#91;Sales Amount], SAMEPERIODLASTYEAR( 'Date'&#91;Date] ) )
+        RETURN DIVIDE ( CY - PY, PY, BLANK () )
+EVALUATE
+SUMMARIZECOLUMNS ( 
+    'Date'&#91;Calendar Year],
+    &quot;Unprotected Growth %&quot;, &#91;Unprotected Growth %],
+    &quot;Protected Growth %&quot;,   &#91;Protected Growth %]
+)
+
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Calendar Year">Calendar Year</th>
+<th title="Unprotected Growth %">Unprotected Growth %</th>
+<th title="Protected Growth %">Protected Growth %</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-date">2007-01-01</td>
+<td class="col-string">Infinity</td>
+<td class="col-percent blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-date">2008-01-01</td>
+<td class="col-string">-0.12222543928588246</td>
+<td class="col-percent">-12.22%</td>
+</tr>
+<tr>
+<td class="col-date">2009-01-01</td>
+<td class="col-string">-0.057795348753533114</td>
+<td class="col-percent">-5.78%</td>
+</tr>
+<tr>
+<td class="col-date">2010-01-01</td>
+<td class="col-string">-1</td>
+<td class="col-percent">-100.00%</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about DIVIDE in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/divide-performance/"  class="low-key"><strong>DIVIDE Performance</strong></a>
+                                <p>The DIVIDE function in DAX is usually faster to avoid division-by-zero errors than the simple division operator. However, there are exceptions to this rule, described in this article through a simple performance analysis. <a href="https://www.sqlbi.com/articles/divide-performance/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/from-sql-to-dax-implementing-nullif-and-coalesce-in-dax/"  class="low-key"><strong>From SQL to DAX: Implementing NULLIF and COALESCE in DAX</strong></a>
+                                <p>This article describes how to implement a syntax equivalent to the T-SQL function NULLIF and the ANSI SQL function COALESCE, in DAX. <a href="https://www.sqlbi.com/articles/from-sql-to-dax-implementing-nullif-and-coalesce-in-dax/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/quotient/" class="ajax" data-id="183">QUOTIENT</a></li>
+                                                    <li><a href="https://dax.guide/iferror/" class="ajax" data-id="112">IFERROR</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://dax.do/" target="_top" class="sam-click" data-campaign="dax-do" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/daxdo-58090.png" title="Run your DAX code with DAX.do" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/divide-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/divide-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

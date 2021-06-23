@@ -1,0 +1,172 @@
+
+            <header>
+                <h1 title="PERMUT"><a href="https://dax.guide/permut/" rel="bookmark">PERMUT</a> <span class="smaller">DAX Function (Statistical)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                                                                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns the number of permutations for a given number of objects that can be selected from number objects. A permutation is any set or subset of objects or events where internal order is significant. Permutations are different from combinations, for which the internal order is not significant. Use this function for lottery-style probability calculations.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    PERMUT ( &lt;Number&gt;, &lt;Number_chosen&gt; )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Number                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>An integer that describes the number of objects.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Number_chosen                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>An integer that describes the number of objects in each permutation.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single <a href="https://dax.guide/dt/decimal/" class="ajax" data-id="258">decimal</a> value.</div></p>                    <p>Returns the number of permutations for a given number of objects that can be selected from number objects.</p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>Both arguments are truncated to integers.</p>
+<p>If Number or Number_chosen is nonnumeric, PERMUT returns the #<a href="https://dax.guide/value/" class="ajax" data-id="247">VALUE</a>! error value.</p>
+<p>If Number &lt;= 0 or if number_chosen &lt; 0, PERMUT returns the #NUM! error value.</p>
+<p>If Number &lt; number_chosen, PERMUT returns the #NUM! error value.</p>
+<p>The equation for the number of permutations is: P( k ,n ) = n! / ( n &#8211; k)!</p>
+                </section>
+            
+            
+                                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/5sXwQ3kCNU5aI9/; notranslate" title="">
+--  PERMUT returns the number of permutations for a given
+--  number of items selected from a number of objects.
+--  A permutation is any set or subset of objects where the
+--  internal order is relevant.
+--
+--  Use COMBIN for the number of combinations, 
+--  where the internal order is not relevant.
+--
+--  PERMUT implements this calculation:
+--  P(k,n) = n! / (n-k)!
+--
+--  For example, consider 3 elements ( A, B, C )
+--  PERMUT ( 3, 2 ) returns 6 counting:
+--       ( A, B )
+--       ( B, A )
+--       ( B, C )
+--       ( C, B )
+--       ( A, C )
+--       ( C, A )
+EVALUATE 
+{
+    ( &quot;PERMUT ( 2, 1 )&quot;, PERMUT ( 2, 1 ) ),
+    ( &quot;PERMUT ( 2, 2 )&quot;, PERMUT ( 2, 2 ) ),
+    ( &quot;PERMUT ( 3, 1 )&quot;, PERMUT ( 3, 1 ) ),
+    ( &quot;PERMUT ( 3, 2 )&quot;, PERMUT ( 3, 2 ) ),
+    ( &quot;PERMUT ( 3, 3 )&quot;, PERMUT ( 3, 3 ) ),
+    ( &quot;PERMUT ( 4, 1 )&quot;, PERMUT ( 4, 1 ) ),
+    ( &quot;PERMUT ( 4, 2 )&quot;, PERMUT ( 4, 2 ) ),
+    ( &quot;PERMUT ( 4, 3 )&quot;, PERMUT ( 4, 3 ) ),
+    ( &quot;PERMUT ( 4, 4 )&quot;, PERMUT ( 4, 4 ) )
+}
+
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Value1">Value1</th>
+<th title="Value2">Value2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">PERMUT ( 2, 1 )</td>
+<td class="col-int">2</td>
+</tr>
+<tr>
+<td class="col-string">PERMUT ( 2, 2 )</td>
+<td class="col-int">2</td>
+</tr>
+<tr>
+<td class="col-string">PERMUT ( 3, 1 )</td>
+<td class="col-int">3</td>
+</tr>
+<tr>
+<td class="col-string">PERMUT ( 3, 2 )</td>
+<td class="col-int">6</td>
+</tr>
+<tr>
+<td class="col-string">PERMUT ( 3, 3 )</td>
+<td class="col-int">6</td>
+</tr>
+<tr>
+<td class="col-string">PERMUT ( 4, 1 )</td>
+<td class="col-int">4</td>
+</tr>
+<tr>
+<td class="col-string">PERMUT ( 4, 2 )</td>
+<td class="col-int">12</td>
+</tr>
+<tr>
+<td class="col-string">PERMUT ( 4, 3 )</td>
+<td class="col-int">24</td>
+</tr>
+<tr>
+<td class="col-string">PERMUT ( 4, 4 )</td>
+<td class="col-int">24</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+            
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/optimizing-dax-video-course/?aff=odax-promo" target="_top" class="sam-click" data-campaign="odax-video-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/odax-58090.png" title="Optimizing DAX" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/permut-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/permut-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

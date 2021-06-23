@@ -1,0 +1,346 @@
+
+            <header>
+                <h1 title="CONTAINSROW"><a href="https://dax.guide/containsrow/" rel="bookmark">CONTAINSROW</a> <span class="smaller">DAX Function (Information)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                                            </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns TRUE if there exists at least one row where all columns have specified values.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    CONTAINSROW ( &lt;Table&gt;, &lt;Value&gt; [, &lt;Value&gt; [, … ] ] )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Table                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The table to test.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Value                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Repeatable<br></td>
+                                    <td class="definition">
+                                        <p>A scalar expression to look for in the corresponding column.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single <a href="https://dax.guide/dt/boolean/" class="ajax" data-id="264">boolean</a> value.</div></p>                    <p>A value of TRUE if a row of values exists in a table; otherwise, the function returns FALSE.</p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>The IN operator internally executes CONTAINSROW.</p>
+<p>The number of scalarExprN must match the number of columns in tableExpr.</p>
+<p>Unlike the = operator, the IN operator and the CONTAINSROW function perform strict comparison. For example, the <a href="https://dax.guide/blank/" class="ajax" data-id="32">BLANK</a> value does not match 0.</p>
+<p>NOT IN is not an operator in DAX. To perform the logical negation of the IN operator, put NOT in front of the entire expression. For example:</p>
+<pre class="brush: dax; gutter: false; title: ; notranslate" title="">
+NOT &#91;Color] IN { &quot;Red&quot;, &quot;Yellow&quot;, &quot;Blue&quot; }
+</pre>
+<p>The following expressions are equivalent:</p>
+<pre class="brush: dax; title: ; notranslate" title="">
+Product&#91;Color] IN { &quot;Red&quot;, &quot;Blue&quot;, &quot;Yellow&quot; }
+CONTAINSROW ( { &quot;Red&quot;, &quot;Blue&quot;, &quot;Yellow&quot; }, Product&#91;Color] )
+</pre>
+<p>The following expressions using two columns are equivalent:</p>
+<pre class="brush: dax; title: ; notranslate" title="">
+( 'Date'&#91;Year], 'Date'&#91;MonthNumber] ) IN { ( 2018, 12 ), ( 2019, 1 ) }
+CONTAINSROW ( { ( 2018, 12 ), ( 2019, 1 ) }, 'Date'&#91;Year], 'Date'&#91;MonthNumber] )
+</pre>
+                </section>
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 1 related article</a><br>
+                                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/xdvjmaBxzD7sFy/; notranslate" title="">
+--  CONTAINSROW requires to specify one value  
+--  for each column of the lookup table.
+DEFINE MEASURE Sales&#91;Customers without stores] = 
+    COUNTROWS (
+        FILTER (
+            Customer,
+            NOT CONTAINSROW (
+                SUMMARIZE ( Store, Store&#91;CountryRegion], Store&#91;City] ),
+                Customer&#91;CountryRegion],
+                Customer&#91;City]
+            )
+        )
+    )
+EVALUATE
+SUMMARIZECOLUMNS (
+    Customer&#91;CountryRegion],
+    &quot;Customers&quot;, COUNTROWS ( Customer ),
+    &quot;Customers without stores&quot;, &#91;Customers without stores]
+)
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="CountryRegion">CountryRegion</th>
+<th title="Customers">Customers</th>
+<th title="Customers without stores">Customers without stores</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Australia</td>
+<td class="col-int">3,631</td>
+<td class="col-int">3,524</td>
+</tr>
+<tr>
+<td class="col-string">United States</td>
+<td class="col-int">8,086</td>
+<td class="col-int">7,362</td>
+</tr>
+<tr>
+<td class="col-string">Canada</td>
+<td class="col-int">1,579</td>
+<td class="col-int">1,381</td>
+</tr>
+<tr>
+<td class="col-string">Germany</td>
+<td class="col-int">1,791</td>
+<td class="col-int">1,668</td>
+</tr>
+<tr>
+<td class="col-string">United Kingdom</td>
+<td class="col-int">1,931</td>
+<td class="col-int">1,271</td>
+</tr>
+<tr>
+<td class="col-string">France</td>
+<td class="col-int">1,814</td>
+<td class="col-int">1,426</td>
+</tr>
+<tr>
+<td class="col-string">the Netherlands</td>
+<td class="col-int">1</td>
+<td class="col-int blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Greece</td>
+<td class="col-int">1</td>
+<td class="col-int blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Switzerland</td>
+<td class="col-int">1</td>
+<td class="col-int blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Ireland</td>
+<td class="col-int">1</td>
+<td class="col-int blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Portugal</td>
+<td class="col-int">1</td>
+<td class="col-int blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Spain</td>
+<td class="col-int">1</td>
+<td class="col-int blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Italy</td>
+<td class="col-int">1</td>
+<td class="col-int blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Russia</td>
+<td class="col-int">2</td>
+<td class="col-int blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Poland</td>
+<td class="col-int">1</td>
+<td class="col-int blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Turkmenistan</td>
+<td class="col-int">1</td>
+<td class="col-int blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Thailand</td>
+<td class="col-int">1</td>
+<td class="col-int blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">China</td>
+<td class="col-int">5</td>
+<td class="col-int blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Kyrgyzstan</td>
+<td class="col-int">1</td>
+<td class="col-int blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">South Korea</td>
+<td class="col-int">2</td>
+<td class="col-int blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Syria</td>
+<td class="col-int">1</td>
+<td class="col-int blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Pakistan</td>
+<td class="col-int">1</td>
+<td class="col-int blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">India</td>
+<td class="col-int">3</td>
+<td class="col-int blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Japan</td>
+<td class="col-int">7</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Singapore</td>
+<td class="col-int">1</td>
+<td class="col-int blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Taiwan</td>
+<td class="col-int">1</td>
+<td class="col-int blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Iran</td>
+<td class="col-int">1</td>
+<td class="col-int blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Bhutan</td>
+<td class="col-int">1</td>
+<td class="col-int blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Armenia</td>
+<td class="col-int">1</td>
+<td class="col-int blank">(Blank)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/L3w0XAD25DFBne/; notranslate" title="">
+--  Internally, the IN operator invokes a corresponding
+--  CONTAINSROW filter.
+--  The CONTAINSROW function has as many arguments after the
+--  first one as the number of column in each row of the table
+--  passed in the first argument. Only IN uses the tuples syntax
+EVALUATE
+{
+     ( 1, &quot;IN&quot;, COUNTROWS (
+        FILTER (
+            Customer,
+             ( Customer&#91;City], Customer&#91;State] )
+                IN { ( &quot;New York&quot;, &quot;New York&quot; ), ( &quot;Columbus&quot;, &quot;Ohio&quot; ) }
+        )
+    ) ),
+     ( 2, &quot;CONTAINSROW&quot;, COUNTROWS (
+        FILTER (
+            Customer,
+            CONTAINSROW (
+                { ( &quot;New York&quot;, &quot;New York&quot; ), ( &quot;Columbus&quot;, &quot;Ohio&quot; ) },
+                Customer&#91;City],
+                Customer&#91;State]
+            )
+        )
+    ) )
+}
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Value1">Value1</th>
+<th title="Value2">Value2</th>
+<th title="Value3">Value3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-int">1</td>
+<td class="col-string">IN</td>
+<td class="col-int">2</td>
+</tr>
+<tr>
+<td class="col-int">2</td>
+<td class="col-string">CONTAINSROW</td>
+<td class="col-int">2</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about CONTAINSROW in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/the-in-operator-in-dax/"  class="low-key"><strong>The IN operator in DAX</strong></a>
+                                <p>This article describes the IN operator in DAX, which simplifies logical conditions checking whether a certain value is included in a list of values or expressions. <a href="https://www.sqlbi.com/articles/the-in-operator-in-dax/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/mastering-dax-video-course/?aff=mdax-promo" target="_top" class="sam-click" data-campaign="mdax-video-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/mdax-58090.jpg" title="Mastering DAX Video Course" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/containsrow-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/containsrow-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

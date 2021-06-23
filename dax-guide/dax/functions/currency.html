@@ -1,0 +1,142 @@
+
+            <header>
+                <h1 title="CURRENCY"><a href="https://dax.guide/currency/" rel="bookmark">CURRENCY</a> <span class="smaller">DAX Function (Math and Trig)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                         &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns the value as a currency data type.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    CURRENCY ( &lt;Value&gt; )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Value                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>A scalar expression to be converted to currency data type.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single <a href="https://dax.guide/dt/currency/" class="ajax" data-id="259">currency</a> value.</div></p>                    <p>The value of the expression evaluated and returned as a currency type value.</p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>The CURRENCY function rounds up the 5th significant decimal, in value, to return the 4th decimal digit; rounding up occurs if the 5th significant decimal is equal or larger than 5. For example, if value is 3.6666666666666 then converting to currency returns $3.6667; however, if value is 3.0123456789 then converting to currency returns $3.0123.</p>
+<p>If the data type of the expression is TrueFalse then CURRENCY( ) will return $1.0000 for True values and $0.0000 for False values.</p>
+<p>If the data type of the expression is Text then CURRENCY() will try to convert text to a number; if conversion succeeds the number will be converted to currency, otherwise an error is returned.</p>
+<p>If the data type of the expression is DateTime then CURRENCY() will convert the datetime value to a number and that number to currency. DateTime values have an integer part that represents the number of days between the given date and 1900-03-01 and a fraction that represents the fraction of a day (where 12 hours or noon is 0.5 day). If the value of the expression is not a proper DateTime value an error is returned</p>
+                </section>
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 1 related article</a><br>
+                                                    <a href="#alt" class="sliding">&raquo; 1 related function</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/AcVvvj4RxPpDLa/; notranslate" title="">
+--  CURRENCY converts any expression in a CURRENCY datatype
+--  The Currency data type is called Fixed Decimal Number in Power BI
+--  This data type stores 4 digits after the decimal point
+EVALUATE 
+    {
+        ( &quot;Currency 1&quot;, FORMAT ( CURRENCY ( 10 ), &quot;#.00000&quot; ) ),
+        ( &quot;Currency 2&quot;, FORMAT ( CURRENCY ( TRUE ), &quot;#.00000&quot; ) ),
+        ( &quot;Currency 3&quot;, FORMAT ( CURRENCY ( &quot;1950.00&quot; ), &quot;#.00000&quot; ) ),
+        ( &quot;Currency 4&quot;, FORMAT ( CURRENCY ( 190.29876 ), &quot;#.00000&quot; ) )
+    }
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Value1">Value1</th>
+<th title="Value2">Value2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-date">2001-01-01</td>
+<td class="col-string">10.00000</td>
+</tr>
+<tr>
+<td class="col-date">2001-02-01</td>
+<td class="col-string">1.00000</td>
+</tr>
+<tr>
+<td class="col-date">2001-03-01</td>
+<td class="col-string">1950.00000</td>
+</tr>
+<tr>
+<td class="col-date">2001-04-01</td>
+<td class="col-string">190.29880</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about CURRENCY in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/understanding-numeric-data-type-conversions-in-dax/"  class="low-key"><strong>Understanding numeric data type conversions in DAX</strong></a>
+                                <p>This article describes how DAX automatically converts data types in arithmetic operations. These small details can cause and explain differences in results when using the same operations in other languages. <a href="https://www.sqlbi.com/articles/understanding-numeric-data-type-conversions-in-dax/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/int/" class="ajax" data-id="114">INT</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/mastering-dax-video-course/?aff=mdax-promo" target="_top" class="sam-click" data-campaign="mdax-video-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/mdax-58090.jpg" title="Mastering DAX Video Course" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/currency-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/currency-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

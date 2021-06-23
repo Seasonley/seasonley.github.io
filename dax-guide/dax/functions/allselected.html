@@ -1,0 +1,220 @@
+
+            <header>
+                <h1 title="ALLSELECTED"><a href="https://dax.guide/allselected/" rel="bookmark">ALLSELECTED</a> <span class="smaller">DAX Function (Filter)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                         &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns all the rows in a table, or all the values in a column, ignoring any filters that might have been applied inside the query, but keeping filters that come from outside.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    ALLSELECTED (  [&lt;TableNameOrColumnName&gt;] [, &lt;ColumnName&gt; [, &lt;ColumnName&gt; [, … ] ] ] )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        TableNameOrColumnName                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Optional<br></td>
+                                    <td class="definition">
+                                        <p>Remove all filters on the specified table or column applied within the query.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        ColumnName                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Optional<br>Repeatable<br></td>
+                                    <td class="definition">
+                                        <p>A column in the same base table.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="table-ret">Table</span> An entire table or a table with one or more columns.</div></p>                                    </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>This function removes the corresponding filters from the filter context, restoring the last shadow filter context. It does not materialize the resulting table when called directly in a filter argument of <a href="https://dax.guide/calculate/" class="ajax" data-id="33">CALCULATE</a> or <a href="https://dax.guide/calculatetable/" class="ajax" data-id="34">CALCULATETABLE</a> .</p>
+<p>ALLSELECTED can be used as a table expression when it has at least one argument.<br />
+ALLSELECTED without arguments can be used only as a <a href="https://dax.guide/calculate/" class="ajax" data-id="33">CALCULATE</a> or <a href="https://dax.guide/calculatetable/" class="ajax" data-id="34">CALCULATETABLE</a> modifier and removes all the filters from the filter context.</p>
+<p>ALLSELECTED supports multiple columns as argument since May 2019.<br />
+In former versions this syntax is equivalent of ALLSELECTED ( table[column1], table[column2] ):</p>
+<pre class="brush: dax; title: ; notranslate" title="">
+SUMMARIZE (
+    ALLSELECTED ( table ),
+    table&#91;column1],
+    tabls&#91;column2]
+)
+</pre>
+                </section>
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 4 related articles</a><br>
+                                                    <a href="#alt" class="sliding">&raquo; 3 related functions</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <p>ALLSELECTED is tipically used as a <a href="https://dax.guide/calculate/" class="ajax" data-id="33">CALCULATE</a> modifier.</p>
+<pre class="brush: dax; title: ; notranslate" title="">
+CALCULATE ( ..., ALLSELECTED () )
+CALCULATE ( ..., ALLSELECTED ( table ) )
+CALCULATE ( ..., ALLSELECTED ( table&#91;column] ) )
+</pre>
+<p>ALLSELECTED can be used as a table function, even though it is not a best practice.</p>
+<pre class="brush: dax; title: ; try: https://dax.do/cFhymVYH9hdI2r/; notranslate" title="">
+EVALUATE
+CALCULATETABLE (
+    { COUNTROWS ( ALLSELECTED ( Product ) ) },
+    Product&#91;Category] = &quot;Audio&quot;
+)
+</pre>
+<p>Be aware that using ALLSELECTED in an iterator could produce unintuitive results.</p>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/5WNE3AvJ3rsRDS/; notranslate" title="">
+EVALUATE
+CALCULATETABLE (
+    ADDCOLUMNS (
+        ALL ( 'Product'&#91;Category] ),
+        &quot;Sales Amount&quot;, &#91;Sales Amount],
+        &quot;Sales Sel&quot;,
+            CALCULATE (
+                &#91;Sales Amount],
+                ALLSELECTED ( Product&#91;Category] )
+            )
+    ),
+    Product&#91;Category] IN { &quot;Audio&quot;, &quot;Computer&quot; }
+)
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Product[Category]">Product[Category]</th>
+<th title="Sales Amount">Sales Amount</th>
+<th title="Sales Sel">Sales Sel</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Audio</td>
+<td class="col-float">384,518.16</td>
+<td class="col-float">30,591,343.98</td>
+</tr>
+<tr>
+<td class="col-string">TV and Video</td>
+<td class="col-float">4,392,768.29</td>
+<td class="col-float">30,591,343.98</td>
+</tr>
+<tr>
+<td class="col-string">Computers</td>
+<td class="col-float">6,741,548.73</td>
+<td class="col-float">30,591,343.98</td>
+</tr>
+<tr>
+<td class="col-string">Cameras and camcorders</td>
+<td class="col-float">7,192,581.95</td>
+<td class="col-float">30,591,343.98</td>
+</tr>
+<tr>
+<td class="col-string">Cell phones</td>
+<td class="col-float">1,604,610.26</td>
+<td class="col-float">30,591,343.98</td>
+</tr>
+<tr>
+<td class="col-string">Music, Movies and Audio Books</td>
+<td class="col-float">314,206.74</td>
+<td class="col-float">30,591,343.98</td>
+</tr>
+<tr>
+<td class="col-string">Games and Toys</td>
+<td class="col-float">360,652.81</td>
+<td class="col-float">30,591,343.98</td>
+</tr>
+<tr>
+<td class="col-string">Home Appliances</td>
+<td class="col-float">9,600,457.04</td>
+<td class="col-float">30,591,343.98</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about ALLSELECTED in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/the-definitive-guide-to-allselected/"  class="low-key"><strong>The definitive guide to ALLSELECTED</strong></a>
+                                <p>ALLSELECTED is a powerful function that can hide several traps. This article is an in-depth analysis of the behavior of ALLSELECTED, explaining shadow filter contexts, what they are and how they are used by ALLSELECTED. <a href="https://www.sqlbi.com/articles/the-definitive-guide-to-allselected/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/managing-all-functions-in-dax-all-allselected-allnoblankrow-allexcept/"  class="low-key"><strong>Managing “all” functions in DAX: ALL, ALLSELECTED, ALLNOBLANKROW, ALLEXCEPT</strong></a>
+                                <p>This article provides a complete explanation of the behavior of the ALLxxx functions in DAX. When used as filters in CALCULATE, ALLxxx functions might display unexpected behaviors. <a href="https://www.sqlbi.com/articles/managing-all-functions-in-dax-all-allselected-allnoblankrow-allexcept/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/computing-same-product-sales-in-dax/"  class="low-key"><strong>Computing same product sales in DAX</strong></a>
+                                <p>This article shows a technique in DAX to compute the sales volume of products that were available right from the beginning of a selected time period, ignoring products introduced afterwards. <a href="https://www.sqlbi.com/articles/computing-same-product-sales-in-dax/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/filtering-the-top-3-products-for-each-category-in-power-bi/"  class="low-key"><strong>Filtering the Top 3 products for each category in Power BI</strong></a>
+                                <p>This article describes different techniques to display the first three products for each category in Power BI. It includes considerations on how to adapt the technique to different models and requirements. <a href="https://www.sqlbi.com/articles/filtering-the-top-3-products-for-each-category-in-power-bi/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/all/" class="ajax" data-id="20">ALL</a></li>
+                                                    <li><a href="https://dax.guide/allexcept/" class="ajax" data-id="21">ALLEXCEPT</a></li>
+                                                    <li><a href="https://dax.guide/allnoblankrow/" class="ajax" data-id="22">ALLNOBLANKROW</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/dax-tools/?aff=tools-promo" target="_top" class="sam-click" data-campaign="dax-tools-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/tools-58090.png" title="DAX Tools Video Course" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/allselected-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/allselected-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

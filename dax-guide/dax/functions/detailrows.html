@@ -1,0 +1,238 @@
+
+            <header>
+                <h1 title="DETAILROWS"><a href="https://dax.guide/detailrows/" rel="bookmark">DETAILROWS</a> <span class="smaller">DAX Function (Table manipulation)                    &nbsp;<a href="https://www.sqlbi.com/articles/understanding-context-transition/" class="feature icon icon-rinfo tooltip" data-tooltip-content="#contexttransition">Context Transition</a></span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                                            </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns the table data corresponding to the DetailRows expression defined on the specified Measure. If a DetailRows expression is not defined then the entire table to which the Measure belongs is returned.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    DETAILROWS ( &lt;Measure&gt; )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Measure                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>A Measure reference whose DetailRows expression is to be evaluated.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="table-ret">Table</span> An entire table or a table with one or more columns.</div></p>                                    </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p><strong>IMPORTANT</strong> : DETAILROWS should perform a context transition, but in SSAS 2017 it does not do that. The behavior by design is to perform a context transition, and this should be fixed in upcoming hotfix or service packs. As a workaround, if called in a row context, it should be wrapped in a <a href="https://dax.guide/calculatetable/" class="ajax" data-id="34">CALCULATETABLE</a> statement. Do not use in a row context if the intended behavior should not execute the context transition &#8211; assign the result of DETAILROWS in a variable before the iterator in that case.</p>
+                </section>
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 2 related articles</a><br>
+                                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <p>Consider the following Detail Rows Expression in the Sales Amount measure:</p>
+<pre class="brush: dax; title: ; notranslate" title="">
+SELECTCOLUMNS (
+    Sales,
+    &quot;Order Number&quot;, Sales&#91;Order Number],
+    &quot;Order Line Number&quot;, Sales&#91;Order Line Number],
+    &quot;Customer&quot;, RELATED ( Customer&#91;Name] ),
+    &quot;Product&quot;, RELATED ( 'Product'&#91;Product Name] ),
+    &quot;Quantity&quot;, Sales&#91;Quantity],
+    &quot;Line Amount&quot;, Sales&#91;Quantity] * Sales&#91;Net Price]
+)
+</pre>
+<p>DETAILSROWS invokes the Detail Rows Expression for the corresponding measure in the same filter context.</p>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/pRBYbUp8oAMArH/; notranslate" title="">
+-- Show DETAILROWS for transactions made in one day 
+EVALUATE
+CALCULATETABLE (
+    DETAILROWS ( &#91;Sales Amount] ),
+    'Date'&#91;Date] = DATE ( 2007, 9, 19 ),
+    Customer&#91;Customer Type] = &quot;Person&quot;
+)
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Order Number">Order Number</th>
+<th title="Order Line Number">Order Line Number</th>
+<th title="Customer">Customer</th>
+<th title="Product">Product</th>
+<th title="Quantity">Quantity</th>
+<th title="Line Amount">Line Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">20070919123935</td>
+<td class="col-key">1</td>
+<td class="col-string">Barnes, Alexis</td>
+<td class="col-string">Contoso 512MB MP3 Player E51 Blue</td>
+<td class="col-int">1</td>
+<td class="col-float">11.69</td>
+</tr>
+<tr>
+<td class="col-string">20070919123937</td>
+<td class="col-key">1</td>
+<td class="col-string">Ruiz, Eddie</td>
+<td class="col-string">Contoso 512MB MP3 Player E51 Blue</td>
+<td class="col-int">1</td>
+<td class="col-float">11.69</td>
+</tr>
+<tr>
+<td class="col-string">20070919123941</td>
+<td class="col-key">1</td>
+<td class="col-string">Anderson, Eduardo</td>
+<td class="col-string">Contoso 512MB MP3 Player E51 Blue</td>
+<td class="col-int">1</td>
+<td class="col-float">11.69</td>
+</tr>
+<tr>
+<td class="col-string">20070919427828</td>
+<td class="col-key">1</td>
+<td class="col-string">Gao, Ernest</td>
+<td class="col-string">Fabrikam Social Videographer 2/3&#8221; 17mm E100 Grey</td>
+<td class="col-int">1</td>
+<td class="col-float">144.00</td>
+</tr>
+<tr>
+<td class="col-string">20070919712464</td>
+<td class="col-key">1</td>
+<td class="col-string">Cook, Jared</td>
+<td class="col-string">MGS Rise of Nations2009 E152</td>
+<td class="col-int">1</td>
+<td class="col-float">38.70</td>
+</tr>
+<tr>
+<td class="col-string">20070919712465</td>
+<td class="col-key">1</td>
+<td class="col-string">Patel, Cassandra</td>
+<td class="col-string">MGS Rise of Nations2009 E152</td>
+<td class="col-int">1</td>
+<td class="col-float">38.70</td>
+</tr>
+<tr>
+<td class="col-string">20070919712466</td>
+<td class="col-key">1</td>
+<td class="col-string">He, Willie</td>
+<td class="col-string">MGS Rise of Nations2009 E152</td>
+<td class="col-int">1</td>
+<td class="col-float">38.70</td>
+</tr>
+<tr>
+<td class="col-string">20070919712467</td>
+<td class="col-key">1</td>
+<td class="col-string">Jones, Jennifer</td>
+<td class="col-string">MGS Rise of Nations2009 E152</td>
+<td class="col-int">1</td>
+<td class="col-float">38.70</td>
+</tr>
+<tr>
+<td class="col-string">20070919525616</td>
+<td class="col-key">1</td>
+<td class="col-string">Rubio, Jésus</td>
+<td class="col-string">The Phone Company Touch Screen Phones &#8211; CRT M11 Grey</td>
+<td class="col-int">1</td>
+<td class="col-float">170.10</td>
+</tr>
+<tr>
+<td class="col-string">20070919525617</td>
+<td class="col-key">1</td>
+<td class="col-string">Shan, Leonard</td>
+<td class="col-string">The Phone Company Touch Screen Phones &#8211; CRT M11 Grey</td>
+<td class="col-int">1</td>
+<td class="col-float">170.10</td>
+</tr>
+<tr>
+<td class="col-string">20070919525618</td>
+<td class="col-key">1</td>
+<td class="col-string">Hernandez, Albert</td>
+<td class="col-string">The Phone Company Touch Screen Phones &#8211; CRT M11 Grey</td>
+<td class="col-int">1</td>
+<td class="col-float">170.10</td>
+</tr>
+<tr>
+<td class="col-string">20070919123936</td>
+<td class="col-key">1</td>
+<td class="col-string">Vazquez, Monique</td>
+<td class="col-string">Contoso 512MB MP3 Player E51 Blue</td>
+<td class="col-int">4</td>
+<td class="col-float">46.76</td>
+</tr>
+<tr>
+<td class="col-string">20070919525615</td>
+<td class="col-key">1</td>
+<td class="col-string">Hall, Destiny</td>
+<td class="col-string">The Phone Company Touch Screen Phones &#8211; CRT M11 Grey</td>
+<td class="col-int">4</td>
+<td class="col-float">680.40</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about DETAILROWS in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/controlling-drillthrough-using-detail-rows-expressions-in-dax/"  class="low-key"><strong>Controlling drillthrough using Detail Rows Expressions in DAX</strong></a>
+                                <p>The Detail Rows Expression in a Tabular model provides the user with control over the drillthrough results obtained by showing details of a measure. This article describes typical DAX expressions you can use in this property. <a href="https://www.sqlbi.com/articles/controlling-drillthrough-using-detail-rows-expressions-in-dax/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/creating-table-functions-in-dax-using-detailrows/"  class="low-key"><strong>Creating table functions in DAX using DETAILROWS</strong></a>
+                                <p>This article describes how to use the detail rows expression of a measure to obtain the equivalent of creating table functions in DAX. This allows the reusing of a table expression in multiple CALCULATE filters. <a href="https://www.sqlbi.com/articles/creating-table-functions-in-dax-using-detailrows/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/data-modeling-for-power-bi-video-course/?aff=mod-promo" target="_top" class="sam-click" data-campaign="mod-video-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/mod-58090.png" title="Data Modeling for Power BI" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/detailrows-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/detailrows-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

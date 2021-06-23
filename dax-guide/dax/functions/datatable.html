@@ -1,0 +1,225 @@
+
+            <header>
+                <h1 title="DATATABLE"><a href="https://dax.guide/datatable/" rel="bookmark">DATATABLE</a> <span class="smaller">DAX Function (Table manipulation)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                                            </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns a table with data defined inline.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    DATATABLE ( &lt;name&gt;, &lt;type&gt; [, &lt;name&gt;, &lt;type&gt; [, … ] ], &lt;data&gt; )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        name                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Repeatable<br></td>
+                                    <td class="definition">
+                                        <p>A column name to be defined.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        type                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Repeatable<br></td>
+                                    <td class="definition">
+                                        <p>A type name to be associated with the column.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        data                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The data for the table.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="table-ret">Table</span> An entire table or a table with one or more columns.</div></p>                    <p>A table declaring an inline set of values.</p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>Unlike DATATABLE, Table Constructor allows any scalar expressions as input values.</p>
+<p>The syntax used by DATATABLE is different from that used by Table Constructor.</p>
+                </section>
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 2 related articles</a><br>
+                                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/6gakTPhpxbmPVm/; notranslate" title="">
+--  DATATABLE is useful to build constant tables in code.
+--  It requires the list of arguments and the list of rows
+--  to build the table.
+EVALUATE
+DATATABLE (
+    &quot;Name&quot;, STRING,
+    &quot;Ordinal&quot;, INTEGER,
+    {
+        { &quot;Small&quot;,  1 },
+        { &quot;Medium&quot;, 2 },
+        { &quot;Large&quot;,  3 }
+    }
+)
+ORDER BY &#91;Ordinal]
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Name">Name</th>
+<th title="Ordinal">Ordinal</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Small</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Medium</td>
+<td class="col-int">2</td>
+</tr>
+<tr>
+<td class="col-string">Large</td>
+<td class="col-int">3</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Values in the definition of the table cannot be expressions, they need to be constant. The following syntax is not valid and generates an error.</p>
+<pre class="brush: dax; title: ; notranslate" title="">
+EVALUATE
+DATATABLE (
+    &quot;Aggregation&quot;, STRING,
+    &quot;Value&quot;, CURRENCY,
+    {
+        { &quot;Min&quot;, MIN ( Sales&#91;Net Price] ) },
+        { &quot;Max&quot;, MAX ( Sales&#91;Net Price] ) }
+    }
+)
+</pre>
+<p>Tables with calculated expressions can be computed using the <a href="https://dax.guide/row/" class="ajax" data-id="200">ROW</a> table constructor, or the table constructor {}, instead of using DATATABLE.<br />
+The table constructor requires renaming the columns. </p>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/yS3v0rgPUoKHqD/; notranslate" title="">
+EVALUATE
+    UNION (
+        ROW ( &quot;Aggregation&quot;, &quot;Min&quot;, &quot;Value&quot;, MIN ( Sales&#91;Net Price] ) ),
+        ROW ( &quot;Aggregation&quot;, &quot;Max&quot;, &quot;Value&quot;, MAX ( Sales&#91;Net Price] ) )
+    )
+
+EVALUATE
+    SELECTCOLUMNS ( 
+        {
+            ( &quot;Min&quot;, MIN ( Sales&#91;Net Price] ) ),
+            ( &quot;Max&quot;, MAX ( Sales&#91;Net Price] ) )
+        },
+        &quot;Aggregation&quot;, &#91;Value1],
+        &quot;Value&quot;, &#91;Value2] 
+    )
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Aggregation">Aggregation</th>
+<th title="Value">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Min</td>
+<td class="col-float">0.76</td>
+</tr>
+<tr>
+<td class="col-string">Max</td>
+<td class="col-float">3,199.99</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th title="Aggregation">Aggregation</th>
+<th title="Value">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Min</td>
+<td class="col-float">0.76</td>
+</tr>
+<tr>
+<td class="col-string">Max</td>
+<td class="col-float">3,199.99</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about DATATABLE in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/create-static-tables-in-dax-using-the-datatable-function/"  class="low-key"><strong>Create Static Tables in DAX Using the DATATABLE Function</strong></a>
+                                <p>You can create static tables in DAX using the DATATABLE function. This article describes the syntax of this new feature and shows when and how to use it. <a href="https://www.sqlbi.com/articles/create-static-tables-in-dax-using-the-datatable-function/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/understanding-data-lineage-in-dax/"  class="low-key"><strong>Understanding data lineage in DAX</strong></a>
+                                <p>Data lineage is such a well-implemented DAX feature that most developers use it without knowing about it. This article describes data lineage and how it can help in producing better DAX code. <a href="https://www.sqlbi.com/articles/understanding-data-lineage-in-dax/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.youtube.com/c/sqlbi/" target="_top" class="sam-click" data-campaign="youtube-channel" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/youtube-58090.jpg" title="Subscribe to our Youtube channel" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/datatable-function?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/datatable-function</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

@@ -1,0 +1,179 @@
+
+            <header>
+                <h1 title="RAND"><a href="https://dax.guide/rand/" rel="bookmark">RAND</a> <span class="smaller">DAX Function (Math and Trig)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                                                 &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                                                 &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns a random number greater than or equal to 0 and less than 1, evenly distributed. Random numbers change on recalculation.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    RAND (  )                 </div>
+
+                                    <p>This expression has no parameters.</p>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single <a href="https://dax.guide/dt/decimal/" class="ajax" data-id="258">decimal</a> value.</div></p>                    <p>A random number.</p>
+                </section>
+            
+            
+            
+            
+                                                    <a href="#alt" class="sliding">&raquo; 1 related function</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/DV0Y1uVpxSXyfL/; notranslate" title="">
+--  RAND returns a random number between 0 and 1
+--  RANDBETWEEN returns a random number between 
+--  the two provide boundaries
+DEFINE 
+    VAR Vals = GENERATESERIES ( 1, 10, 1 )
+VAR Random = 
+    ADDCOLUMNS ( 
+        Vals,
+        &quot;RAND&quot;,        RAND (),
+        &quot;RANDBETWEEN&quot;, RANDBETWEEN (-&#91;Value], +&#91;Value] )
+    )
+EVALUATE
+    Random
+EVALUATE
+    {
+        ( &quot;Random Average (around 0.5)&quot;,  AVERAGEX ( Random, &#91;RAND] ) ),
+        ( &quot;RanBetween Avg (near 0)&quot;,      AVERAGEX ( Random, &#91;RANDBETWEEN] ) ),
+        ( &quot;RanBetween Min (near -10000)&quot;, MINX ( Random, &#91;RANDBETWEEN] ) ),
+        ( &quot;RanBetween Max (near  10000)&quot;, MAXX ( Random, &#91;RANDBETWEEN] ) )
+    }
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Value">Value</th>
+<th title="RAND">RAND</th>
+<th title="RANDBETWEEN">RANDBETWEEN</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-int">1</td>
+<td class="col-float">0.31</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-int">2</td>
+<td class="col-float">0.87</td>
+<td class="col-int">2</td>
+</tr>
+<tr>
+<td class="col-int">3</td>
+<td class="col-float">0.54</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-int">4</td>
+<td class="col-float">0.91</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-int">5</td>
+<td class="col-float">0.24</td>
+<td class="col-int">3</td>
+</tr>
+<tr>
+<td class="col-int">6</td>
+<td class="col-float">0.40</td>
+<td class="col-int">2</td>
+</tr>
+<tr>
+<td class="col-int">7</td>
+<td class="col-float">0.39</td>
+<td class="col-int">-6</td>
+</tr>
+<tr>
+<td class="col-int">8</td>
+<td class="col-float">0.40</td>
+<td class="col-int">6</td>
+</tr>
+<tr>
+<td class="col-int">9</td>
+<td class="col-float">0.99</td>
+<td class="col-int">-6</td>
+</tr>
+<tr>
+<td class="col-int">10</td>
+<td class="col-float">0.41</td>
+<td class="col-int">1</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th title="Value1">Value1</th>
+<th title="Value2">Value2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Random Average (around 0.5)</td>
+<td class="col-float">0.55</td>
+</tr>
+<tr>
+<td class="col-string">RanBetween Avg (near 0)</td>
+<td class="col-float">0.30</td>
+</tr>
+<tr>
+<td class="col-string">RanBetween Min (near -10000)</td>
+<td class="col-float">-6.00</td>
+</tr>
+<tr>
+<td class="col-string">RanBetween Max (near  10000)</td>
+<td class="col-float">6.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/randbetween/" class="ajax" data-id="186">RANDBETWEEN</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/dax-tools/?aff=tools-promo" target="_top" class="sam-click" data-campaign="dax-tools-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/tools-58090.png" title="DAX Tools Video Course" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/rand-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/rand-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

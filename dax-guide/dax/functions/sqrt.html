@@ -1,0 +1,179 @@
+
+            <header>
+                <h1 title="SQRT"><a href="https://dax.guide/sqrt/" rel="bookmark">SQRT</a> <span class="smaller">DAX Function (Math and Trig)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                                                 &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns the square root of a number.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    SQRT ( &lt;Number&gt; )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Number                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The number for which you want the square root.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single <a href="https://dax.guide/dt/decimal/" class="ajax" data-id="258">decimal</a> value.</div></p>                    <p>Square root of Number.</p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>If the number is negative, the SQRT function returns an error. </p>
+                </section>
+            
+            
+                                                    <a href="#alt" class="sliding">&raquo; 1 related function</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/sJfu15l8kKSY2E/; notranslate" title="">
+--  SQRT computes the square root of a number
+--  POWER raises the number to the required power
+DEFINE
+    VAR Vals = GENERATESERIES ( 1, 25, 3 )
+EVALUATE
+ADDCOLUMNS ( 
+    Vals,
+    &quot;SQRT&quot;,        SQRT   ( &#91;Value] ),
+    &quot;POWER (0.5)&quot;, POWER  ( &#91;Value], 0.5 ),
+    &quot;POWER (4)&quot;,   POWER  ( &#91;Value],   4 ),
+    &quot;POWER  -1&quot;,   POWER  ( &#91;Value],  -1 )
+)
+
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Value">Value</th>
+<th title="SQRT">SQRT</th>
+<th title="POWER (0.5)">POWER (0.5)</th>
+<th title="POWER (4)">POWER (4)</th>
+<th title="POWER  -1">POWER  -1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-int">1</td>
+<td class="col-float">1.00</td>
+<td class="col-float">1.00</td>
+<td class="col-int">1</td>
+<td class="col-float">1.00</td>
+</tr>
+<tr>
+<td class="col-int">4</td>
+<td class="col-float">2.00</td>
+<td class="col-float">2.00</td>
+<td class="col-int">256</td>
+<td class="col-float">0.25</td>
+</tr>
+<tr>
+<td class="col-int">7</td>
+<td class="col-float">2.65</td>
+<td class="col-float">2.65</td>
+<td class="col-int">2,401</td>
+<td class="col-float">0.14</td>
+</tr>
+<tr>
+<td class="col-int">10</td>
+<td class="col-float">3.16</td>
+<td class="col-float">3.16</td>
+<td class="col-int">10,000</td>
+<td class="col-float">0.10</td>
+</tr>
+<tr>
+<td class="col-int">13</td>
+<td class="col-float">3.61</td>
+<td class="col-float">3.61</td>
+<td class="col-int">28,561</td>
+<td class="col-float">0.08</td>
+</tr>
+<tr>
+<td class="col-int">16</td>
+<td class="col-float">4.00</td>
+<td class="col-float">4.00</td>
+<td class="col-int">65,536</td>
+<td class="col-float">0.06</td>
+</tr>
+<tr>
+<td class="col-int">19</td>
+<td class="col-float">4.36</td>
+<td class="col-float">4.36</td>
+<td class="col-int">130,321</td>
+<td class="col-float">0.05</td>
+</tr>
+<tr>
+<td class="col-int">22</td>
+<td class="col-float">4.69</td>
+<td class="col-float">4.69</td>
+<td class="col-int">234,256</td>
+<td class="col-float">0.05</td>
+</tr>
+<tr>
+<td class="col-int">25</td>
+<td class="col-float">5.00</td>
+<td class="col-float">5.00</td>
+<td class="col-int">390,625</td>
+<td class="col-float">0.04</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/sqrtpi/" class="ajax" data-id="213">SQRTPI</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/data-modeling-for-power-bi-video-course/?aff=mod-promo" target="_top" class="sam-click" data-campaign="mod-video-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/mod-58090.png" title="Data Modeling for Power BI" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/sqrt-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/sqrt-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

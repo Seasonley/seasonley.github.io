@@ -1,0 +1,179 @@
+
+            <header>
+                <h1 title="PERCENTILE.EXC"><a href="https://dax.guide/percentile-exc/" rel="bookmark">PERCENTILE.EXC</a> <span class="smaller">DAX Function (Statistical)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                                                 &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                         &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns the k-th (exclusive) percentile of values in a column.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    PERCENTILE.EXC ( &lt;Column&gt;, &lt;K&gt; )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Column                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>A column containing the values.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        K                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>Desired percentile value in the interval [1/(n+1),1-1/(n+1)], where n is a number of valid data points.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single <a href="https://dax.guide/dt/variant/" class="ajax" data-id="260">variant</a> value.</div></p>                    <p>Percentile value.</p>
+                </section>
+            
+            
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 1 related article</a><br>
+                                                    <a href="#alt" class="sliding">&raquo; 3 related functions</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/6XyNJvI73GJIaV/; notranslate" title="">
+--  PERCENTILE.EXC computed the k-th percentile, exclusive
+--  PERCENTILE.INC computed the k-th percentile, inclusive
+--
+--  Both functions rank the N values from 1 (lowest)
+--  to N (highest), then determine the possibly-non-integer 
+--  calculated rank for the specified percentage argument K 
+--  (a decimal number between 0.00 and 1.00), and finally 
+--  use linear interpolation between the closest integer-rank 
+--  values of the data array.
+--
+--  For PERCENTILE.EXC the calculated rank is K*(N+1)
+--  For PERCENTILE.INC the calculated rank is K*(N-1)+1
+--
+--  MEDIAN corresponds to PERCENTILE.INC with k=0.50
+DEFINE
+    TABLE SampleData = { 2, 4, 4, 4, 5, 5, 7, 9 }
+EVALUATE
+{
+     ( &quot;AVERAGE&quot;,  AVERAGE ( SampleData&#91;Value] ) ),
+     ( &quot;MEDIAN&quot;,   MEDIAN ( SampleData&#91;Value] ) ),
+     ( &quot;PERCENTILE.EXC 0.25&quot;,  PERCENTILE.EXC ( SampleData&#91;Value], 0.25 ) ),
+     ( &quot;PERCENTILE.INC 0.25&quot;,  PERCENTILE.INC ( SampleData&#91;Value], 0.25 ) ),
+     ( &quot;PERCENTILE.EXC 0.50&quot;,  PERCENTILE.EXC ( SampleData&#91;Value], 0.50 ) ),
+     ( &quot;PERCENTILE.INC 0.50&quot;,  PERCENTILE.INC ( SampleData&#91;Value], 0.50 ) ),
+     ( &quot;PERCENTILE.EXC 0.75&quot;,  PERCENTILE.EXC ( SampleData&#91;Value], 0.75 ) ),
+     ( &quot;PERCENTILE.INC 0.75&quot;,  PERCENTILE.INC ( SampleData&#91;Value], 0.75 ) )
+}
+
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Value1">Value1</th>
+<th title="Value2">Value2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">AVERAGE</td>
+<td class="col-float">5.00</td>
+</tr>
+<tr>
+<td class="col-string">MEDIAN</td>
+<td class="col-float">4.50</td>
+</tr>
+<tr>
+<td class="col-string">PERCENTILE.EXC 0.25</td>
+<td class="col-float">4.00</td>
+</tr>
+<tr>
+<td class="col-string">PERCENTILE.INC 0.25</td>
+<td class="col-float">4.00</td>
+</tr>
+<tr>
+<td class="col-string">PERCENTILE.EXC 0.50</td>
+<td class="col-float">4.50</td>
+</tr>
+<tr>
+<td class="col-string">PERCENTILE.INC 0.50</td>
+<td class="col-float">4.50</td>
+</tr>
+<tr>
+<td class="col-string">PERCENTILE.EXC 0.75</td>
+<td class="col-float">6.50</td>
+</tr>
+<tr>
+<td class="col-string">PERCENTILE.INC 0.75</td>
+<td class="col-float">5.50</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about PERCENTILE.EXC in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/daxpatterns/statistical-patterns/"  class="low-key"><strong>Statistical Patterns</strong></a>
+                                <p>DAX includes a few statistical aggregation functions, such as average, variance, and standard deviation. Other typical statistical calculations require you to write longer DAX expressions. Excel, from this point of view, has a much richer language. The Statistical Patterns are a collection of common statistical calculations: median, mode, moving average, percentile, and quartile. <a href="https://www.sqlbi.com/daxpatterns/statistical-patterns/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/percentile-inc/" class="ajax" data-id="313">PERCENTILE.INC</a></li>
+                                                    <li><a href="https://dax.guide/percentilex-exc/" class="ajax" data-id="314">PERCENTILEX.EXC</a></li>
+                                                    <li><a href="https://dax.guide/percentilex-inc/" class="ajax" data-id="315">PERCENTILEX.INC</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://dax.guide/" target="_top" class="sam-click" data-campaign="dax-guide" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/daxguide-58090.png" title="DAX Guide" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/percentile-exc-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/percentile-exc-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

@@ -1,0 +1,269 @@
+
+            <header>
+                <h1 title="ENDOFQUARTER"><a href="https://dax.guide/endofquarter/" rel="bookmark">ENDOFQUARTER</a> <span class="smaller">DAX Function (Time Intelligence)                    &nbsp;<a href="https://www.sqlbi.com/articles/understanding-context-transition/" class="feature icon icon-rinfo tooltip" data-tooltip-content="#contexttransition">Context Transition</a></span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                         &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns the end of quarter.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    ENDOFQUARTER ( &lt;Dates&gt; )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Dates                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The name of a column containing dates or a one column table containing dates.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="table-ret">Table</span> A table with a single column.</div></p>                                    </section>
+            
+                            <!--googleoff: snippet-->
+                <section id="notes" class="notes">
+                    <h2>Notes</h2>
+                    <p>In order to use any time intelligence calculation, you need a well-formed date table. The <i>Date</i> table must satisfy the following requirements:
+<ul>
+<li>All dates need to be present for the years required. The <i>Date</i> table must always start on January 1 and end on December 31, including all the days in this range. If the report only references fiscal years, then the date table must include all the dates from the first to the last day of a fiscal year. For example, if the fiscal year 2008 starts on July 1, 2007, then the <i>Date</i> table must include all the days from July 1, 2007 to June 30, 2008.</li>
+<li>There needs to be a column with a <i>DateTime</i> or <i>Date</i> data type containing unique values. This column is usually called <i>Date</i>. Even though the <i>Date</i> column is often used to define relationships with other tables, this is not required. Still, the <i>Date</i> column must contain unique values and should be referenced by the Mark as Date Table feature. In case the column also contains a time part, no time should be used – for example, the time should always be 12:00 am.</li>
+<li>The <i>Date</i> table must be marked as a date table in the model, in case the relationship between the <i>Date</i> table and any other table is not based on the <i>Date</i>.</li>
+</ul></p>
+                </section>
+                <!--googleon: snippet-->
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>The &lt;Dates&gt; argument can be any of the following:</p>
+<ul>
+<li>A reference to a date/time column. Only in this case a context transition applies because the column reference is replaced by
+<ul>
+<li><a href="https://dax.guide/calculatetable/" class="ajax" data-id="34">CALCULATETABLE</a> ( <a href="https://dax.guide/distinct/" class="ajax" data-id="76">DISTINCT</a> ( &lt;Dates&gt; ) )</li>
+</ul>
+</li>
+<li>A table expression that returns a single column of date/time values.</li>
+<li>A Boolean expression that defines a single-column table of date/time values (when used in a <a href="https://dax.guide/calculate/" class="ajax" data-id="33">CALCULATE</a> filter argument).</li>
+</ul>
+<p>ENDOFQUARTER filters &lt;Dates&gt; into a 1-row, 1-column table that shows only the latest date, in the entire &lt;Dates&gt; column devoid of all filters, that is in the same year and quarter as the latest visible date in &lt;Dates&gt;.</p>
+<p>The following ENDOFQUARTER call</p>
+<pre class="brush: dax; title: ; notranslate" title="">
+ENDOFQUARTER ( 'Date'&#91;date] )
+</pre>
+<p>is a more efficient implementation of the following semantically equivalent expression:</p>
+<pre class="brush: dax; title: ; notranslate" title="">
+VAR LastDateVisible =
+    CALCULATE ( MAX ( 'Date'&#91;Date] ) )
+VAR LastYearVisible =
+    YEAR ( LastDateVisible )
+VAR LastQuarterVisible =
+    QUOTIENT ( MONTH ( LastDateVisible ) - 1, 3 )
+VAR DaysInQuarter =
+    FILTER (
+        ALL ( 'Date'&#91;Date] ),
+        YEAR ( 'Date'&#91;Date] ) = LastYearVisible
+            &amp;&amp; QUOTIENT ( MONTH ( 'Date'&#91;Date] ) - 1, 3 ) = LastQuarterVisible
+    )
+VAR LastDayInQuarter =
+    MAXX (
+        DaysInQuarter,
+        'Date'&#91;Date]
+    )
+VAR Result =
+    CALCULATETABLE (
+        VALUES ( 'Date'&#91;Date] ),
+        'Date'&#91;Date] = LastDayInQuarter
+    )
+RETURN
+    Result
+</pre>
+                </section>
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 1 related article</a><br>
+                                                    <a href="#alt" class="sliding">&raquo; 2 related functions</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/LQ4MkT0wDMU4p3/; notranslate" title="">
+--  If the selection is a single date, the result is a table with
+--  the requested date.
+EVALUATE
+CALCULATETABLE (
+    STARTOFQUARTER ( 'Date'&#91;Date] ),
+    'Date'&#91;Date] = DATE ( 2007, 5, 12 )
+)
+
+EVALUATE
+CALCULATETABLE (
+    ENDOFQUARTER ( 'Date'&#91;Date] ),
+    'Date'&#91;Date] = DATE ( 2007, 5, 12 )
+)
+
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Date">Date</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-date">2007-04-01</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th title="Date">Date</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-date">2007-06-30</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/zJluxB1aKuBxY1/; notranslate" title="">
+--  If the selection contains larger periods, it returns the beginning or
+--  the end of the entire period.
+--  The result is always a single-row table.
+EVALUATE
+    CALCULATETABLE ( 
+        STARTOFQUARTER ( 'Date'&#91;Date] ),
+        'Date'&#91;Date] &gt;= DATE ( 2007, 2, 5 ) &amp;&amp;
+        'Date'&#91;Date] &lt;= DATE ( 2007, 5, 12 ) 
+    )
+    
+EVALUATE
+    CALCULATETABLE ( 
+        ENDOFQUARTER ( 'Date'&#91;Date] ),
+        'Date'&#91;Date] &gt;= DATE ( 2007, 2, 5 ) &amp;&amp;
+        'Date'&#91;Date] &lt;= DATE ( 2007, 5, 12 ) 
+    )
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Date">Date</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-date">2007-01-01</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th title="Date">Date</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-date">2007-06-30</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/v6cvH2HFf5jkFz/; notranslate" title="">
+--  All time intelligence function are designed to return a table
+--  to be easily used in CALCULATE as a filter.
+EVALUATE
+{
+    CALCULATE (
+        CALCULATE (
+            &#91;Sales Amount],
+            ENDOFQUARTER ( 'Date'&#91;Date] )  -- 2007-06-30
+        ),
+        'Date'&#91;Date] = DATE ( 2007, 5, 12 )
+    )
+}
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Value">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-float">378.55</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about ENDOFQUARTER in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/semi-additive-measures-in-dax/"  class="low-key"><strong>Semi-Additive Measures in DAX</strong></a>
+                                <p>Values such as inventory and account balance, usually calculated from a snapshot table, require the use of semi-additive measures. This article describes how to implement these calculations in DAX according to your specific requirements. <a href="https://www.sqlbi.com/articles/semi-additive-measures-in-dax/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/endofmonth/" class="ajax" data-id="82">ENDOFMONTH</a></li>
+                                                    <li><a href="https://dax.guide/endofyear/" class="ajax" data-id="84">ENDOFYEAR</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/dax-tools/?aff=tools-promo" target="_top" class="sam-click" data-campaign="dax-tools-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/tools-58090.png" title="DAX Tools Video Course" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/endofquarter-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/endofquarter-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

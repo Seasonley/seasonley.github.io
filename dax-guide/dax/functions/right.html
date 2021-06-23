@@ -1,0 +1,144 @@
+
+            <header>
+                <h1 title="RIGHT"><a href="https://dax.guide/right/" rel="bookmark">RIGHT</a> <span class="smaller">DAX Function (Text)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                                                 &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                         &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns the specified number of characters from the end of a text string.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    RIGHT ( &lt;Text&gt; [, &lt;NumberOfCharacters&gt;] )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Text                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The text string that contains the characters you want to extract.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        NumberOfCharacters                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Optional<br></td>
+                                    <td class="definition">
+                                        <p>The number of characters you want to extract; if omitted, 1.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single <a href="https://dax.guide/dt/string/" class="ajax" data-id="261">string</a> value.</div></p>                    <p>A text string containing the specified right-most characters. </p>
+                </section>
+            
+            
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 1 related article</a><br>
+                                                    <a href="#alt" class="sliding">&raquo; 2 related functions</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/NNjzMX5jjoJR7p/; notranslate" title="">
+--  LEFT, RIGHT, MID and LEN are the basic string-manipulation functions
+DEFINE 
+    VAR Val = &quot;DAX is so cool!&quot;
+EVALUATE
+{
+    ( &quot;LEFT ( Val, 3 ) &quot;,   LEFT  ( Val, 3     ) ),
+    ( &quot;RIGHT ( Val, 5 )&quot;,   RIGHT ( Val, 5     ) ),
+    ( &quot;MID ( Val, 11, 4 )&quot;, MID   ( Val, 11, 4 ) ),
+    ( &quot;LEN ( Val )&quot;,        LEN   ( Val        ) )
+}
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Value1">Value1</th>
+<th title="Value2">Value2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">LEFT ( Val, 3 ) </td>
+<td class="col-string">DAX</td>
+</tr>
+<tr>
+<td class="col-string">RIGHT ( Val, 5 )</td>
+<td class="col-string">cool!</td>
+</tr>
+<tr>
+<td class="col-string">MID ( Val, 11, 4 )</td>
+<td class="col-string">cool</td>
+</tr>
+<tr>
+<td class="col-string">LEN ( Val )</td>
+<td class="col-string">15</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about RIGHT in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/from-sql-to-dax-string-comparison/"  class="low-key"><strong>From SQL to DAX: String Comparison</strong></a>
+                                <p>In DAX string comparison requires you more attention than in SQL, for several reasons: DAX doesn’t offer the same set of features you have in SQL, a few text comparison functions in DAX are only case-sensitive and others only case-insensitive,&hellip; <a href="https://www.sqlbi.com/articles/from-sql-to-dax-string-comparison/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/left/" class="ajax" data-id="135">LEFT</a></li>
+                                                    <li><a href="https://dax.guide/mid/" class="ajax" data-id="147">MID</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://dax.do/" target="_top" class="sam-click" data-campaign="dax-do" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/daxdo-58090.png" title="Run your DAX code with DAX.do" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/right-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/right-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

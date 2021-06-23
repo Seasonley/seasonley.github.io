@@ -1,0 +1,223 @@
+
+            <header>
+                <h1 title="UNICHAR"><a href="https://dax.guide/unichar/" rel="bookmark">UNICHAR</a> <span class="smaller">DAX Function (Text)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                         &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns the Unicode character that is referenced by the given numeric value.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    UNICHAR ( &lt;Number&gt; )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Number                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>Number is the Unicode number(code point) for which you want the Unicode character.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single <a href="https://dax.guide/dt/string/" class="ajax" data-id="261">string</a> value.</div></p>                    <p>A character represented by the Unicode number.</p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>If numbers are numeric values that fall outside the allowable range, UNICHAR returns an error.</p>
+<p>If number is zero (0), UNICHAR returns an error.</p>
+                </section>
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 3 related articles</a><br>
+                                                    <a href="#alt" class="sliding">&raquo; 1 related function</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/EqBgFMC1PhKSIs/; notranslate" title="">
+--  UNICHAR returns a character given the unicode value.
+--  UNICODE returns the Unicode value for a character
+--      The example uses UNICODE ( &quot;━&quot; ) = 9473
+EVALUATE 
+{ 
+    ( &quot;UNICODE ( &quot;&quot;━&quot;&quot; )&quot;, UNICODE ( &quot;━&quot; ) ), 
+    (&quot;UNICHAR ( 9473 )&quot;,   UNICHAR ( 9473 ) ) 
+}
+
+EVALUATE
+ADDCOLUMNS (
+    VALUES ( 'Product'&#91;Color] ),
+    &quot;Histogram&quot;, REPT ( UNICHAR ( 9473 ), &#91;Sales Amount] / 1000000 )
+)
+
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Value1">Value1</th>
+<th title="Value2">Value2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">UNICODE ( &#8220;━&#8221; )</td>
+<td class="col-string">9473</td>
+</tr>
+<tr>
+<td class="col-string">UNICHAR ( 9473 )</td>
+<td class="col-string">━</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th title="Color">Color</th>
+<th title="Histogram">Histogram</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Silver</td>
+<td class="col-string">━━━━━━━</td>
+</tr>
+<tr>
+<td class="col-string">Blue</td>
+<td class="col-string">━━</td>
+</tr>
+<tr>
+<td class="col-string">White</td>
+<td class="col-string">━━━━━━</td>
+</tr>
+<tr>
+<td class="col-string">Red</td>
+<td class="col-string">━</td>
+</tr>
+<tr>
+<td class="col-string">Black</td>
+<td class="col-string">━━━━━━</td>
+</tr>
+<tr>
+<td class="col-string">Green</td>
+<td class="col-string">━</td>
+</tr>
+<tr>
+<td class="col-string">Orange</td>
+<td class="col-string">━</td>
+</tr>
+<tr>
+<td class="col-string">Pink</td>
+<td class="col-string">━</td>
+</tr>
+<tr>
+<td class="col-string">Yellow</td>
+<td class="col-string"></td>
+</tr>
+<tr>
+<td class="col-string">Purple</td>
+<td class="col-string"></td>
+</tr>
+<tr>
+<td class="col-string">Brown</td>
+<td class="col-string">━</td>
+</tr>
+<tr>
+<td class="col-string">Grey</td>
+<td class="col-string">━━━━</td>
+</tr>
+<tr>
+<td class="col-string">Gold</td>
+<td class="col-string"></td>
+</tr>
+<tr>
+<td class="col-string">Azure</td>
+<td class="col-string"></td>
+</tr>
+<tr>
+<td class="col-string">Silver Grey</td>
+<td class="col-string"></td>
+</tr>
+<tr>
+<td class="col-string">Transparent</td>
+<td class="col-string"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about UNICHAR in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/handling-customers-with-the-same-name-in-power-bi/"  class="low-key"><strong>Handling customers with the same name in Power BI</strong></a>
+                                <p>This article explains how to show different customers with the same name in a Power BI report by using zero-width spaces, thus simplifying the presentation without adding visible characters to make the names unique. <a href="https://www.sqlbi.com/articles/handling-customers-with-the-same-name-in-power-bi/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/sorting-duplicated-names-in-a-level-of-a-hierarchy-with-dax/"  class="low-key"><strong>Sorting duplicated names in a level of a hierarchy with DAX</strong></a>
+                                <p>This article describes how to use DAX calculated columns to sort names that look like duplicates at a certain level of a hierarchy, but are unique when considering their full path within the hierarchy. <a href="https://www.sqlbi.com/articles/sorting-duplicated-names-in-a-level-of-a-hierarchy-with-dax/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/displaying-filter-context-in-power-bi-tooltips/"  class="low-key"><strong>Displaying filter context in Power BI Tooltips</strong></a>
+                                <p>This article describes how to display the filter context applied to a calculation using a special DAX measure in Power BI Tooltips. <a href="https://www.sqlbi.com/articles/displaying-filter-context-in-power-bi-tooltips/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/unicode/" class="ajax" data-id="238">UNICODE</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/dax-patterns/?aff=daxp-promo" target="_top" class="sam-click" data-campaign="dax-patterns-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/daxp-58090.png" title="DAX Patterns" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/unichar-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/unichar-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

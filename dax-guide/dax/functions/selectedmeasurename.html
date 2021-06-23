@@ -1,0 +1,216 @@
+
+            <header>
+                <h1 title="SELECTEDMEASURENAME"><a href="https://dax.guide/selectedmeasurename/" rel="bookmark">SELECTEDMEASURENAME</a> <span class="smaller">DAX Function (Information)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                                                 &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                         &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns name of the measure that is currently being evaluated.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    SELECTEDMEASURENAME (  )                 </div>
+
+                                    <p>This expression has no parameters.</p>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single <a href="https://dax.guide/dt/string/" class="ajax" data-id="261">string</a> value.</div></p>                    <p>Returns the name of the measure evaluated.</p>
+                </section>
+            
+            
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 3 related articles</a><br>
+                                                    <a href="#alt" class="sliding">&raquo; 1 related function</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <pre class="brush: dax; title: ; notranslate" title="">
+-- Code of the calculation item Growth in the Time calc
+-- calculation group used in the following example.
+IF (
+    SEARCH ( &quot;Pct&quot;, SELECTEDMEASURENAME (), 1, -1 ) = -1,
+    VAR CY =
+        SELECTEDMEASURE ()
+    VAR PY =
+        CALCULATE (
+            SELECTEDMEASURE (),
+            SAMEPERIODLASTYEAR ( 'Date'&#91;Date] )
+        )
+    VAR Result = CY - PY
+    RETURN
+        Result
+)
+</pre>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/0NwK1uSE9TLg0G/; notranslate" title="">
+--  SELECTEDMEASURENAME returns the name of the currently selected measure.
+--  It can be used in place of ISSELECTEDMEASURE to search for specific
+--  name patterns.
+DEFINE
+    MEASURE Sales&#91;Sales Amount] =
+        SUMX ( Sales, Sales&#91;Quantity] * Sales&#91;Net Price] )
+    MEASURE Sales&#91;Sales Quantity] =
+        SUM ( Sales&#91;Quantity] )
+EVALUATE
+SUMMARIZECOLUMNS (
+    'Product'&#91;Brand],
+    'Date'&#91;Calendar Year],
+    'Time calc'&#91;Time calc],
+    TREATAS ( { &quot;CY 2008&quot; }, 'Date'&#91;Calendar Year] ),
+    TREATAS ( { &quot;Contoso&quot;, &quot;Fabrikam&quot; }, 'Product'&#91;Brand] ),
+    &quot;Sales Amount&quot;, &#91;Sales Amount],
+    &quot;Quantity&quot;, &#91;Sales Quantity],
+    &quot;% of Products&quot;, &#91;Pct over all prods]
+)
+ORDER BY
+    'Product'&#91;Brand],
+    'Date'&#91;Calendar Year],
+    'Time calc'&#91;Time calc]
+    
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Brand">Brand</th>
+<th title="Calendar Year">Calendar Year</th>
+<th title="Time calc">Time calc</th>
+<th title="Sales Amount">Sales Amount</th>
+<th title="Quantity">Quantity</th>
+<th title="% of Products">% of Products</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Contoso</td>
+<td class="col-date">2008-01-01</td>
+<td class="col-string">Current</td>
+<td class="col-float">2,369,167.68</td>
+<td class="col-float">14,901.00</td>
+<td class="col-percent">54.31%</td>
+</tr>
+<tr>
+<td class="col-string">Contoso</td>
+<td class="col-date">2008-01-01</td>
+<td class="col-string">Growth</td>
+<td class="col-float">-360,650.85</td>
+<td class="col-float">429.00</td>
+<td class="col-percent blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Contoso</td>
+<td class="col-date">2008-01-01</td>
+<td class="col-string">Growth %</td>
+<td class="col-float">-0.13</td>
+<td class="col-float">0.03</td>
+<td class="col-percent blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Contoso</td>
+<td class="col-date">2008-01-01</td>
+<td class="col-string">Prev Year</td>
+<td class="col-float">2,729,818.54</td>
+<td class="col-float">14,472.00</td>
+<td class="col-percent">62.29%</td>
+</tr>
+<tr>
+<td class="col-string">Fabrikam</td>
+<td class="col-date">2008-01-01</td>
+<td class="col-string">Current</td>
+<td class="col-float">1,993,123.48</td>
+<td class="col-float">3,899.00</td>
+<td class="col-percent">45.69%</td>
+</tr>
+<tr>
+<td class="col-string">Fabrikam</td>
+<td class="col-date">2008-01-01</td>
+<td class="col-string">Growth</td>
+<td class="col-float">340,372.14</td>
+<td class="col-float">701.00</td>
+<td class="col-percent blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Fabrikam</td>
+<td class="col-date">2008-01-01</td>
+<td class="col-string">Growth %</td>
+<td class="col-float">0.21</td>
+<td class="col-float">0.22</td>
+<td class="col-percent blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Fabrikam</td>
+<td class="col-date">2008-01-01</td>
+<td class="col-string">Prev Year</td>
+<td class="col-float">1,652,751.34</td>
+<td class="col-float">3,198.00</td>
+<td class="col-percent">37.71%</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about SELECTEDMEASURENAME in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/introducing-calculation-groups/"  class="low-key"><strong>Introducing Calculation Groups</strong></a>
+                                <p>This article is the first of a series dedicated to calculation groups in DAX. This introduction explains the capabilities of this feature and how to create calculation groups in a Tabular model. <a href="https://www.sqlbi.com/articles/introducing-calculation-groups/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/currency-conversion-in-power-bi-reports/"  class="low-key"><strong>Currency conversion in Power BI reports</strong></a>
+                                <p>This article describes how to implement currency conversion for reporting purposes in Power BI. <a href="https://www.sqlbi.com/articles/currency-conversion-in-power-bi-reports/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/controlling-format-strings-in-calculation-groups/"  class="low-key"><strong>Controlling Format Strings in Calculation Groups</strong></a>
+                                <p>This article describes how to control format strings in calculation groups. Before starting, we suggest you read the previous articles in this series. <a href="https://www.sqlbi.com/articles/controlling-format-strings-in-calculation-groups/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/selectedmeasure/" class="ajax" data-id="206">SELECTEDMEASURE</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/guides/dax/?aff=learn-dax-promo" target="_top" class="sam-click" data-campaign="learn-dax-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/learn-dax-58090.png" title="Become a DAX guru" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/selectedmeasurename-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/selectedmeasurename-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

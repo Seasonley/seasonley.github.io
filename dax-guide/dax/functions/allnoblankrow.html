@@ -1,0 +1,154 @@
+
+            <header>
+                <h1 title="ALLNOBLANKROW"><a href="https://dax.guide/allnoblankrow/" rel="bookmark">ALLNOBLANKROW</a> <span class="smaller">DAX Function (Filter)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                         &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns all the rows except blank row in a table, or all the values in a column, ignoring any filters that might have been applied.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    ALLNOBLANKROW ( &lt;TableNameOrColumnName&gt; [, &lt;ColumnName&gt; [, &lt;ColumnName&gt; [, … ] ] ] )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        TableNameOrColumnName                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The name of an existing table or column.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        ColumnName                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Optional<br>Repeatable<br></td>
+                                    <td class="definition">
+                                        <p>A column in the same base table. The column can be specified in optional parameters only when a column is used in the first argument, too.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="table-ret">Table</span> An entire table or a table with one or more columns.</div></p>                    <p>The result can include blank values if the table has blank values. The only blank that is not included in the result is the one added to the table in case of invalid relationships.</p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>This function removes the corresponding filters from the filter context. It does not materialize the resulting table when called directly in a filter argument of <a href="https://dax.guide/calculate/" class="ajax" data-id="33">CALCULATE</a> or <a href="https://dax.guide/calculatetable/" class="ajax" data-id="34">CALCULATETABLE</a>.</p>
+<p>The only blank row that is ignored is the one added to a table in case of an invalid relationship. If the table contains blank values in columns, these values are included in the result.</p>
+                </section>
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 3 related articles</a><br>
+                                                    <a href="#alt" class="sliding">&raquo; 3 related functions</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <p>The ALLNOBLANKROW function can be applied to either a table or a set of columns.</p>
+<pre class="brush: dax; title: ; notranslate" title="">
+ALLNOBLANKROW ( Customer )
+
+ALLNOBLANKROW ( Customer&#91;Country], Customer&#91;State] , Customer&#91;City] )
+</pre>
+<pre class="brush: dax; title: ; try: https://dax.do/QbdEjxP51lJuHf/; notranslate" title="">
+--  
+--  ALLNOBLANKROW still returns blanks, if they are present among the
+--  regular rows of the table. The only blank ignored is the one in the
+--  blank row
+--
+EVALUATE
+ADDCOLUMNS (
+    ALLNOBLANKROW ( Customer&#91;Birth Date] ),
+    &quot;# Customers&quot;, CALCULATE ( COUNTROWS ( Customer ) )
+)
+ORDER BY &#91;Birth Date]
+</pre>
+<pre class="brush: dax; title: ; try: https://dax.do/mfTea18qn6rGRc/; notranslate" title="">
+--
+--  If you need to remove blanks, you need to use either FILTER
+--  or CALCULATETABLE to manually remove blanks.
+--
+EVALUATE
+    ADDCOLUMNS (
+        FILTER ( 
+            ALLNOBLANKROW ( Customer&#91;Birth Date] ), 
+            NOT ( Customer&#91;Birth Date] == BLANK () ) 
+        ),
+        &quot;# Customers&quot;, CALCULATE ( COUNTROWS ( Customer ) ) 
+    )
+ORDER BY &#91;Birth Date]
+</pre>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about ALLNOBLANKROW in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/avoiding-circular-dependency-errors-in-dax/"  class="low-key"><strong>Avoiding circular dependency errors in DAX</strong></a>
+                                <p>This article explains how DAX handles dependencies between tables, columns and relationships, to help you avoid circular dependency errors. <a href="https://www.sqlbi.com/articles/avoiding-circular-dependency-errors-in-dax/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/blank-row-in-dax/"  class="low-key"><strong>Blank row in DAX</strong></a>
+                                <p>There are two functions in DAX that return the list of values of a column: VALUES and DISTINCT. This article describes the difference between the two, explaining the details of the blank row added to tables for invalid relationships. <a href="https://www.sqlbi.com/articles/blank-row-in-dax/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/understanding-circular-dependencies/"  class="low-key"><strong>Understanding Circular Dependencies in DAX</strong></a>
+                                <p>This article explains how to avoid circular dependency errors that can occur in DAX when two or more entities (calculated columns or calculated tables) reference one another in such a way that the engine cannot compute their value. <a href="https://www.sqlbi.com/articles/understanding-circular-dependencies/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/all/" class="ajax" data-id="20">ALL</a></li>
+                                                    <li><a href="https://dax.guide/allexcept/" class="ajax" data-id="21">ALLEXCEPT</a></li>
+                                                    <li><a href="https://dax.guide/allselected/" class="ajax" data-id="23">ALLSELECTED</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/optimizing-dax-video-course/?aff=odax-promo" target="_top" class="sam-click" data-campaign="odax-video-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/odax-58090.png" title="Optimizing DAX" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/allnoblankrow-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/allnoblankrow-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

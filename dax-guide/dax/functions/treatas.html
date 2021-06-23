@@ -1,0 +1,356 @@
+
+            <header>
+                <h1 title="TREATAS"><a href="https://dax.guide/treatas/" rel="bookmark">TREATAS</a> <span class="smaller">DAX Function (Table manipulation)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                         &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Treats the columns of the input table as columns from other tables.For each column, filters out any values that are not present in its respective output column.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    TREATAS ( &lt;Expression&gt;, &lt;ColumnName&gt; [, &lt;ColumnName&gt; [, … ] ] )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Expression                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The expression that generates the set of columns to be remapped.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        ColumnName                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Repeatable<br></td>
+                                    <td class="definition">
+                                        <p>The name of the output column.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="table-ret">Table</span> An entire table or a table with one or more columns.</div></p>                    <p>A table that contains all the rows in column(s) that are also in Expression.</p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>TREATAS assigns the data lineage of the columns returned by the expression using the columns in the following arguments. The result can be assigned to a variable, because TREATAS is not a filter modifier. The first argument must be a table expression.</p>
+<p><strong>The TREATAS function works in Excel since version 1809.</strong> However, the function is not reported by IntelliSense and it might be not supported in Excel by Microsoft, yet.</p>
+                </section>
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 5 related articles</a><br>
+                                                    <a href="#alt" class="sliding">&raquo; 1 related function</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/5yBbTYuCRtEwT4/; notranslate" title="">
+--  TREATAS can be used as an alternative syntax to apply 
+--  a filter in CALCULATE/CALCULATETABLE
+DEFINE
+    MEASURE Sales&#91;Sales Trendy Colors] =
+        CALCULATE ( 
+            &#91;Sales Amount], 
+            'Product'&#91;Color] IN { &quot;Red&quot;, &quot;White&quot;, &quot;Blue&quot; } 
+        )
+    MEASURE Sales&#91;Sales Trendy Colors 2] =
+        CALCULATE (
+            &#91;Sales Amount],
+            TREATAS ( { &quot;Red&quot;, &quot;White&quot;, &quot;Blue&quot; }, 'Product'&#91;Color] )
+        )
+EVALUATE
+SUMMARIZECOLUMNS (
+    'Product'&#91;Brand],
+    &quot;Sales Trendy Colors&quot;, &#91;Sales Trendy Colors],
+    &quot;Sales Trendy Colors 2&quot;, &#91;Sales Trendy Colors 2]
+)
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Brand">Brand</th>
+<th title="Sales Trendy Colors">Sales Trendy Colors</th>
+<th title="Sales Trendy Colors 2">Sales Trendy Colors 2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Contoso</td>
+<td class="col-float">2,560,661.40</td>
+<td class="col-float">2,560,661.40</td>
+</tr>
+<tr>
+<td class="col-string">Wide World Importers</td>
+<td class="col-float">809,002.39</td>
+<td class="col-float">809,002.39</td>
+</tr>
+<tr>
+<td class="col-string">Northwind Traders</td>
+<td class="col-float">557,579.98</td>
+<td class="col-float">557,579.98</td>
+</tr>
+<tr>
+<td class="col-string">Adventure Works</td>
+<td class="col-float">952,982.71</td>
+<td class="col-float">952,982.71</td>
+</tr>
+<tr>
+<td class="col-string">Southridge Video</td>
+<td class="col-float">128,714.66</td>
+<td class="col-float">128,714.66</td>
+</tr>
+<tr>
+<td class="col-string">Litware</td>
+<td class="col-float">1,059,954.76</td>
+<td class="col-float">1,059,954.76</td>
+</tr>
+<tr>
+<td class="col-string">Fabrikam</td>
+<td class="col-float">1,959,282.72</td>
+<td class="col-float">1,959,282.72</td>
+</tr>
+<tr>
+<td class="col-string">Proseware</td>
+<td class="col-float">963,930.44</td>
+<td class="col-float">963,930.44</td>
+</tr>
+<tr>
+<td class="col-string">A. Datum</td>
+<td class="col-float">34,852.00</td>
+<td class="col-float">34,852.00</td>
+</tr>
+<tr>
+<td class="col-string">The Phone Company</td>
+<td class="col-float">224,400.54</td>
+<td class="col-float">224,400.54</td>
+</tr>
+<tr>
+<td class="col-string">Tailspin Toys</td>
+<td class="col-float">123,785.02</td>
+<td class="col-float">123,785.02</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/P3hPnDu8F4eLfe/; notranslate" title="">
+--  TREATAS changes the data lineage of a table and it is
+--  used to convert values to the desired filtering column.
+DEFINE
+    MEASURE Sales&#91;NumOfCustomersInStoreCity] =
+        VAR StoreCities = VALUES ( Store&#91;City] )
+        RETURN
+            CALCULATE (
+                COUNTROWS ( Customer ),
+                TREATAS ( StoreCities, Customer&#91;City] )
+            )
+    MEASURE Sales&#91;NumOfCustomersInStoreCountry] =
+        VAR StoreCountries = VALUES ( Store&#91;CountryRegion] )
+        RETURN
+            CALCULATE (
+                COUNTROWS ( Customer ),
+                TREATAS ( StoreCountries, Customer&#91;CountryRegion] )
+            )
+EVALUATE
+SELECTCOLUMNS (
+    VALUES ( Store&#91;Continent] ),
+    &quot;Continent&quot;, Store&#91;Continent],
+    &quot;NumOfStores&quot;, CALCULATE ( COUNTROWS ( Store ) ),
+    &quot;NumOfCustomersInStoreCity&quot;, &#91;NumOfCustomersInStoreCity],
+    &quot;NumOfCustomersInStoreCountry&quot;, &#91;NumOfCustomersInStoreCountry]
+)
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Continent">Continent</th>
+<th title="NumOfStores">NumOfStores</th>
+<th title="NumOfCustomersInStoreCity">NumOfCustomersInStoreCity</th>
+<th title="NumOfCustomersInStoreCountry">NumOfCustomersInStoreCountry</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">North America</td>
+<td class="col-int">209</td>
+<td class="col-int">922</td>
+<td class="col-int">9,665</td>
+</tr>
+<tr>
+<td class="col-string">Europe</td>
+<td class="col-int">54</td>
+<td class="col-int">1,181</td>
+<td class="col-int">5,546</td>
+</tr>
+<tr>
+<td class="col-string">Asia</td>
+<td class="col-int">41</td>
+<td class="col-int">133</td>
+<td class="col-int">3,658</td>
+</tr>
+<tr>
+<td class="col-string blank">(Blank)</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int blank">(Blank)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/7MR042UQqxIIU1/; notranslate" title="">
+--  TREATAS can be used with tables with multiple columns,
+--  in that case you need to provide the new lineage for each 
+--  column of the table.
+DEFINE
+    MEASURE Sales&#91;NumOfCustomersInStoreCity] =
+        VAR StoreCities = SUMMARIZE ( Store, Store&#91;CountryRegion], Store&#91;City] )
+        RETURN
+            CALCULATE (
+                COUNTROWS ( Customer ),
+                TREATAS ( StoreCities, Customer&#91;CountryRegion], Customer&#91;City] )
+            )
+    MEASURE Sales&#91;NumOfCustomersInStoreCountry] =
+        VAR StoreCountries = VALUES ( Store&#91;CountryRegion] )
+        RETURN
+            CALCULATE (
+                COUNTROWS ( Customer ),
+                TREATAS ( StoreCountries, Customer&#91;CountryRegion] )
+            )
+EVALUATE
+SELECTCOLUMNS (
+    VALUES ( Store&#91;Continent] ),
+    &quot;Continent&quot;, Store&#91;Continent],
+    &quot;NumOfStores&quot;, CALCULATE ( COUNTROWS ( Store ) ),
+    &quot;NumOfCustomersInStoreCity&quot;, &#91;NumOfCustomersInStoreCity],
+    &quot;NumOfCustomersInStoreCountry&quot;, &#91;NumOfCustomersInStoreCountry]
+)
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Continent">Continent</th>
+<th title="NumOfStores">NumOfStores</th>
+<th title="NumOfCustomersInStoreCity">NumOfCustomersInStoreCity</th>
+<th title="NumOfCustomersInStoreCountry">NumOfCustomersInStoreCountry</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">North America</td>
+<td class="col-int">209</td>
+<td class="col-int">922</td>
+<td class="col-int">9,665</td>
+</tr>
+<tr>
+<td class="col-string">Europe</td>
+<td class="col-int">54</td>
+<td class="col-int">1,181</td>
+<td class="col-int">5,546</td>
+</tr>
+<tr>
+<td class="col-string">Asia</td>
+<td class="col-int">41</td>
+<td class="col-int">133</td>
+<td class="col-int">3,658</td>
+</tr>
+<tr>
+<td class="col-string blank">(Blank)</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int blank">(Blank)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about TREATAS in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/propagate-filters-using-treatas-in-dax/"  class="low-key"><strong>Propagating filters using TREATAS in DAX</strong></a>
+                                <p>This article describes how to create a virtual relationship in DAX using the TREATAS function, which is more efficient than approaches based on INTERSECT or FILTER. <a href="https://www.sqlbi.com/articles/propagate-filters-using-treatas-in-dax/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/understanding-data-lineage-in-dax/"  class="low-key"><strong>Understanding data lineage in DAX</strong></a>
+                                <p>Data lineage is a DAX feature so well-implemented that most developers use it without knowing about its existence. This article describes the data lineage and how it can help producing better DAX code. <a href="https://www.sqlbi.com/articles/understanding-data-lineage-in-dax/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/physical-and-virtual-relationships-in-dax/"  class="low-key"><strong>Physical and Virtual Relationships in DAX</strong></a>
+                                <p>DAX calculations can leverage relationships present in the data model, but you can obtain the same result without physical relationships, applying equivalent filters using specific DAX patterns. This article show a more efficient technique to apply virtual relationships in DAX expressions. <a href="https://www.sqlbi.com/articles/physical-and-virtual-relationships-in-dax/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/strong-and-weak-relationships-in-power-bi/"  class="low-key"><strong>Strong and weak relationships in Power BI</strong></a>
+                                <p>This article describes what weak relationships are and the differences between strong and weak relationship in Power BI and DAX. <a href="https://www.sqlbi.com/articles/strong-and-weak-relationships-in-power-bi/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/relationships-in-power-bi-and-tabular-models/"  class="low-key"><strong>Relationships in Power BI and Tabular models</strong></a>
+                                <p>This article describes the types of relationships available in Power BI and Analysis Services, clarifying the differences in cardinality and filter propagation of physical relationships. <a href="https://www.sqlbi.com/articles/relationships-in-power-bi-and-tabular-models/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/intersect/" class="ajax" data-id="115">INTERSECT</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/optimizing-dax-video-course/?aff=odax-promo" target="_top" class="sam-click" data-campaign="odax-video-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/odax-58090.png" title="Optimizing DAX" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/treatas-function?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/treatas-function</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

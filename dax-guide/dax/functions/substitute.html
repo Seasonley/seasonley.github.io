@@ -1,0 +1,221 @@
+
+            <header>
+                <h1 title="SUBSTITUTE"><a href="https://dax.guide/substitute/" rel="bookmark">SUBSTITUTE</a> <span class="smaller">DAX Function (Text)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                         &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Replaces existing text with new text in a text string.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    SUBSTITUTE ( &lt;Text&gt;, &lt;OldText&gt;, &lt;NewText&gt; [, &lt;InstanceNumber&gt;] )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Text                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>A string of text, or a reference to a cell containing text, in which you want to substitute characters.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        OldText                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The existing text you want to replace. If the case of old_text does not match the case in the existing text, SUBSTITUTE will not replace the text.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        NewText                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The text you want to replace old_text with.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        InstanceNumber                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Optional<br></td>
+                                    <td class="definition">
+                                        <p>The occurrence of old_text you want to replace. If omitted, every instance of old_text is replaced.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single <a href="https://dax.guide/dt/string/" class="ajax" data-id="261">string</a> value.</div></p>                    <p>The modified string.</p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>Use the SUBSTITUTE function to replace specific text in a text string; use the <a href="https://dax.guide/replace/" class="ajax" data-id="190">REPLACE</a> function to replace any text of variable length that occurs in a specific location in a text string. </p>
+<p>The SUBSTITUTE function is case-sensitive. If case does not match between Text and OldText, SUBSTITUTE will not replace the text. </p>
+                </section>
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 1 related article</a><br>
+                                                    <a href="#alt" class="sliding">&raquo; 1 related function</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/hYfulBU24WBmA7/; notranslate" title="">
+--  SUBSTITUTE replaces a substring in a string with another value.
+EVALUATE
+CALCULATETABLE (
+    ADDCOLUMNS (
+        TOPN ( 5, VALUES ( 'Product'&#91;Product Name] ) ),
+        &quot;New name&quot;, 
+            SUBSTITUTE ( 
+                'Product'&#91;Product Name], 
+                &quot;MP3 Player&quot;,
+                &quot;Zune-like player&quot; 
+            )
+    ),
+    'Product'&#91;Color] IN { &quot;Red&quot;, &quot;Blue&quot; }
+)
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Product Name">Product Name</th>
+<th title="New name">New name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Contoso 512MB MP3 Player E51 Blue</td>
+<td class="col-string">Contoso 512MB Zune-like player E51 Blue</td>
+</tr>
+<tr>
+<td class="col-string">Contoso 2G MP3 Player E200 Red</td>
+<td class="col-string">Contoso 2G Zune-like player E200 Red</td>
+</tr>
+<tr>
+<td class="col-string">Contoso 2G MP3 Player E200 Blue</td>
+<td class="col-string">Contoso 2G Zune-like player E200 Blue</td>
+</tr>
+<tr>
+<td class="col-string">Contoso 4GB Flash MP3 Player E401 Blue</td>
+<td class="col-string">Contoso 4GB Flash Zune-like player E401 Blue</td>
+</tr>
+<tr>
+<td class="col-string">Contoso 8GB Super-Slim MP3/Video Player M800 Red</td>
+<td class="col-string">Contoso 8GB Super-Slim MP3/Video Player M800 Red</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/VrSwwg8Yy8aNVW/; notranslate" title="">
+--  SUBSTITUTE replaces a substring in a string with another value.
+EVALUATE
+CALCULATETABLE (
+    ADDCOLUMNS (
+        TOPN ( 5, VALUES ( 'Product'&#91;Product Name] ) ),
+        &quot;Hide 2&quot;,
+            SUBSTITUTE ( 
+                'Product'&#91;Product Name], 
+                &quot;2&quot;, &quot;?&quot; 
+            )
+    ),
+    'Product'&#91;Color] IN { &quot;Red&quot;, &quot;Blue&quot; }
+)
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Product Name">Product Name</th>
+<th title="Hide 2">Hide 2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Contoso 512MB MP3 Player E51 Blue</td>
+<td class="col-string">Contoso 51?MB MP3 Player E51 Blue</td>
+</tr>
+<tr>
+<td class="col-string">Contoso 2G MP3 Player E200 Red</td>
+<td class="col-string">Contoso ?G MP3 Player E?00 Red</td>
+</tr>
+<tr>
+<td class="col-string">Contoso 2G MP3 Player E200 Blue</td>
+<td class="col-string">Contoso ?G MP3 Player E?00 Blue</td>
+</tr>
+<tr>
+<td class="col-string">Contoso 4GB Flash MP3 Player E401 Blue</td>
+<td class="col-string">Contoso 4GB Flash MP3 Player E401 Blue</td>
+</tr>
+<tr>
+<td class="col-string">Contoso 8GB Super-Slim MP3/Video Player M800 Red</td>
+<td class="col-string">Contoso 8GB Super-Slim MP3/Video Player M800 Red</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about SUBSTITUTE in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/from-sql-to-dax-string-comparison/"  class="low-key"><strong>From SQL to DAX: String Comparison</strong></a>
+                                <p>In DAX string comparison requires you more attention than in SQL, for several reasons: DAX doesn’t offer the same set of features you have in SQL, a few text comparison functions in DAX are only case-sensitive and others only case-insensitive,&hellip; <a href="https://www.sqlbi.com/articles/from-sql-to-dax-string-comparison/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/replace/" class="ajax" data-id="190">REPLACE</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.youtube.com/c/sqlbi/" target="_top" class="sam-click" data-campaign="youtube-channel" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/youtube-58090.jpg" title="Subscribe to our Youtube channel" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/substitute-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/substitute-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

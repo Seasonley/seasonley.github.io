@@ -1,0 +1,146 @@
+
+            <header>
+                <h1 title="SELECTEDMEASUREFORMATSTRING"><a href="https://dax.guide/selectedmeasureformatstring/" rel="bookmark">SELECTEDMEASUREFORMATSTRING</a> <span class="smaller">DAX Function (Information)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                                                 &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                                            </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns format string for the measure that is currently being evaluated.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    SELECTEDMEASUREFORMATSTRING (  )                 </div>
+
+                                    <p>This expression has no parameters.</p>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single <a href="https://dax.guide/dt/string/" class="ajax" data-id="261">string</a> value.</div></p>                    <p>Format string of the measure currently being evaluated &#8211; which is the measure identified by <a href="https://dax.guide/selectedmeasure/" class="ajax" data-id="206">SELECTEDMEASURE</a>.</p>
+                </section>
+            
+            
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 3 related articles</a><br>
+                                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <pre class="brush: dax; title: ; notranslate" title="">
+-- Format string expression for Thousands calculation item
+-- in Scale calculation group, which is used in the following example:
+VAR CurrentFormatString =
+    SELECTEDMEASUREFORMATSTRING ()
+VAR FormatStringContainsDot =
+    SEARCH ( &quot;.&quot;, CurrentFormatString, 1, 0 ) &gt; 0
+VAR Result =
+    CurrentFormatString &amp; IF ( NOT FormatStringContainsDot, &quot;.00&quot; ) &amp; &quot; K&quot;
+RETURN
+    Result
+</pre>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/EPpHbx3lFmw7uf/; notranslate" title="">
+--  SELECTEDMEASUREFORMATSTRING returns the format string of the 
+--  selected measure. It can be used only in calculation items
+--
+--  Its main usage is to dynamically create a format string based on
+--  the original format string, modified by the calculation item
+EVALUATE
+SUMMARIZECOLUMNS (
+    'Date'&#91;Calendar Year],
+    'Scale'&#91;Scale],
+    TREATAS ( { &quot;CY 2009&quot; }, 'Date'&#91;Calendar Year] ),
+    &quot;Amount&quot;, &#91;Sales Amount],
+    &quot;Format String&quot;, IGNORE('Sales'&#91;_Sales Amount FormatString] )
+)
+ORDER BY
+    'Date'&#91;Calendar Year]
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Calendar Year">Calendar Year</th>
+<th title="Scale">Scale</th>
+<th title="Amount">Amount</th>
+<th title="Format String">Format String</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-date">2009-01-01</td>
+<td class="col-string">Value</td>
+<td class="col-float">9,353,814.87</td>
+<td class="col-string">#,0.00</td>
+</tr>
+<tr>
+<td class="col-date">2009-01-01</td>
+<td class="col-string">Thousands</td>
+<td class="col-float">9,353.81</td>
+<td class="col-string">#,0.00 K</td>
+</tr>
+<tr>
+<td class="col-date">2009-01-01</td>
+<td class="col-string">Millions</td>
+<td class="col-float">9.35</td>
+<td class="col-string">#,0.00 M</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about SELECTEDMEASUREFORMATSTRING in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/understanding-calculation-groups/"  class="low-key"><strong>Understanding Calculation Groups</strong></a>
+                                <p>This article explores the properties of calculation groups in detail and then it describes how a calculation item is applied to a measure. Before starting, we suggest you read the previous article that introduces calculation groups. <a href="https://www.sqlbi.com/articles/understanding-calculation-groups/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/currency-conversion-in-power-bi-reports/"  class="low-key"><strong>Currency conversion in Power BI reports</strong></a>
+                                <p>This article describes how to implement currency conversion for reporting purposes in Power BI. <a href="https://www.sqlbi.com/articles/currency-conversion-in-power-bi-reports/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/controlling-format-strings-in-calculation-groups/"  class="low-key"><strong>Controlling Format Strings in Calculation Groups</strong></a>
+                                <p>This article describes how to control format strings in calculation groups. Before starting, we suggest you read the previous articles in this series. <a href="https://www.sqlbi.com/articles/controlling-format-strings-in-calculation-groups/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://dax.guide/" target="_top" class="sam-click" data-campaign="dax-guide" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/daxguide-58090.png" title="DAX Guide" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/selectedmeasureformatstring-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/selectedmeasureformatstring-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

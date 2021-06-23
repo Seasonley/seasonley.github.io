@@ -1,0 +1,657 @@
+
+            <header>
+                <h1 title="DATEADD"><a href="https://dax.guide/dateadd/" rel="bookmark">DATEADD</a> <span class="smaller">DAX Function (Time Intelligence)                    &nbsp;<a href="https://www.sqlbi.com/articles/understanding-context-transition/" class="feature icon icon-rinfo tooltip" data-tooltip-content="#contexttransition">Context Transition</a></span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                                                 &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Moves the given set of dates by a specified interval.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    DATEADD ( &lt;Dates&gt;, &lt;NumberOfIntervals&gt;, &lt;Interval&gt; )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Dates                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The name of a column containing dates or a one column table containing dates.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        NumberOfIntervals                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The number of intervals to shift.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Interval                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>One of: Day, Month, Quarter, Year.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="table-ret">Table</span> A table with a single column.</div></p>                    <p>A table containing a single column of date values.</p>
+                </section>
+            
+                            <!--googleoff: snippet-->
+                <section id="notes" class="notes">
+                    <h2>Notes</h2>
+                    <p>In order to use any time intelligence calculation, you need a well-formed date table. The <i>Date</i> table must satisfy the following requirements:
+<ul>
+<li>All dates need to be present for the years required. The <i>Date</i> table must always start on January 1 and end on December 31, including all the days in this range. If the report only references fiscal years, then the date table must include all the dates from the first to the last day of a fiscal year. For example, if the fiscal year 2008 starts on July 1, 2007, then the <i>Date</i> table must include all the days from July 1, 2007 to June 30, 2008.</li>
+<li>There needs to be a column with a <i>DateTime</i> or <i>Date</i> data type containing unique values. This column is usually called <i>Date</i>. Even though the <i>Date</i> column is often used to define relationships with other tables, this is not required. Still, the <i>Date</i> column must contain unique values and should be referenced by the Mark as Date Table feature. In case the column also contains a time part, no time should be used – for example, the time should always be 12:00 am.</li>
+<li>The <i>Date</i> table must be marked as a date table in the model, in case the relationship between the <i>Date</i> table and any other table is not based on the <i>Date</i>.</li>
+</ul></p>
+                </section>
+                <!--googleon: snippet-->
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>The dates argument can be any of the following:</p>
+<ul>
+<li>A reference to a date/time column. Only in this case a context transition applies because the &lt;Dates&gt; column reference is replaced by
+<ul>
+<li><a href="https://dax.guide/calculatetable/" class="ajax" data-id="34">CALCULATETABLE</a> ( <a href="https://dax.guide/distinct/" class="ajax" data-id="76">DISTINCT</a> ( &lt;Dates&gt; ) )</li>
+</ul>
+</li>
+<li>A table expression that returns a single column of date/time values.</li>
+<li>A Boolean expression that defines a single-column table of date/time values.</li>
+</ul>
+<p>If the number specified for NumberOfIntervals is positive, the dates in dates are moved forward in time; if the number is negative, the dates in dates are shifted back in time.</p>
+<p>The result table includes only dates that exist in the dates column.</p>
+<p>The result table has an entire month if an entire month is selected in the source table. The notion of &#8220;month selected&#8221; is based on the dates available in the underlying date table. This way:</p>
+<ul>
+<li>If the &lt;Dates&gt; argument includes all the days in April (30 rows), the result for the previous month includes all the days in March (31 days).</li>
+<li>If the &lt;Dates&gt; argument includes the first 15 days in April (15 rows), the result for the previous month includes the first 15 days in March (15 rows).</li>
+</ul>
+                </section>
+            
+            
+                                                    <a href="#alt" class="sliding">&raquo; 1 related function</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/4EqLk5ma5AjtLd/; notranslate" title="">
+--  DATEADD is a more generic functions. 
+--  It shifts a period back and forth over time using 
+--  DAY, MONTH, QUARTER, YEAR
+--  This example produces the same result as SAMEPERIODLASTYEAR
+EVALUATE
+VAR StartDate = DATE ( 2008, 07, 25 )
+VAR EndDate =   DATE ( 2008, 07, 31 )
+RETURN
+    CALCULATETABLE (
+        DATEADD ( 'Date'&#91;Date], -1, YEAR ),
+        'Date'&#91;Date] &gt;= StartDate &amp;&amp;
+        'Date'&#91;Date] &lt;= EndDate
+    )
+ORDER BY &#91;Date]
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Date">Date</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-date">2007-07-25</td>
+</tr>
+<tr>
+<td class="col-date">2007-07-26</td>
+</tr>
+<tr>
+<td class="col-date">2007-07-27</td>
+</tr>
+<tr>
+<td class="col-date">2007-07-28</td>
+</tr>
+<tr>
+<td class="col-date">2007-07-29</td>
+</tr>
+<tr>
+<td class="col-date">2007-07-30</td>
+</tr>
+<tr>
+<td class="col-date">2007-07-31</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/q5jI0XVfDlgj1V/; notranslate" title="">
+--  DATEADD has a quite complex logic to move months and quarters
+--  the right way, handling months with different dates.
+EVALUATE
+VAR StartDate = DATE ( 2008, 02, 25 )
+VAR EndDate =   DATE ( 2008, 02, 29 )
+RETURN
+    CALCULATETABLE (
+        DATEADD ( 'Date'&#91;Date], +1, MONTH ),
+        'Date'&#91;Date] &gt;= StartDate &amp;&amp;
+        'Date'&#91;Date] &lt;= EndDate
+    )
+ORDER BY &#91;Date]
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Date">Date</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-date">2008-03-25</td>
+</tr>
+<tr>
+<td class="col-date">2008-03-26</td>
+</tr>
+<tr>
+<td class="col-date">2008-03-27</td>
+</tr>
+<tr>
+<td class="col-date">2008-03-28</td>
+</tr>
+<tr>
+<td class="col-date">2008-03-29</td>
+</tr>
+<tr>
+<td class="col-date">2008-03-30</td>
+</tr>
+<tr>
+<td class="col-date">2008-03-31</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/eqPgrx532IRKAX/; notranslate" title="">
+--  This example shows the sales in the current and previous month.
+--  It also reports sales in the same month in the previous quarter and year.
+DEFINE
+    MEASURE Sales&#91;Same period last month] =
+        CALCULATE (
+            &#91;Sales Amount],
+            DATEADD ( 'Date'&#91;Date], -1, MONTH )
+        )
+    MEASURE Sales&#91;Same period last quarter] =
+        CALCULATE (
+            &#91;Sales Amount],
+            DATEADD ( 'Date'&#91;Date], -1, QUARTER )
+        )
+    MEASURE Sales&#91;Same period last year] =
+        CALCULATE (
+            &#91;Sales Amount],
+            SAMEPERIODLASTYEAR ( 'Date'&#91;Date] )
+        )
+EVALUATE
+SUMMARIZECOLUMNS (
+    'Date'&#91;Calendar Year Month Number],
+    'Date'&#91;Calendar Year Month],
+    &quot;Sales Amount&quot;, &#91;Sales Amount],
+    &quot;Same period last month&quot;, &#91;Same period last month],
+    &quot;Same period last quarter&quot;, &#91;Same period last quarter],
+    &quot;Same period last year&quot;, &#91;Same period last year]
+)
+ORDER BY &#91;Calendar Year Month Number]
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Calendar Year Month Number">Calendar Year Month Number</th>
+<th title="Calendar Year Month">Calendar Year Month</th>
+<th title="Sales Amount">Sales Amount</th>
+<th title="Same period last month">Same period last month</th>
+<th title="Same period last quarter">Same period last quarter</th>
+<th title="Same period last year">Same period last year</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-key">200701</td>
+<td class="col-date">2007-01-01</td>
+<td class="col-float">794,248.24</td>
+<td class="col-float blank">(Blank)</td>
+<td class="col-float blank">(Blank)</td>
+<td class="col-float blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-key">200702</td>
+<td class="col-date">2007-02-01</td>
+<td class="col-float">891,135.91</td>
+<td class="col-float">794,248.24</td>
+<td class="col-float blank">(Blank)</td>
+<td class="col-float blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-key">200703</td>
+<td class="col-date">2007-03-01</td>
+<td class="col-float">961,289.24</td>
+<td class="col-float">891,135.91</td>
+<td class="col-float blank">(Blank)</td>
+<td class="col-float blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-key">200704</td>
+<td class="col-date">2007-04-01</td>
+<td class="col-float">1,128,104.82</td>
+<td class="col-float">961,289.24</td>
+<td class="col-float">794,248.24</td>
+<td class="col-float blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-key">200705</td>
+<td class="col-date">2007-05-01</td>
+<td class="col-float">936,192.74</td>
+<td class="col-float">1,128,104.82</td>
+<td class="col-float">891,135.91</td>
+<td class="col-float blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-key">200706</td>
+<td class="col-date">2007-06-01</td>
+<td class="col-float">982,304.46</td>
+<td class="col-float">936,192.74</td>
+<td class="col-float">961,289.24</td>
+<td class="col-float blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-key">200707</td>
+<td class="col-date">2007-07-01</td>
+<td class="col-float">922,542.98</td>
+<td class="col-float">982,304.46</td>
+<td class="col-float">1,128,104.82</td>
+<td class="col-float blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-key">200708</td>
+<td class="col-date">2007-08-01</td>
+<td class="col-float">952,834.58</td>
+<td class="col-float">922,542.98</td>
+<td class="col-float">936,192.74</td>
+<td class="col-float blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-key">200709</td>
+<td class="col-date">2007-09-01</td>
+<td class="col-float">1,009,868.98</td>
+<td class="col-float">952,834.59</td>
+<td class="col-float">982,304.46</td>
+<td class="col-float blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-key">200710</td>
+<td class="col-date">2007-10-01</td>
+<td class="col-float">914,273.54</td>
+<td class="col-float">1,009,868.98</td>
+<td class="col-float">922,542.98</td>
+<td class="col-float blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-key">200711</td>
+<td class="col-date">2007-11-01</td>
+<td class="col-float">825,601.87</td>
+<td class="col-float">914,273.54</td>
+<td class="col-float">952,834.59</td>
+<td class="col-float blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-key">200712</td>
+<td class="col-date">2007-12-01</td>
+<td class="col-float">991,548.75</td>
+<td class="col-float">825,601.87</td>
+<td class="col-float">1,009,868.98</td>
+<td class="col-float blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-key">200801</td>
+<td class="col-date">2008-01-01</td>
+<td class="col-float">656,766.69</td>
+<td class="col-float">991,548.75</td>
+<td class="col-float">914,273.54</td>
+<td class="col-float">794,248.24</td>
+</tr>
+<tr>
+<td class="col-key">200802</td>
+<td class="col-date">2008-02-01</td>
+<td class="col-float">600,080.00</td>
+<td class="col-float">656,766.69</td>
+<td class="col-float">825,601.87</td>
+<td class="col-float">891,135.91</td>
+</tr>
+<tr>
+<td class="col-key">200803</td>
+<td class="col-date">2008-03-01</td>
+<td class="col-float">559,538.52</td>
+<td class="col-float">600,080.00</td>
+<td class="col-float">991,548.75</td>
+<td class="col-float">961,289.24</td>
+</tr>
+<tr>
+<td class="col-key">200804</td>
+<td class="col-date">2008-04-01</td>
+<td class="col-float">999,667.17</td>
+<td class="col-float">559,538.52</td>
+<td class="col-float">656,766.69</td>
+<td class="col-float">1,128,104.82</td>
+</tr>
+<tr>
+<td class="col-key">200805</td>
+<td class="col-date">2008-05-01</td>
+<td class="col-float">893,231.96</td>
+<td class="col-float">999,667.17</td>
+<td class="col-float">600,080.00</td>
+<td class="col-float">936,192.74</td>
+</tr>
+<tr>
+<td class="col-key">200806</td>
+<td class="col-date">2008-06-01</td>
+<td class="col-float">845,141.60</td>
+<td class="col-float">893,231.96</td>
+<td class="col-float">559,538.52</td>
+<td class="col-float">982,304.46</td>
+</tr>
+<tr>
+<td class="col-key">200807</td>
+<td class="col-date">2008-07-01</td>
+<td class="col-float">890,547.41</td>
+<td class="col-float">845,141.60</td>
+<td class="col-float">999,667.17</td>
+<td class="col-float">922,542.98</td>
+</tr>
+<tr>
+<td class="col-key">200808</td>
+<td class="col-date">2008-08-01</td>
+<td class="col-float">721,560.95</td>
+<td class="col-float">890,547.41</td>
+<td class="col-float">893,231.96</td>
+<td class="col-float">952,834.59</td>
+</tr>
+<tr>
+<td class="col-key">200809</td>
+<td class="col-date">2008-09-01</td>
+<td class="col-float">963,437.23</td>
+<td class="col-float">721,560.95</td>
+<td class="col-float">845,141.60</td>
+<td class="col-float">1,009,868.98</td>
+</tr>
+<tr>
+<td class="col-key">200810</td>
+<td class="col-date">2008-10-01</td>
+<td class="col-float">719,792.99</td>
+<td class="col-float">963,437.23</td>
+<td class="col-float">890,547.41</td>
+<td class="col-float">914,273.54</td>
+</tr>
+<tr>
+<td class="col-key">200811</td>
+<td class="col-date">2008-11-01</td>
+<td class="col-float">1,156,109.32</td>
+<td class="col-float">719,792.99</td>
+<td class="col-float">721,560.95</td>
+<td class="col-float">825,601.87</td>
+</tr>
+<tr>
+<td class="col-key">200812</td>
+<td class="col-date">2008-12-01</td>
+<td class="col-float">921,709.14</td>
+<td class="col-float">1,156,109.32</td>
+<td class="col-float">963,437.23</td>
+<td class="col-float">991,548.75</td>
+</tr>
+<tr>
+<td class="col-key">200901</td>
+<td class="col-date">2009-01-01</td>
+<td class="col-float">580,901.05</td>
+<td class="col-float">921,709.14</td>
+<td class="col-float">719,792.99</td>
+<td class="col-float">656,766.69</td>
+</tr>
+<tr>
+<td class="col-key">200902</td>
+<td class="col-date">2009-02-01</td>
+<td class="col-float">622,581.14</td>
+<td class="col-float">580,901.05</td>
+<td class="col-float">1,156,109.32</td>
+<td class="col-float">600,080.00</td>
+</tr>
+<tr>
+<td class="col-key">200903</td>
+<td class="col-date">2009-03-01</td>
+<td class="col-float">496,137.87</td>
+<td class="col-float">622,581.14</td>
+<td class="col-float">921,709.14</td>
+<td class="col-float">559,538.52</td>
+</tr>
+<tr>
+<td class="col-key">200904</td>
+<td class="col-date">2009-04-01</td>
+<td class="col-float">678,893.22</td>
+<td class="col-float">496,137.87</td>
+<td class="col-float">580,901.05</td>
+<td class="col-float">999,667.17</td>
+</tr>
+<tr>
+<td class="col-key">200905</td>
+<td class="col-date">2009-05-01</td>
+<td class="col-float">1,067,165.23</td>
+<td class="col-float">678,893.22</td>
+<td class="col-float">622,581.14</td>
+<td class="col-float">893,231.96</td>
+</tr>
+<tr>
+<td class="col-key">200906</td>
+<td class="col-date">2009-06-01</td>
+<td class="col-float">872,586.20</td>
+<td class="col-float">1,067,165.23</td>
+<td class="col-float">496,137.87</td>
+<td class="col-float">845,141.60</td>
+</tr>
+<tr>
+<td class="col-key">200907</td>
+<td class="col-date">2009-07-01</td>
+<td class="col-float">1,068,396.58</td>
+<td class="col-float">872,586.20</td>
+<td class="col-float">678,893.22</td>
+<td class="col-float">890,547.41</td>
+</tr>
+<tr>
+<td class="col-key">200908</td>
+<td class="col-date">2009-08-01</td>
+<td class="col-float">835,707.46</td>
+<td class="col-float">1,068,396.58</td>
+<td class="col-float">1,067,165.23</td>
+<td class="col-float">721,560.95</td>
+</tr>
+<tr>
+<td class="col-key">200909</td>
+<td class="col-date">2009-09-01</td>
+<td class="col-float">709,610.40</td>
+<td class="col-float">835,707.46</td>
+<td class="col-float">872,586.20</td>
+<td class="col-float">963,437.23</td>
+</tr>
+<tr>
+<td class="col-key">200910</td>
+<td class="col-date">2009-10-01</td>
+<td class="col-float">806,738.22</td>
+<td class="col-float">709,610.40</td>
+<td class="col-float">1,068,396.58</td>
+<td class="col-float">719,792.99</td>
+</tr>
+<tr>
+<td class="col-key">200911</td>
+<td class="col-date">2009-11-01</td>
+<td class="col-float">868,164.01</td>
+<td class="col-float">806,738.22</td>
+<td class="col-float">835,707.46</td>
+<td class="col-float">1,156,109.32</td>
+</tr>
+<tr>
+<td class="col-key">200912</td>
+<td class="col-date">2009-12-01</td>
+<td class="col-float">746,933.50</td>
+<td class="col-float">868,164.01</td>
+<td class="col-float">709,610.40</td>
+<td class="col-float">921,709.14</td>
+</tr>
+<tr>
+<td class="col-key">201001</td>
+<td class="col-date">2010-01-01</td>
+<td class="col-float blank">(Blank)</td>
+<td class="col-float">746,933.50</td>
+<td class="col-float">806,738.22</td>
+<td class="col-float">580,901.05</td>
+</tr>
+<tr>
+<td class="col-key">201002</td>
+<td class="col-date">2010-02-01</td>
+<td class="col-float blank">(Blank)</td>
+<td class="col-float blank">(Blank)</td>
+<td class="col-float">868,164.01</td>
+<td class="col-float">622,581.14</td>
+</tr>
+<tr>
+<td class="col-key">201003</td>
+<td class="col-date">2010-03-01</td>
+<td class="col-float blank">(Blank)</td>
+<td class="col-float blank">(Blank)</td>
+<td class="col-float">746,933.50</td>
+<td class="col-float">496,137.87</td>
+</tr>
+<tr>
+<td class="col-key">201004</td>
+<td class="col-date">2010-04-01</td>
+<td class="col-float blank">(Blank)</td>
+<td class="col-float blank">(Blank)</td>
+<td class="col-float blank">(Blank)</td>
+<td class="col-float">678,893.22</td>
+</tr>
+<tr>
+<td class="col-key">201005</td>
+<td class="col-date">2010-05-01</td>
+<td class="col-float blank">(Blank)</td>
+<td class="col-float blank">(Blank)</td>
+<td class="col-float blank">(Blank)</td>
+<td class="col-float">1,067,165.23</td>
+</tr>
+<tr>
+<td class="col-key">201006</td>
+<td class="col-date">2010-06-01</td>
+<td class="col-float blank">(Blank)</td>
+<td class="col-float blank">(Blank)</td>
+<td class="col-float blank">(Blank)</td>
+<td class="col-float">872,586.20</td>
+</tr>
+<tr>
+<td class="col-key">201007</td>
+<td class="col-date">2010-07-01</td>
+<td class="col-float blank">(Blank)</td>
+<td class="col-float blank">(Blank)</td>
+<td class="col-float blank">(Blank)</td>
+<td class="col-float">1,068,396.58</td>
+</tr>
+<tr>
+<td class="col-key">201008</td>
+<td class="col-date">2010-08-01</td>
+<td class="col-float blank">(Blank)</td>
+<td class="col-float blank">(Blank)</td>
+<td class="col-float blank">(Blank)</td>
+<td class="col-float">835,707.46</td>
+</tr>
+<tr>
+<td class="col-key">201009</td>
+<td class="col-date">2010-09-01</td>
+<td class="col-float blank">(Blank)</td>
+<td class="col-float blank">(Blank)</td>
+<td class="col-float blank">(Blank)</td>
+<td class="col-float">709,610.40</td>
+</tr>
+<tr>
+<td class="col-key">201010</td>
+<td class="col-date">2010-10-01</td>
+<td class="col-float blank">(Blank)</td>
+<td class="col-float blank">(Blank)</td>
+<td class="col-float blank">(Blank)</td>
+<td class="col-float">806,738.22</td>
+</tr>
+<tr>
+<td class="col-key">201011</td>
+<td class="col-date">2010-11-01</td>
+<td class="col-float blank">(Blank)</td>
+<td class="col-float blank">(Blank)</td>
+<td class="col-float blank">(Blank)</td>
+<td class="col-float">868,164.01</td>
+</tr>
+<tr>
+<td class="col-key">201012</td>
+<td class="col-date">2010-12-01</td>
+<td class="col-float blank">(Blank)</td>
+<td class="col-float blank">(Blank)</td>
+<td class="col-float blank">(Blank)</td>
+<td class="col-float">746,933.50</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/parallelperiod/" class="ajax" data-id="168">PARALLELPERIOD</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.youtube.com/c/sqlbi/" target="_top" class="sam-click" data-campaign="youtube-channel" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/youtube-58090.jpg" title="Subscribe to our Youtube channel" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/dateadd-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/dateadd-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

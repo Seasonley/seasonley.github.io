@@ -1,0 +1,176 @@
+
+            <header>
+                <h1 title="VAR.P"><a href="https://dax.guide/var-p/" rel="bookmark">VAR.P</a> <span class="smaller">DAX Function (Statistical)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                         &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Calculates variance based on the entire population. Ignores logical values and text in the population.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    VAR.P ( &lt;ColumnName&gt; )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        ColumnName                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>A column that contains values corresponding to a population.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single <a href="https://dax.guide/dt/decimal/" class="ajax" data-id="258">decimal</a> value.</div></p>                    <p>A number with the variance of the entire population. </p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>VAR.P assumes that the column refers to the entire population.</p>
+<p>To compute the variance with a sample of the population, use <a href="https://dax.guide/var.s/" class="ajax" data-id="323">VAR.S</a>. </p>
+<p>The VAR.P function internally executes <a href="https://dax.guide/varx.p/" class="ajax" data-id="324">VARX.P</a>, without any performance difference.<br />
+The following VAR.P call:</p>
+<pre class="brush: dax; gutter: false; title: ; notranslate" title="">
+VAR.P ( table&#91;column] )
+</pre>
+<p>corresponds to the following <a href="https://dax.guide/varx.p/" class="ajax" data-id="324">VARX.P</a> call:</p>
+<pre class="brush: dax; gutter: false; title: ; notranslate" title="">
+VARX.P (
+    table,
+    table&#91;column]
+)
+</pre>
+                </section>
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 1 related article</a><br>
+                                                    <a href="#alt" class="sliding">&raquo; 3 related functions</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/nvhno9eAI3qVTs/; notranslate" title="">
+--  Computes the variance over a table of values
+--
+--  VAR.P : variance over the entire population
+--  VAR.S : variance over a sample of the entire population
+--
+--  VARX is an iterator, VAR is the simplified version in case
+--  you are using a single column
+DEFINE
+    TABLE SampleData = { 2, 4, 4, 4, 5, 5, 7, 9 }
+EVALUATE
+{
+     ( &quot;VAR.P&quot;,  VAR.P ( SampleData&#91;Value] ) ),
+     ( &quot;VAR.S&quot;,  VAR.S ( SampleData&#91;Value] ) ),
+     ( &quot;VARX.P&quot;, VARX.P ( SampleData, SampleData&#91;Value] ) ),
+     ( &quot;VARX.S&quot;, VARX.S ( SampleData, SampleData&#91;Value] ) ),
+     ( &quot;VARX.P&quot;, VARX.P ( Sales, Sales&#91;Quantity] * Sales&#91;Net Price] ) ),
+     ( &quot;VARX.S&quot;, VARX.S ( Sales, Sales&#91;Quantity] * Sales&#91;Net Price] ) )
+}
+
+-- The STDEV.S over SampleData is very different from STDEV.P because the 
+-- set is small (8 rows for the population, 8 rows for the sample)
+-- When applied to Sales, the difference is smaller because
+-- the set used has 100,000 rows
+
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Value1">Value1</th>
+<th title="Value2">Value2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">VAR.P</td>
+<td class="col-float">4.00</td>
+</tr>
+<tr>
+<td class="col-string">VAR.S</td>
+<td class="col-float">4.57</td>
+</tr>
+<tr>
+<td class="col-string">VARX.P</td>
+<td class="col-float">4.00</td>
+</tr>
+<tr>
+<td class="col-string">VARX.S</td>
+<td class="col-float">4.57</td>
+</tr>
+<tr>
+<td class="col-string">VARX.P</td>
+<td class="col-float">346,327.15</td>
+</tr>
+<tr>
+<td class="col-string">VARX.S</td>
+<td class="col-float">346,330.61</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about VAR.P in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/daxpatterns/statistical-patterns/"  class="low-key"><strong>Statistical Patterns</strong></a>
+                                <p>DAX includes a few statistical aggregation functions, such as average, variance, and standard deviation. Other typical statistical calculations require you to write longer DAX expressions. Excel, from this point of view, has a much richer language. The Statistical Patterns are a collection of common statistical calculations: median, mode, moving average, percentile, and quartile. <a href="https://www.sqlbi.com/daxpatterns/statistical-patterns/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/var-s/" class="ajax" data-id="323">VAR.S</a></li>
+                                                    <li><a href="https://dax.guide/varx-p/" class="ajax" data-id="324">VARX.P</a></li>
+                                                    <li><a href="https://dax.guide/varx-s/" class="ajax" data-id="325">VARX.S</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/mastering-dax-video-course/?aff=mdax-promo" target="_top" class="sam-click" data-campaign="mdax-video-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/mdax-58090.jpg" title="Mastering DAX Video Course" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/var-p-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/var-p-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

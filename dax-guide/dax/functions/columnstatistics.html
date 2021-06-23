@@ -1,0 +1,206 @@
+
+            <header>
+                <h1 title="COLUMNSTATISTICS"><a href="https://dax.guide/columnstatistics/" rel="bookmark">COLUMNSTATISTICS</a> <span class="smaller">DAX Function (Information)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                                                                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns statistical information about all the tables, columns, and rows visible to the current user.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    COLUMNSTATISTICS ( )                </div>
+
+                                    <p>This expression has no parameters.</p>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="table-ret">Table</span> An entire table or a table with one or more columns.</div></p>                    <p>One row for each column visible in the model to the current user, with the following data: <em>Table Name</em>, <em>Column Name</em>, <em>Min</em>, <em>Max</em>, <em>Cardinality</em>, <em>Max Length</em>.</p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>In the following remarks, &#8220;column&#8221; relates to the result of the function and &#8220;attribute&#8221; to a column in the data model.</p>
+<p>The COLUMNSTATISTICS function returns the attributes and values visible to the user considering the security roles. Different users can get different results querying the same model because of different security profiles.</p>
+<p>The <em>Cardinality</em> column provides the number of unique values for each attribute in the data model. &#8220;Row-Number&#8221; corresponds to the number of rows of the table.</p>
+<p>The <em>Min</em> and <em>Max</em> columns show the minimum and maximum values visible in the attribute.</p>
+<p>The <em>Max Length</em> column shows the maximum length of strings visible in the attribute.</p>
+<p>When used with a DirectQuery data source over SQL Server, it is compatible only with SQL Server 2019 or later version, because internally it uses APPROX_COUNT_DISTINCT.</p>
+                </section>
+            
+            
+                                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/05MIcI3Wt1pTvY/; notranslate" title="">
+EVALUATE COLUMNSTATISTICS()
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Table Name">Table Name</th>
+<th title="Column Name">Column Name</th>
+<th title="Min">Min</th>
+<th title="Max">Max</th>
+<th title="Cardinality">Cardinality</th>
+<th title="Max Length">Max Length</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Customer</td>
+<td class="col-string">RowNumber-2662979B-1795-4F74-8F37-6A1BA8059B61</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">18,869</td>
+<td class="col-int blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Customer</td>
+<td class="col-string">CustomerKey</td>
+<td class="col-int">1</td>
+<td class="col-int">19,145</td>
+<td class="col-int">18,869</td>
+<td class="col-int blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Customer</td>
+<td class="col-string">Customer Code</td>
+<td class="col-int">11000</td>
+<td class="col-int">CS952</td>
+<td class="col-int">18,869</td>
+<td class="col-int">5</td>
+</tr>
+<tr>
+<td class="col-string">Customer</td>
+<td class="col-string">Title</td>
+<td class="col-int">Mr.</td>
+<td class="col-int">Sr.</td>
+<td class="col-int">6</td>
+<td class="col-int">4</td>
+</tr>
+<tr>
+<td class="col-string">Customer</td>
+<td class="col-string">Name</td>
+<td class="col-int"></td>
+<td class="col-int">Zukowski, Jake</td>
+<td class="col-int">18,401</td>
+<td class="col-int">27</td>
+</tr>
+<tr>
+<td class="col-string">Customer</td>
+<td class="col-string">Birth Date</td>
+<td class="col-int">1910-08-13T00:00:00</td>
+<td class="col-int">1980-12-26T00:00:00</td>
+<td class="col-int">8,253</td>
+<td class="col-int blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">&#8230;</td>
+<td class="col-string">&#8230;</td>
+<td class="col-int">.</td>
+<td class="col-int">.</td>
+<td class="col-int">.</td>
+<td class="col-int">.</td>
+</tr>
+<tr>
+<td class="col-string">Product</td>
+<td class="col-string">Unit Price</td>
+<td class="col-int">1</td>
+<td class="col-int">3,200</td>
+<td class="col-int">426</td>
+<td class="col-int blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Product</td>
+<td class="col-string">Available Date</td>
+<td class="col-int">2004-01-01T00:00:00</td>
+<td class="col-int">2009-07-21T00:00:00</td>
+<td class="col-int">355</td>
+<td class="col-int blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Product</td>
+<td class="col-string">Subcategory</td>
+<td class="col-int">Air Conditioners</td>
+<td class="col-int">Water Heaters</td>
+<td class="col-int">32</td>
+<td class="col-int">32</td>
+</tr>
+<tr>
+<td class="col-string">Product</td>
+<td class="col-string">Category</td>
+<td class="col-int">Audio</td>
+<td class="col-int">TV and Video</td>
+<td class="col-int">8</td>
+<td class="col-int">29</td>
+</tr>
+<tr>
+<td class="col-string">Currency</td>
+<td class="col-string">RowNumber-2662979B-1795-4F74-8F37-6A1BA8059B61</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int blank">(Blank)</td>
+<td class="col-int">28</td>
+<td class="col-int blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Currency</td>
+<td class="col-string">CurrencyKey</td>
+<td class="col-int">1</td>
+<td class="col-int">28</td>
+<td class="col-int">28</td>
+<td class="col-int blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Currency</td>
+<td class="col-string">Currency Code</td>
+<td class="col-int">AMD</td>
+<td class="col-int">USD</td>
+<td class="col-int">28</td>
+<td class="col-int">3</td>
+</tr>
+<tr>
+<td class="col-string">Currency</td>
+<td class="col-string">Currency</td>
+<td class="col-int">Armenian Dram</td>
+<td class="col-int">US Dollar</td>
+<td class="col-int">28</td>
+<td class="col-int">18</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+            
+                        
+            
+            <section class="side-notes">
+                
+<p>Last update: <span>May 30, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

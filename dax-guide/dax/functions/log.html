@@ -1,0 +1,173 @@
+
+            <header>
+                <h1 title="LOG"><a href="https://dax.guide/log/" rel="bookmark">LOG</a> <span class="smaller">DAX Function (Math and Trig)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                                                 &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns the logarithm of a number to the base you specify.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    LOG ( &lt;Number&gt; [, &lt;Base&gt;] )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Number                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The positive number for which you want the logarithm.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Base                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Optional<br></td>
+                                    <td class="definition">
+                                        <p>The base of the logarithm; if omitted, 10.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single <a href="https://dax.guide/dt/decimal/" class="ajax" data-id="258">decimal</a> value.</div></p>                    <p>Logarithm of number to the base specified.</p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>The function <a href="https://dax.guide/log10/" class="ajax" data-id="139">LOG10</a> is similar, but always returns the logarithm for the base 10. </p>
+                </section>
+            
+            
+                                                    <a href="#alt" class="sliding">&raquo; 1 related function</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/uX6AaK74qBwo4j/; notranslate" title="">
+--  Logarithmic functions include LOG10, LN, LOG, and EXP to compute
+--  logarithms using various bases or exponential.
+DEFINE
+    VAR Vals = GENERATESERIES ( 1, 25, 4 )
+EVALUATE
+ADDCOLUMNS ( 
+    Vals,
+    &quot;LN&quot;,       LN      ( &#91;Value] ),
+    &quot;LOG10&quot;,    LOG10   ( &#91;Value] ),
+    &quot;LOG 5&quot;,    LOG     ( &#91;Value], 5 ),
+    &quot;EXP&quot;,      EXP     ( &#91;Value] )
+)
+
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Value">Value</th>
+<th title="LN">LN</th>
+<th title="LOG10">LOG10</th>
+<th title="LOG 5">LOG 5</th>
+<th title="EXP">EXP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-int">1</td>
+<td class="col-float">0.00</td>
+<td class="col-float">0.00</td>
+<td class="col-float">0.00</td>
+<td class="col-float">2.72</td>
+</tr>
+<tr>
+<td class="col-int">5</td>
+<td class="col-float">1.61</td>
+<td class="col-float">0.70</td>
+<td class="col-float">1.00</td>
+<td class="col-float">148.41</td>
+</tr>
+<tr>
+<td class="col-int">9</td>
+<td class="col-float">2.20</td>
+<td class="col-float">0.95</td>
+<td class="col-float">1.37</td>
+<td class="col-float">8,103.08</td>
+</tr>
+<tr>
+<td class="col-int">13</td>
+<td class="col-float">2.56</td>
+<td class="col-float">1.11</td>
+<td class="col-float">1.59</td>
+<td class="col-float">442,413.39</td>
+</tr>
+<tr>
+<td class="col-int">17</td>
+<td class="col-float">2.83</td>
+<td class="col-float">1.23</td>
+<td class="col-float">1.76</td>
+<td class="col-float">24,154,952.75</td>
+</tr>
+<tr>
+<td class="col-int">21</td>
+<td class="col-float">3.04</td>
+<td class="col-float">1.32</td>
+<td class="col-float">1.89</td>
+<td class="col-float">1,318,815,734.48</td>
+</tr>
+<tr>
+<td class="col-int">25</td>
+<td class="col-float">3.22</td>
+<td class="col-float">1.40</td>
+<td class="col-float">2.00</td>
+<td class="col-float">72,004,899,337.39</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/log10/" class="ajax" data-id="139">LOG10</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/guides/dax/?aff=learn-dax-promo" target="_top" class="sam-click" data-campaign="learn-dax-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/learn-dax-58090.png" title="Become a DAX guru" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/log-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/log-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

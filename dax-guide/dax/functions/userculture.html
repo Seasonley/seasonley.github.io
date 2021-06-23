@@ -1,0 +1,89 @@
+
+            <header>
+                <h1 title="USERCULTURE"><a href="https://dax.guide/userculture/" rel="bookmark">USERCULTURE</a> <span class="smaller">DAX Function (Information)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                                                 &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                         &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns the culture code for the user, based on their operating system or browser settings.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    USERCULTURE ( )                </div>
+
+                                    <p>This expression has no parameters.</p>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single <a href="https://dax.guide/dt/string/" class="ajax" data-id="261">string</a> value.</div></p>                    <p>The culture code as a string, such as &#8220;en-US&#8221;.</p>
+                </section>
+            
+            
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 1 related article</a><br>
+                                                    <a href="#alt" class="sliding">&raquo; 3 related functions</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <p>You can use the following DAX switch statement to select the correct translated value in a dynamic visual title in Power BI:</p>
+<pre class="brush: dax; title: ; notranslate" title="">
+SWITCH (
+  USERCULTURE(),
+  &quot;de-DE&quot;, &quot;Umsatz nach Produkt&quot;,
+  &quot;fr-FR&quot;, &quot;Ventes par produit&quot;,
+  &quot;Sales by product&quot;
+)
+</pre>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about USERCULTURE in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://docs.microsoft.com/en-us/power-bi/create-reports/desktop-conditional-format-visual-titles#create-a-field-for-your-title"  rel="nofollow" class="low-key"><strong>Expression-based titles in Power BI Desktop: Create a field for your title</strong></a>
+                                <p>You can create language-specific titles in a DAX measure by using the USERCULTURE() function. This function returns the culture code for the user, based on their operating system or browser settings.  <a href="https://docs.microsoft.com/en-us/power-bi/create-reports/desktop-conditional-format-visual-titles#create-a-field-for-your-title"  rel="nofollow" class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/username/" class="ajax" data-id="242">USERNAME</a></li>
+                                                    <li><a href="https://dax.guide/userobjectid/" class="ajax" data-id="243">USEROBJECTID</a></li>
+                                                    <li><a href="https://dax.guide/userprincipalname/" class="ajax" data-id="244">USERPRINCIPALNAME</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/dax-patterns/?aff=daxp-promo" target="_top" class="sam-click" data-campaign="dax-patterns-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/daxp-58090.png" title="DAX Patterns" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Feb 4, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

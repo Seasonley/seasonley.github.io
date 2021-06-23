@@ -1,0 +1,219 @@
+
+            <header>
+                <h1 title="COALESCE"><a href="https://dax.guide/coalesce/" rel="bookmark">COALESCE</a> <span class="smaller">DAX Function (Logical)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                                                 &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                         &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns the first argument that does not evaluate to a blank value. If all arguments evaluate to blank values, <a href="https://dax.guide/blank/" class="ajax" data-id="32">BLANK</a> is returned.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    COALESCE ( &lt;Value1&gt;, &lt;Value2&gt; [, &lt;Value2&gt; [, … ] ] )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Value1                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>Any value or expression.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Value2                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Repeatable<br></td>
+                                    <td class="definition">
+                                        <p>Any value or expression.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single value of any type.</div></p>                    <p>The first Value argument that is not blank.</p>
+                </section>
+            
+            
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 2 related articles</a><br>
+                                                    <a href="#alt" class="sliding">&raquo; 3 related functions</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/6bgeUUSo9e2J3d/; notranslate" title="">
+--  COALESCE returns the first non-blank of its arguments
+--  It is commonly used to provide default values to expressions
+--  that might result in a blank
+EVALUATE
+SELECTCOLUMNS (
+    TOPN ( 10, Store ),
+    &quot;Store name&quot;, Store&#91;Store Name],
+    &quot;Manager&quot;,
+        COALESCE ( Store&#91;Area Manager], &quot;** Not Assigned **&quot; ),
+    &quot;Years open&quot;,
+        DATEDIFF (
+            Store&#91;Open Date],
+            COALESCE ( Store&#91;Close Date], TODAY () ),
+            YEAR
+        )
+)
+ORDER BY &#91;Manager]
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Store name">Store name</th>
+<th title="Manager">Manager</th>
+<th title="Years open">Years open</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Contoso Aurora Store</td>
+<td class="col-string">** Not Assigned **</td>
+<td class="col-int">18</td>
+</tr>
+<tr>
+<td class="col-string">Contoso Bar Harbor Store</td>
+<td class="col-string">Alvarez, Janet</td>
+<td class="col-int">17</td>
+</tr>
+<tr>
+<td class="col-string">Contoso Renton Store</td>
+<td class="col-string">Bennett, Sydney</td>
+<td class="col-int">17</td>
+</tr>
+<tr>
+<td class="col-string">Contoso Spokane Store</td>
+<td class="col-string">Hill, Wyatt</td>
+<td class="col-int">17</td>
+</tr>
+<tr>
+<td class="col-string">Contoso Bayonne Store</td>
+<td class="col-string">Hill, Wyatt</td>
+<td class="col-int">17</td>
+</tr>
+<tr>
+<td class="col-string">Contoso Seattle No.2 Store</td>
+<td class="col-string">Huang, Eugene</td>
+<td class="col-int">17</td>
+</tr>
+<tr>
+<td class="col-string">Contoso Redmond Store</td>
+<td class="col-string">Johnson, Elizabeth</td>
+<td class="col-int">17</td>
+</tr>
+<tr>
+<td class="col-string">Contoso Attleboro Store</td>
+<td class="col-string">Moreno, Jimmy</td>
+<td class="col-int">17</td>
+</tr>
+<tr>
+<td class="col-string">Contoso Baltimore Store</td>
+<td class="col-string">Ramos, Theresa</td>
+<td class="col-int">17</td>
+</tr>
+<tr>
+<td class="col-string">Contoso Back River Store</td>
+<td class="col-string">Russell, Jennifer</td>
+<td class="col-int">17</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/Q5BC3q3SmsG9vb/; notranslate" title="">
+--  COALESCE can have more than two arguments
+EVALUATE
+VAR A = BLANK ()
+VAR B = BLANK ()
+VAR C = &quot;Test&quot;
+RETURN
+    { COALESCE ( A, B, C ) }
+
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Value">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Test</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about COALESCE in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/from-sql-to-dax-implementing-nullif-and-coalesce-in-dax/"  class="low-key"><strong>From SQL to DAX: Implementing NULLIF and COALESCE in DAX</strong></a>
+                                <p>This article describes how to implement a syntax equivalent to the T-SQL function NULLIF and the ANSI SQL function COALESCE, in DAX. <a href="https://www.sqlbi.com/articles/from-sql-to-dax-implementing-nullif-and-coalesce-in-dax/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/the-coalesce-function-in-dax/"  class="low-key"><strong>The COALESCE function in DAX</strong></a>
+                                <p>COALESCE is a DAX function introduced in March 2020. This article describes the purpose of COALESCE and how to simplify DAX expressions by removing verbose conditions, and yet obtain the same result. <a href="https://www.sqlbi.com/articles/the-coalesce-function-in-dax/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/if/" class="ajax" data-id="111">IF</a></li>
+                                                    <li><a href="https://dax.guide/if-eager/" class="ajax" data-id="607">IF.EAGER</a></li>
+                                                    <li><a href="https://dax.guide/switch/" class="ajax" data-id="223">SWITCH</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/mastering-dax-video-course/?aff=mdax-promo" target="_top" class="sam-click" data-campaign="mdax-video-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/mdax-58090.jpg" title="Mastering DAX Video Course" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/coalesce-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/coalesce-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

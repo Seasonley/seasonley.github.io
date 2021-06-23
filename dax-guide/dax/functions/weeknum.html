@@ -1,0 +1,295 @@
+
+            <header>
+                <h1 title="WEEKNUM"><a href="https://dax.guide/weeknum/" rel="bookmark">WEEKNUM</a> <span class="smaller">DAX Function (Date and Time)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                                                 &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns the week number in the year.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    WEEKNUM ( &lt;Date&gt; [, &lt;ReturnType&gt;] )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Date                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>A date in datetime format.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        ReturnType                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Optional<br></td>
+                                    <td class="definition">
+                                        <p>A number that determines the return value: for example, use 1 when week begins on Sunday, or use 2 when week begins on Monday, or use 21 for ISO week numbers. More details in Remarks section.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single <a href="https://dax.guide/dt/integer/" class="ajax" data-id="257">integer</a> value.</div></p>                    <p>The week number for the given date.</p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>If the argument is a string, it is translated into a datetime value using the same rules applied by the <a href="https://dax.guide/datevalue/" class="ajax" data-id="72">DATEVALUE</a> function.</p>
+<p>There are two systems used for this function:</p>
+<ul>
+<li><strong>System 1</strong> The week containing January 1 is the first week of the year, and is numbered week 1.</li>
+<li><strong>System 2</strong> The week containing the first Thursday of the year is the first week of the year, and is numbered as week 1. This system is the methodology specified in ISO 8601, which is commonly known as the European week numbering system.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Return_type</th>
+<th>Week begins on</th>
+<th>System</th>
+</tr>
+</thead>
+<tr>
+<td>1 or omitted</td>
+<td>Sunday</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Monday</td>
+<td>1</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Monday</td>
+<td>1</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Tuesday</td>
+<td>1</td>
+</tr>
+<tr>
+<td>13</td>
+<td>Wednesday</td>
+<td>1</td>
+</tr>
+<tr>
+<td>14</td>
+<td>Thursday</td>
+<td>1</td>
+</tr>
+<tr>
+<td>15</td>
+<td>Friday</td>
+<td>1</td>
+</tr>
+<tr>
+<td>16</td>
+<td>Saturday</td>
+<td>1</td>
+</tr>
+<tr>
+<td>17</td>
+<td>Sunday</td>
+<td>1</td>
+</tr>
+<tr>
+<td>21</td>
+<td>Monday</td>
+<td>2</td>
+</tr>
+</table>
+                </section>
+            
+            
+                                                    <a href="#alt" class="sliding">&raquo; 2 related functions</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/nJIdwvjAgP1W7Q/; notranslate" title="">
+--
+--    WEEKNUM returns the week number following different standards
+--
+EVALUATE 
+ADDCOLUMNS ( 
+    TOPN ( 10, VALUES ( 'Date'&#91;Date] ), 'Date'&#91;Date], ASC ),
+    &quot;Day of week&quot;, FORMAT ( 'Date'&#91;Date], &quot;dddd&quot; ),
+    &quot;WEEKNUM&quot;,    WEEKNUM ( 'Date'&#91;Date] ) ,    -- Same as 1, week start on Sun
+    &quot;WEEKNUM  2&quot;, WEEKNUM ( 'Date'&#91;Date],  2 ), -- Week start on Mon
+    &quot;WEEKNUM 11&quot;, WEEKNUM ( 'Date'&#91;Date], 11 ), -- 11 to 17: 1st DOW Mon 
+    &quot;WEEKNUM 12&quot;, WEEKNUM ( 'Date'&#91;Date], 12 ), -- 11 to 17: 1st DOW Tue
+    &quot;WEEKNUM 13&quot;, WEEKNUM ( 'Date'&#91;Date], 13 ), -- 11 to 17: 1st DOW Wed
+    &quot;WEEKNUM 21&quot;, WEEKNUM ( 'Date'&#91;Date], 21 )  -- ISO 8601 Week 
+                                                -- (1st thursday of the year)
+)
+ORDER BY 'Date'&#91;Date]
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Date">Date</th>
+<th title="Day of week">Day of week</th>
+<th title="WEEKNUM">WEEKNUM</th>
+<th title="WEEKNUM  2">WEEKNUM  2</th>
+<th title="WEEKNUM 11">WEEKNUM 11</th>
+<th title="WEEKNUM 12">WEEKNUM 12</th>
+<th title="WEEKNUM 13">WEEKNUM 13</th>
+<th title="WEEKNUM 21">WEEKNUM 21</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-date">2005-01-01</td>
+<td class="col-string">Saturday</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+<td class="col-int">53</td>
+</tr>
+<tr>
+<td class="col-date">2005-01-02</td>
+<td class="col-string">Sunday</td>
+<td class="col-int">2</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+<td class="col-int">53</td>
+</tr>
+<tr>
+<td class="col-date">2005-01-03</td>
+<td class="col-string">Monday</td>
+<td class="col-int">2</td>
+<td class="col-int">2</td>
+<td class="col-int">2</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-date">2005-01-04</td>
+<td class="col-string">Tuesday</td>
+<td class="col-int">2</td>
+<td class="col-int">2</td>
+<td class="col-int">2</td>
+<td class="col-int">2</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-date">2005-01-05</td>
+<td class="col-string">Wednesday</td>
+<td class="col-int">2</td>
+<td class="col-int">2</td>
+<td class="col-int">2</td>
+<td class="col-int">2</td>
+<td class="col-int">2</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-date">2005-01-06</td>
+<td class="col-string">Thursday</td>
+<td class="col-int">2</td>
+<td class="col-int">2</td>
+<td class="col-int">2</td>
+<td class="col-int">2</td>
+<td class="col-int">2</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-date">2005-01-07</td>
+<td class="col-string">Friday</td>
+<td class="col-int">2</td>
+<td class="col-int">2</td>
+<td class="col-int">2</td>
+<td class="col-int">2</td>
+<td class="col-int">2</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-date">2005-01-08</td>
+<td class="col-string">Saturday</td>
+<td class="col-int">2</td>
+<td class="col-int">2</td>
+<td class="col-int">2</td>
+<td class="col-int">2</td>
+<td class="col-int">2</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-date">2005-01-09</td>
+<td class="col-string">Sunday</td>
+<td class="col-int">3</td>
+<td class="col-int">2</td>
+<td class="col-int">2</td>
+<td class="col-int">2</td>
+<td class="col-int">2</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-date">2005-01-10</td>
+<td class="col-string">Monday</td>
+<td class="col-int">3</td>
+<td class="col-int">3</td>
+<td class="col-int">3</td>
+<td class="col-int">2</td>
+<td class="col-int">2</td>
+<td class="col-int">2</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/weekday/" class="ajax" data-id="249">WEEKDAY</a></li>
+                                                    <li><a href="https://dax.guide/yearfrac/" class="ajax" data-id="254">YEARFRAC</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://dax.do/" target="_top" class="sam-click" data-campaign="dax-do" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/daxdo-58090.png" title="Run your DAX code with DAX.do" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/weeknum-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/weeknum-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

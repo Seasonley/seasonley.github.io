@@ -1,0 +1,349 @@
+
+            <header>
+                <h1 title="ISONORAFTER"><a href="https://dax.guide/isonorafter/" rel="bookmark">ISONORAFTER</a> <span class="smaller">DAX Function (Information)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                                                 &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>The IsOnOrAfter function is a boolean function that emulates the behavior of Start At clause and returns true for a row that meets all the conditions mentioned as parameters in this function.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    ISONORAFTER ( &lt;Value1&gt;, &lt;Value2&gt; [, [&lt;Order&gt;] [, &lt;Value1&gt;, &lt;Value2&gt; [, [&lt;Order&gt;] [, … ] ] ] ] )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Value1                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Repeatable<br></td>
+                                    <td class="definition">
+                                        <p>Expression to be compared with second parameter.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Value2                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Repeatable<br></td>
+                                    <td class="definition">
+                                        <p>Expression to be compared with first parameter.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Order                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Optional<br>Repeatable<br></td>
+                                    <td class="definition">
+                                        <p>The order to be applied. 0/FALSE/DESC &#8211; descending; 1/TRUE/ASC &#8211; ascending.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single <a href="https://dax.guide/dt/boolean/" class="ajax" data-id="264">boolean</a> value.</div></p>                    <p>Returns TRUE when the set of values passed as arguments in Value1 is &#8220;greater than or equal to&#8221; the set of values passed as arguments in Value2.</p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>The ISONORAFTER function emulates the behavior of a START AT clause in EVALUATE, and returns TRUE when all of the values passed as argument meet the condition specified.<br />
+Usually this function is evaluated in a filter condition during an iteration, applying it to the current row context. However, ISONORAFTER uses the existing evaluation context, so any row context must be created outside of ISONORAFTER, which is not an iterator.</p>
+<p>A blank value is matched with <a href="https://dax.guide/blank/" class="ajax" data-id="32">BLANK</a>(), in this comparison a blank and an empty string are considered as different values and an empty string is after a blank in ascending order.</p>
+                </section>
+            
+            
+                                                    <a href="#alt" class="sliding">&raquo; 1 related function</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <p>The following query filters the months greater than or equal to October 2008 by using the ISONORAFTER function in the filter condition of <a href="https://dax.guide/filter/" class="ajax" data-id="93">FILTER</a>.</p>
+<pre class="brush: dax; title: ; notranslate" title="">
+EVALUATE
+FILTER (
+    SUMMARIZE (
+        'Date',
+        'Date'&#91;Calendar Year],
+        'Date'&#91;Month],
+        'Date'&#91;Month Number]
+    ),
+    ISONORAFTER (
+        'Date'&#91;Calendar Year], &quot;CY 2008&quot;, ASC,
+        'Date'&#91;Month Number], 10, ASC
+    )
+)
+ORDER BY
+    'Date'&#91;Calendar Year],
+    'Date'&#91;Month Number]
+</pre>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/uJ8AgauDGufzCE/; notranslate" title="">
+--  ISAFTER and ISONORAFTER are useful functions to compare multiple columns
+--  A column is compared only if the previous columns have the same vale
+EVALUATE
+ADDCOLUMNS (
+    SUMMARIZE ( 'Product', 'Product'&#91;Category], 'Product'&#91;Subcategory] ),
+    &quot;OnOrAfterCameraAndCamcorders&quot;,
+        ISONORAFTER (
+            'Product'&#91;Category], &quot;Cameras and camcorders&quot;, ASC,
+            'Product'&#91;Subcategory], &quot;Digital Cameras&quot;, ASC
+        ),
+    &quot;AfterCameraAndCamcorders&quot;,
+        ISAFTER (
+            'Product'&#91;Category], &quot;Cameras and camcorders&quot;, ASC,
+            'Product'&#91;Subcategory], &quot;Digital Cameras&quot;, ASC )
+)
+ORDER BY
+    'Product'&#91;Category],
+    'Product'&#91;Subcategory]
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Category">Category</th>
+<th title="Subcategory">Subcategory</th>
+<th title="OnOrAfterCameraAndCamcorders">OnOrAfterCameraAndCamcorders</th>
+<th title="AfterCameraAndCamcorders">AfterCameraAndCamcorders</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Audio</td>
+<td class="col-string">Bluetooth Headphones</td>
+<td class="col-string">false</td>
+<td class="col-string">false</td>
+</tr>
+<tr>
+<td class="col-string">Audio</td>
+<td class="col-string">MP4&#038;MP3</td>
+<td class="col-string">false</td>
+<td class="col-string">false</td>
+</tr>
+<tr>
+<td class="col-string">Audio</td>
+<td class="col-string">Recording Pen</td>
+<td class="col-string">false</td>
+<td class="col-string">false</td>
+</tr>
+<tr>
+<td class="col-string">Cameras and camcorders</td>
+<td class="col-string">Camcorders</td>
+<td class="col-string">false</td>
+<td class="col-string">false</td>
+</tr>
+<tr>
+<td class="col-string">Cameras and camcorders</td>
+<td class="col-string">Cameras &#038; Camcorders Accessories</td>
+<td class="col-string">false</td>
+<td class="col-string">false</td>
+</tr>
+<tr>
+<td class="col-string">Cameras and camcorders</td>
+<td class="col-string">Digital Cameras</td>
+<td class="col-string">true</td>
+<td class="col-string">false</td>
+</tr>
+<tr>
+<td class="col-string">Cameras and camcorders</td>
+<td class="col-string">Digital SLR Cameras</td>
+<td class="col-string">true</td>
+<td class="col-string">true</td>
+</tr>
+<tr>
+<td class="col-string">Cell phones</td>
+<td class="col-string">Cell phones Accessories</td>
+<td class="col-string">true</td>
+<td class="col-string">true</td>
+</tr>
+<tr>
+<td class="col-string">Cell phones</td>
+<td class="col-string">Home &#038; Office Phones</td>
+<td class="col-string">true</td>
+<td class="col-string">true</td>
+</tr>
+<tr>
+<td class="col-string">Cell phones</td>
+<td class="col-string">Smart phones &#038; PDAs</td>
+<td class="col-string">true</td>
+<td class="col-string">true</td>
+</tr>
+<tr>
+<td class="col-string">Cell phones</td>
+<td class="col-string">Touch Screen Phones</td>
+<td class="col-string">true</td>
+<td class="col-string">true</td>
+</tr>
+<tr>
+<td class="col-string">Computers</td>
+<td class="col-string">Computers Accessories</td>
+<td class="col-string">true</td>
+<td class="col-string">true</td>
+</tr>
+<tr>
+<td class="col-string">Computers</td>
+<td class="col-string">Desktops</td>
+<td class="col-string">true</td>
+<td class="col-string">true</td>
+</tr>
+<tr>
+<td class="col-string">Computers</td>
+<td class="col-string">Laptops</td>
+<td class="col-string">true</td>
+<td class="col-string">true</td>
+</tr>
+<tr>
+<td class="col-string">Computers</td>
+<td class="col-string">Monitors</td>
+<td class="col-string">true</td>
+<td class="col-string">true</td>
+</tr>
+<tr>
+<td class="col-string">Computers</td>
+<td class="col-string">Printers, Scanners &#038; Fax</td>
+<td class="col-string">true</td>
+<td class="col-string">true</td>
+</tr>
+<tr>
+<td class="col-string">Computers</td>
+<td class="col-string">Projectors &#038; Screens</td>
+<td class="col-string">true</td>
+<td class="col-string">true</td>
+</tr>
+<tr>
+<td class="col-string">Games and Toys</td>
+<td class="col-string">Boxed Games</td>
+<td class="col-string">true</td>
+<td class="col-string">true</td>
+</tr>
+<tr>
+<td class="col-string">Games and Toys</td>
+<td class="col-string">Download Games</td>
+<td class="col-string">true</td>
+<td class="col-string">true</td>
+</tr>
+<tr>
+<td class="col-string">Home Appliances</td>
+<td class="col-string">Air Conditioners</td>
+<td class="col-string">true</td>
+<td class="col-string">true</td>
+</tr>
+<tr>
+<td class="col-string">Home Appliances</td>
+<td class="col-string">Coffee Machines</td>
+<td class="col-string">true</td>
+<td class="col-string">true</td>
+</tr>
+<tr>
+<td class="col-string">Home Appliances</td>
+<td class="col-string">Fans</td>
+<td class="col-string">true</td>
+<td class="col-string">true</td>
+</tr>
+<tr>
+<td class="col-string">Home Appliances</td>
+<td class="col-string">Lamps</td>
+<td class="col-string">true</td>
+<td class="col-string">true</td>
+</tr>
+<tr>
+<td class="col-string">Home Appliances</td>
+<td class="col-string">Microwaves</td>
+<td class="col-string">true</td>
+<td class="col-string">true</td>
+</tr>
+<tr>
+<td class="col-string">Home Appliances</td>
+<td class="col-string">Refrigerators</td>
+<td class="col-string">true</td>
+<td class="col-string">true</td>
+</tr>
+<tr>
+<td class="col-string">Home Appliances</td>
+<td class="col-string">Washers &#038; Dryers</td>
+<td class="col-string">true</td>
+<td class="col-string">true</td>
+</tr>
+<tr>
+<td class="col-string">Home Appliances</td>
+<td class="col-string">Water Heaters</td>
+<td class="col-string">true</td>
+<td class="col-string">true</td>
+</tr>
+<tr>
+<td class="col-string">Music, Movies and Audio Books</td>
+<td class="col-string">Movie DVD</td>
+<td class="col-string">true</td>
+<td class="col-string">true</td>
+</tr>
+<tr>
+<td class="col-string">TV and Video</td>
+<td class="col-string">Car Video</td>
+<td class="col-string">true</td>
+<td class="col-string">true</td>
+</tr>
+<tr>
+<td class="col-string">TV and Video</td>
+<td class="col-string">Home Theater System</td>
+<td class="col-string">true</td>
+<td class="col-string">true</td>
+</tr>
+<tr>
+<td class="col-string">TV and Video</td>
+<td class="col-string">Televisions</td>
+<td class="col-string">true</td>
+<td class="col-string">true</td>
+</tr>
+<tr>
+<td class="col-string">TV and Video</td>
+<td class="col-string">VCD &#038; DVD</td>
+<td class="col-string">true</td>
+<td class="col-string">true</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/isafter/" class="ajax" data-id="728">ISAFTER</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/guides/dax/?aff=learn-dax-promo" target="_top" class="sam-click" data-campaign="learn-dax-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/learn-dax-58090.png" title="Become a DAX guru" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/isonorafter-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/isonorafter-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

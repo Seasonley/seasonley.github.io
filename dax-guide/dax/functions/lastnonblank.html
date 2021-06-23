@@ -1,0 +1,242 @@
+
+            <header>
+                <h1 title="LASTNONBLANK"><a href="https://dax.guide/lastnonblank/" rel="bookmark">LASTNONBLANK</a> <span class="smaller">DAX Function (Time Intelligence)                    &nbsp;<a href="https://www.sqlbi.com/articles/understanding-context-transition/" class="feature icon icon-rinfo tooltip" data-tooltip-content="#contexttransition">Context Transition</a></span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                         &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns the last value in the column for which the expression has a non blank value.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    LASTNONBLANK ( &lt;ColumnName&gt;, &lt;Expression&gt; )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        ColumnName                                                                                                                            <br><a href="https://www.sqlbi.com/articles/row-context-and-filter-context-in-dax/" class="feature2 icon icon-rinfo tooltip"  data-tooltip-content="#iterator">Iterator</section>
+                                                                                                                                                            </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The source values.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Expression                                                                                    <br><a href="https://www.sqlbi.com/articles/row-context-and-filter-context-in-dax/" class="feature icon icon-rinfo tooltip"  data-tooltip-content="#rowcontext">Row Context</a>
+                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The expression to be evaluated for each value.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="table-ret">Table</span> A table with a single column.</div></p>                    <p>A table containing a single column and single row with the computed last value.</p>
+                </section>
+            
+                            <!--googleoff: snippet-->
+                <section id="notes" class="notes">
+                    <h2>Notes</h2>
+                    <p>In order to use any time intelligence calculation, you need a well-formed date table. The <i>Date</i> table must satisfy the following requirements:
+<ul>
+<li>All dates need to be present for the years required. The <i>Date</i> table must always start on January 1 and end on December 31, including all the days in this range. If the report only references fiscal years, then the date table must include all the dates from the first to the last day of a fiscal year. For example, if the fiscal year 2008 starts on July 1, 2007, then the <i>Date</i> table must include all the days from July 1, 2007 to June 30, 2008.</li>
+<li>There needs to be a column with a <i>DateTime</i> or <i>Date</i> data type containing unique values. This column is usually called <i>Date</i>. Even though the <i>Date</i> column is often used to define relationships with other tables, this is not required. Still, the <i>Date</i> column must contain unique values and should be referenced by the Mark as Date Table feature. In case the column also contains a time part, no time should be used – for example, the time should always be 12:00 am.</li>
+<li>The <i>Date</i> table must be marked as a date table in the model, in case the relationship between the <i>Date</i> table and any other table is not based on the <i>Date</i>.</li>
+</ul></p>
+                </section>
+                <!--googleon: snippet-->
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>The ColumnName argument can be any of the following:</p>
+<ul>
+<li>A reference to a column. Only in this case a context transition applies because the column reference is replaced by
+<ul>
+<li><a href="https://dax.guide/calculatetable/" class="ajax" data-id="34">CALCULATETABLE</a> ( <a href="https://dax.guide/distinct/" class="ajax" data-id="76">DISTINCT</a> ( &lt;ColumnName&gt; ) )</li>
+</ul>
+</li>
+<li>A table expression that returns a single column.</li>
+<li>A Boolean expression that defines a single-column.</li>
+</ul>
+<p>The result table includes only values that exist in the ColumnName column.<br />
+Even though this function is commonly used for dates, it can be applied to a column of any data type.</p>
+<p>The ColumnName argument must be a column. In certain conditions the function does not return an error passing a table with more than one column as ColumnName argument, but the behavior in that case is not supported and the error condition is not reported because it could break existing reports.</p>
+                </section>
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 3 related articles</a><br>
+                                                    <a href="#alt" class="sliding">&raquo; 3 related functions</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/wRwgnyX0sHXQf9/; notranslate" title="">
+--  FIRSTNONBLANK returns the first date where the 
+--  expression is not blank.
+--  LASTNONBLANK returns the last date where the 
+--  expression is not blank.
+EVALUATE
+CALCULATETABLE ( 
+    ADDCOLUMNS ( VALUES ( 'Date'&#91;Date] ), &quot;Sales Amount&quot;, &#91;Sales Amount] ),
+    'Date'&#91;Date] &gt;= DATE ( 2007, 2, 8 ) &amp;&amp;
+    'Date'&#91;Date] &lt;= DATE ( 2007, 2, 15 ) 
+)
+ORDER BY &#91;Date]
+
+EVALUATE
+CALCULATETABLE ( 
+    FIRSTNONBLANK ( 'Date'&#91;Date], &#91;Sales Amount] ),
+    'Date'&#91;Date] &gt;= DATE ( 2007, 2, 8 ) &amp;&amp;
+    'Date'&#91;Date] &lt;= DATE ( 2007, 2, 15 ) 
+)
+
+EVALUATE
+CALCULATETABLE ( 
+    LASTNONBLANK ( 'Date'&#91;Date], &#91;Sales Amount] ),
+    'Date'&#91;Date] &gt;= DATE ( 2007, 2, 8 ) &amp;&amp;
+    'Date'&#91;Date] &lt;= DATE ( 2007, 2, 15 ) 
+)
+
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Date">Date</th>
+<th title="Sales Amount">Sales Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-date">2007-02-08</td>
+<td class="col-float blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-date">2007-02-09</td>
+<td class="col-float">70,032.69</td>
+</tr>
+<tr>
+<td class="col-date">2007-02-10</td>
+<td class="col-float">27,487.70</td>
+</tr>
+<tr>
+<td class="col-date">2007-02-11</td>
+<td class="col-float">28,419.46</td>
+</tr>
+<tr>
+<td class="col-date">2007-02-12</td>
+<td class="col-float">64,176.29</td>
+</tr>
+<tr>
+<td class="col-date">2007-02-13</td>
+<td class="col-float">56,046.10</td>
+</tr>
+<tr>
+<td class="col-date">2007-02-14</td>
+<td class="col-float">26,612.37</td>
+</tr>
+<tr>
+<td class="col-date">2007-02-15</td>
+<td class="col-float blank">(Blank)</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th title="Date">Date</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-date">2007-02-09</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th title="Date">Date</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-date">2007-02-14</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about LASTNONBLANK in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/alternative-use-of-firstnonblank-and-lastnonblank/"  class="low-key"><strong>Alternative use of FIRSTNONBLANK and LASTNONBLANK</strong></a>
+                                <p>You might have used FIRSTNONBLANK and LASTNONBLANK in semi-additive measures, but you might not be aware that their use is not limited to time intelligence functions. This article shows alternative scenarios where these functions are useful. <a href="https://www.sqlbi.com/articles/alternative-use-of-firstnonblank-and-lastnonblank/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/semi-additive-measures-in-dax/"  class="low-key"><strong>Semi-Additive Measures in DAX</strong></a>
+                                <p>Values such as inventory and balance account, usually calculated from a snapshot table, require the use of semi-additive measures. In Multidimensional you have specific aggregation types, like LastChild and LastNonEmpty. In PowerPivot and Tabular you use DAX, which is flexible enough to implement any calculation, as described in this article. <a href="https://www.sqlbi.com/articles/semi-additive-measures-in-dax/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/optimizing-lastnonblank-and-lastnonblankvalue-calculations/"  class="low-key"><strong>Optimizing LASTNONBLANK and LASTNONBLANKVALUE calculations</strong></a>
+                                <p>This article explains the behavior of LASTNONBLANK, LASTNONBLANKVALUE, and similar DAX functions, also providing patterns for performance optimization. <a href="https://www.sqlbi.com/articles/optimizing-lastnonblank-and-lastnonblankvalue-calculations/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/firstdate/" class="ajax" data-id="96">FIRSTDATE</a></li>
+                                                    <li><a href="https://dax.guide/firstnonblank/" class="ajax" data-id="97">FIRSTNONBLANK</a></li>
+                                                    <li><a href="https://dax.guide/lastdate/" class="ajax" data-id="132">LASTDATE</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/guides/dax/?aff=learn-dax-promo" target="_top" class="sam-click" data-campaign="learn-dax-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/learn-dax-58090.png" title="Become a DAX guru" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/lastnonblank-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/lastnonblank-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

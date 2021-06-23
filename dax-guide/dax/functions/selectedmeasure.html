@@ -1,0 +1,184 @@
+
+            <header>
+                <h1 title="SELECTEDMEASURE"><a href="https://dax.guide/selectedmeasure/" rel="bookmark">SELECTEDMEASURE</a> <span class="smaller">DAX Function (Information)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                                                 &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                         &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns the measure that is currently being evaluated.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    SELECTEDMEASURE (  )                 </div>
+
+                                    <p>This expression has no parameters.</p>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single value of any type.</div></p>                    <p>A reference to the measure that is currently in context when the calculation item is evaluated.</p>
+                </section>
+            
+            
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 5 related articles</a><br>
+                                                    <a href="#alt" class="sliding">&raquo; 1 related function</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <pre class="brush: dax; title: ; notranslate" title="">
+-- Code of the calculation item Growth in the Time calc
+-- calculation group used in the following example.
+IF (
+    NOT ISSELECTEDMEASURE ( &#91;Pct over all prods] ),
+    VAR CY =
+        SELECTEDMEASURE ()
+    VAR PY =
+        CALCULATE (
+            SELECTEDMEASURE (),
+            SAMEPERIODLASTYEAR ( 'Date'&#91;Date] )
+        )
+    VAR Result = CY - PY
+    RETURN
+        Result
+)
+</pre>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/e9Qv6AVtQKA5j2/; notranslate" title="">
+--  SELECTEDMEASURE is a placeholder used in calculation items
+--  to represent the measure currently being modified by the
+--  calculation item.
+--
+--  During the application process, each reference to SELECTEDMEASURE
+--  is replaced with the currently selected measure
+DEFINE
+    MEASURE Sales&#91;Sales Amount] =
+        SUMX ( Sales, Sales&#91;Quantity] * Sales&#91;Net Price] )
+    MEASURE Sales&#91;Sales Quantity] =
+        SUM ( Sales&#91;Quantity] )
+EVALUATE
+SUMMARIZECOLUMNS (
+    'Date'&#91;Calendar Year],
+    'Time calc'&#91;Time calc],
+    TREATAS ( { &quot;CY 2008&quot; }, 'Date'&#91;Calendar Year] ),
+    &quot;Sales Amount&quot;, &#91;Sales Amount],
+    &quot;Quantity&quot;, &#91;Sales Quantity]
+)
+ORDER BY
+    'Date'&#91;Calendar Year],
+    'Time calc'&#91;Time calc]
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Calendar Year">Calendar Year</th>
+<th title="Time calc">Time calc</th>
+<th title="Sales Amount">Sales Amount</th>
+<th title="Quantity">Quantity</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-date">2008-01-01</td>
+<td class="col-string">Current</td>
+<td class="col-float">9,927,582.99</td>
+<td class="col-float">40,226.00</td>
+</tr>
+<tr>
+<td class="col-date">2008-01-01</td>
+<td class="col-string">Growth</td>
+<td class="col-float">-1,382,363.13</td>
+<td class="col-float">-4,084.00</td>
+</tr>
+<tr>
+<td class="col-date">2008-01-01</td>
+<td class="col-string">Growth %</td>
+<td class="col-float">-0.12</td>
+<td class="col-float">-0.09</td>
+</tr>
+<tr>
+<td class="col-date">2008-01-01</td>
+<td class="col-string">Prev Year</td>
+<td class="col-float">11,309,946.12</td>
+<td class="col-float">44,310.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about SELECTEDMEASURE in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/introducing-calculation-groups/"  class="low-key"><strong>Introducing Calculation Groups</strong></a>
+                                <p>This article is the first of a series dedicated to calculation groups in DAX. This introduction explains the capabilities of this feature and how to create calculation groups in a Tabular model. <a href="https://www.sqlbi.com/articles/introducing-calculation-groups/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/understanding-calculation-groups/"  class="low-key"><strong>Understanding Calculation Groups</strong></a>
+                                <p>This article explores the properties of calculation groups in detail and then it describes how a calculation item is applied to a measure. Before starting, we suggest you read the previous article that introduces calculation groups. <a href="https://www.sqlbi.com/articles/understanding-calculation-groups/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/understanding-the-application-of-calculation-items/"  class="low-key"><strong>Understanding the Application of Calculation Items</strong></a>
+                                <p>This article explains how calculation items are applied to measure references, and it is part of a series dedicated to calculation groups in DAX. Before starting, we suggest you read the previous articles in this series. <a href="https://www.sqlbi.com/articles/understanding-the-application-of-calculation-items/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/understanding-calculation-group-precedence/"  class="low-key"><strong>Understanding Calculation Group Precedence</strong></a>
+                                <p>This article explains the precedence of calculation groups in DAX, needed whenever multiple calculation groups are present within the same model. Before starting, we suggest you read the previous articles in this series. <a href="https://www.sqlbi.com/articles/understanding-calculation-group-precedence/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/avoiding-pitfalls-in-calculation-groups-precedence/"  class="low-key"><strong>Avoiding Pitfalls in Calculation Groups Precedence</strong></a>
+                                <p>This article describes in which conditions the precedence of calculation groups might return unexpected results when filtering calculation items in both the visuals and the measures present in a report. <a href="https://www.sqlbi.com/articles/avoiding-pitfalls-in-calculation-groups-precedence/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/selectedmeasurename/" class="ajax" data-id="207">SELECTEDMEASURENAME</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/mastering-dax-video-course/?aff=mdax-promo" target="_top" class="sam-click" data-campaign="mdax-video-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/mdax-58090.jpg" title="Mastering DAX Video Course" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/selectedmeasure-function-dax ?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/selectedmeasure-function-dax </a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

@@ -1,0 +1,252 @@
+
+            <header>
+                <h1 title="NATURALINNERJOIN"><a href="https://dax.guide/naturalinnerjoin/" rel="bookmark">NATURALINNERJOIN</a> <span class="smaller">DAX Function (Table manipulation)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                                            </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Joins the Left table with right table using the Inner Join semantics.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    NATURALINNERJOIN ( &lt;LeftTable&gt;, &lt;RightTable&gt; )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        LeftTable                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The Left-side table expression to be used for join.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        RightTable                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The Right-side table expression to be used for join.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="table-ret">Table</span> An entire table or a table with one or more columns.</div></p>                    <p>A table which includes only rows for which the values in the common columns specified are present in both tables. The table returned will have the common columns from the left table and other columns from both the tables. </p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>There is no sort order guarantee for the results.<br />
+Columns being joined on must have the same data type and the same name in both tables.<br />
+The columns used in the join condition that correspond to physical columns of the data model must also have the same data lineage; two columns with the same name and different data lineage generate an error.<br />
+Two columns with the same data lineage must have also the same full column name, which includes both table name and column name; otherwise, they are not matched for the join.<br />
+Strict comparison semantics are used during the join. There is no type coercion; for example, 1 does not equal 1.0. </p>
+                </section>
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 2 related articles</a><br>
+                                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/5b6ztqKKtqTBWM/; notranslate" title="">
+--  NATURALLEFTOUTERJOIN performs a left outer join between two
+--  tables, joining columns with the same name. 
+--  NATURALINNERJOIN performs an inner join.
+--  Corresponding columns must both have the same lineage, or no lineage.
+DEFINE
+    VAR StoresByCountry = 
+        SELECTCOLUMNS (
+            TREATAS ( { &quot;Armenia&quot;, &quot;Australia&quot;, &quot;Denmark&quot; }, Store&#91;CountryRegion] ),
+            &quot;Country&quot;, Store&#91;CountryRegion] &amp; &quot;&quot;,
+            &quot;NumOfStores&quot;, CALCULATE ( COUNTROWS ( Store ) )
+        )
+    VAR CustomersByCountry = 
+        SELECTCOLUMNS (
+            TREATAS ( { &quot;Armenia&quot;, &quot;Australia&quot;, &quot;Denmark&quot; }, Customer&#91;CountryRegion] ),
+            &quot;Country&quot;, Customer&#91;CountryRegion] &amp; &quot;&quot;,
+            &quot;NumOfCustomer&quot;, CALCULATE ( COUNTROWS ( Customer ) )
+        )
+        
+EVALUATE StoresByCountry
+
+EVALUATE CustomersByCountry
+
+EVALUATE
+    NATURALLEFTOUTERJOIN ( StoresByCountry, CustomersByCountry )
+    
+EVALUATE
+    NATURALLEFTOUTERJOIN ( CustomersByCountry, StoresByCountry )
+    
+EVALUATE
+    NATURALINNERJOIN ( StoresByCountry, CustomersByCountry )
+
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Country">Country</th>
+<th title="NumOfStores">NumOfStores</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Armenia</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Australia</td>
+<td class="col-int">3</td>
+</tr>
+<tr>
+<td class="col-string">Denmark</td>
+<td class="col-int">1</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th title="Country">Country</th>
+<th title="NumOfCustomer">NumOfCustomer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Armenia</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Australia</td>
+<td class="col-int">3,631</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th title="Country">Country</th>
+<th title="NumOfStores">NumOfStores</th>
+<th title="NumOfCustomer">NumOfCustomer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Armenia</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Australia</td>
+<td class="col-int">3</td>
+<td class="col-int">3,631</td>
+</tr>
+<tr>
+<td class="col-string">Denmark</td>
+<td class="col-int">1</td>
+<td class="col-int blank">(Blank)</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th title="Country">Country</th>
+<th title="NumOfCustomer">NumOfCustomer</th>
+<th title="NumOfStores">NumOfStores</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Armenia</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Australia</td>
+<td class="col-int">3,631</td>
+<td class="col-int">3</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th title="Country">Country</th>
+<th title="NumOfStores">NumOfStores</th>
+<th title="NumOfCustomer">NumOfCustomer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Armenia</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Australia</td>
+<td class="col-int">3</td>
+<td class="col-int">3,631</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about NATURALINNERJOIN in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/from-sql-to-dax-joining-tables/"  class="low-key"><strong>From SQL to DAX: Joining Tables</strong></a>
+                                <p>In SQL there are different types of JOIN, available for different purposes. This article shows the equivalent syntaxes supported in DAX and it was updated in May 2018. <a href="https://www.sqlbi.com/articles/from-sql-to-dax-joining-tables/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/lookup-multiple-values-in-dax/"  class="low-key"><strong>Lookup multiple values in DAX</strong></a>
+                                <p>This article describes different techniques to retrieve multiple values from a lookup table in DAX, improving code readability and performance. <a href="https://www.sqlbi.com/articles/lookup-multiple-values-in-dax/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/guides/dax/?aff=learn-dax-promo" target="_top" class="sam-click" data-campaign="learn-dax-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/learn-dax-58090.png" title="Become a DAX guru" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/naturalinnerjoin-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/naturalinnerjoin-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

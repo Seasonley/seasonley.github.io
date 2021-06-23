@@ -1,0 +1,222 @@
+
+            <header>
+                <h1 title="ROLLUPGROUP"><a href="https://dax.guide/rollupgroup/" rel="bookmark">ROLLUPGROUP</a> <span class="smaller">DAX Function (Table manipulation)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                                                 &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Identifies a subset of columns specified in the call to <a href="https://dax.guide/summarize/" class="ajax" data-id="220">SUMMARIZE</a> function that should be used to calculate groups of subtotals.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    ROLLUPGROUP ( &lt;GroupBy_ColumnName&gt; [, &lt;GroupBy_ColumnName&gt; [, … ] ] )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        GroupBy_ColumnName                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Repeatable<br></td>
+                                    <td class="definition">
+                                        <p>A column to be returned.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p></p>                    <p>The function does not return a value. It only specifies the set of columns to be subtotaled. </p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>The <a href="https://dax.guide/rollup/" class="ajax" data-id="193">ROLLUP</a> function is used exclusively within <a href="https://dax.guide/summarize/" class="ajax" data-id="220">SUMMARIZE</a> or <a href="https://dax.guide/addmissingitems/" class="ajax" data-id="19">ADDMISSINGITEMS</a>.</p>
+<p>ROLLUPGROUP can be used to calculate groups of subtotals. If used within <a href="https://dax.guide/summarize/" class="ajax" data-id="220">SUMMARIZE</a> in-place of <a href="https://dax.guide/rollup/" class="ajax" data-id="193">ROLLUP</a>, ROLLUPGROUP will yield the same result by adding roll-up rows to the result on the GroupBy_ColumnName columns. However, the addition of ROLLUPGROUP() inside a <a href="https://dax.guide/rollup/" class="ajax" data-id="193">ROLLUP</a> syntax can be used to prevent partial subtotals in roll-up rows.</p>
+                </section>
+            
+            
+                                                    <a href="#alt" class="sliding">&raquo; 3 related functions</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/3pAIEHDltCv4sM/; notranslate" title="">
+--  Using ROLLUPGROUP in SUMMARIZE you can reduce the number 
+--  of subtotals by grouping together several columns.
+EVALUATE
+CALCULATETABLE (
+    SUMMARIZE (
+        Sales,
+        ROLLUP ( ROLLUPGROUP ( 'Date'&#91;Calendar Year], Customer&#91;Education] ) ),
+        &quot;Year total&quot;, ISSUBTOTAL ( 'Date'&#91;Calendar Year] ),
+        &quot;Education total&quot;, ISSUBTOTAL ( Customer&#91;Education] ),
+        &quot;Amount&quot;, &#91;Sales Amount]
+    ),
+    TREATAS ( { &quot;CY 2008&quot;, &quot;CY 2009&quot; }, 'Date'&#91;Calendar Year] ),
+    TREATAS ( { &quot;Bachelors&quot;, &quot;Partial College&quot; }, Customer&#91;Education] )
+)
+ORDER BY
+    &#91;Year total],
+    &#91;Calendar Year]
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Calendar Year">Calendar Year</th>
+<th title="Education">Education</th>
+<th title="Year total">Year total</th>
+<th title="Education total">Education total</th>
+<th title="Amount">Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-date">2008-01-01</td>
+<td class="col-string">Bachelors</td>
+<td class="col-string">false</td>
+<td class="col-string">false</td>
+<td class="col-float">429,554.13</td>
+</tr>
+<tr>
+<td class="col-date">2008-01-01</td>
+<td class="col-string">Partial College</td>
+<td class="col-string">false</td>
+<td class="col-string">false</td>
+<td class="col-float">317,811.40</td>
+</tr>
+<tr>
+<td class="col-date">2009-01-01</td>
+<td class="col-string">Bachelors</td>
+<td class="col-string">false</td>
+<td class="col-string">false</td>
+<td class="col-float">189,037.54</td>
+</tr>
+<tr>
+<td class="col-date">2009-01-01</td>
+<td class="col-string">Partial College</td>
+<td class="col-string">false</td>
+<td class="col-string">false</td>
+<td class="col-float">173,317.03</td>
+</tr>
+<tr>
+<td class="col-date blank">(Blank)</td>
+<td class="col-string blank">(Blank)</td>
+<td class="col-string">true</td>
+<td class="col-string">true</td>
+<td class="col-float">1,109,720.09</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/XNazbwl7KRAFkP/; notranslate" title="">
+--  ROLLUPGROUP can also be used in SUMMARIZECOLUMNS with the same
+--  goal: grouping columns together to reduce the number of subtotals.
+EVALUATE
+SUMMARIZECOLUMNS (
+    ROLLUPADDISSUBTOTAL (
+        ROLLUPGROUP ( 'Date'&#91;Calendar Year], Customer&#91;Education] ),
+        &quot;Year total&quot;
+    ),
+    TREATAS ( { &quot;CY 2008&quot;, &quot;CY 2009&quot; }, 'Date'&#91;Calendar Year] ),
+    TREATAS ( { &quot;Bachelors&quot;, &quot;Partial College&quot; }, Customer&#91;Education] ),
+    &quot;Amount&quot;, &#91;Sales Amount]
+)
+ORDER BY
+    &#91;Year total],
+    &#91;Calendar Year],
+    &#91;Education]
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Calendar Year">Calendar Year</th>
+<th title="Education">Education</th>
+<th title="Year total">Year total</th>
+<th title="Amount">Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-date">2008-01-01</td>
+<td class="col-string">Bachelors</td>
+<td class="col-string">false</td>
+<td class="col-float">429,554.13</td>
+</tr>
+<tr>
+<td class="col-date">2008-01-01</td>
+<td class="col-string">Partial College</td>
+<td class="col-string">false</td>
+<td class="col-float">317,811.40</td>
+</tr>
+<tr>
+<td class="col-date">2009-01-01</td>
+<td class="col-string">Bachelors</td>
+<td class="col-string">false</td>
+<td class="col-float">189,037.54</td>
+</tr>
+<tr>
+<td class="col-date">2009-01-01</td>
+<td class="col-string">Partial College</td>
+<td class="col-string">false</td>
+<td class="col-float">173,317.03</td>
+</tr>
+<tr>
+<td class="col-date blank">(Blank)</td>
+<td class="col-string blank">(Blank)</td>
+<td class="col-string">true</td>
+<td class="col-float">1,109,720.09</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/rollup/" class="ajax" data-id="193">ROLLUP</a></li>
+                                                    <li><a href="https://dax.guide/summarize/" class="ajax" data-id="220">SUMMARIZE</a></li>
+                                                    <li><a href="https://dax.guide/rollupissubtotal/" class="ajax" data-id="196">ROLLUPISSUBTOTAL</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://dax.guide/" target="_top" class="sam-click" data-campaign="dax-guide" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/daxguide-58090.png" title="DAX Guide" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/rollupgroup-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/rollupgroup-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

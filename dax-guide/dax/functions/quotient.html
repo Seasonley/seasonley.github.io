@@ -1,0 +1,311 @@
+
+            <header>
+                <h1 title="QUOTIENT"><a href="https://dax.guide/quotient/" rel="bookmark">QUOTIENT</a> <span class="smaller">DAX Function (Math and Trig)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                                                 &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                                                 &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns the integer portion of a division.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    QUOTIENT ( &lt;Numerator&gt;, &lt;Denominator&gt; )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Numerator                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The dividend.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Denominator                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The divisor.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single <a href="https://dax.guide/dt/integer/" class="ajax" data-id="257">integer</a> value.</div></p>                    <p>Returns only the integer portion of the division result.</p>
+                </section>
+            
+            
+            
+            
+                                                    <a href="#alt" class="sliding">&raquo; 3 related functions</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <pre class="brush: dax; title: ; notranslate" title="">
+QUOTIENT ( 0, 2 ) -- returns 0
+QUOTIENT ( 1, 2 ) -- returns 0
+QUOTIENT ( 4, 2 ) -- returns 2
+QUOTIENT ( 5, 2 ) -- returns 2
+QUOTIENT ( 6, 2 ) -- returns 3
+QUOTIENT ( 6, 3 ) -- returns 2
+QUOTIENT ( 7, 3 ) -- returns 2
+</pre>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/KEUvvhtSx3NNqX/; notranslate" title="">
+--  MOD returns the remainder of an integer division by A and B
+--  whereas QUOTIENT returns the integer part of the quotient
+DEFINE
+    VAR Val1 = SELECTCOLUMNS ( GENERATESERIES ( 3, 6, 1 ), &quot;Val1&quot;, &#91;Value] )
+    VAR Val2 = SELECTCOLUMNS ( GENERATESERIES ( 2, 4, 1 ), &quot;Val2&quot;, &#91;Value] )
+EVALUATE
+ADDCOLUMNS ( 
+    CROSSJOIN ( Val1, Val2 ),
+    &quot;Division&quot;, DIVIDE   ( &#91;Val1], &#91;Val2] ),
+    &quot;QUOTIENT&quot;, QUOTIENT ( &#91;Val1], &#91;Val2] ),
+    &quot;MOD&quot;,      MOD      ( &#91;Val1], &#91;Val2] ),
+    &quot;Mod/Div&quot;,  MOD ( &#91;Val1], &#91;Val2] ) / &#91;Val2]
+)
+ORDER BY &#91;Val1] DESC, &#91;Val2] ASC
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Val1">Val1</th>
+<th title="Val2">Val2</th>
+<th title="Division">Division</th>
+<th title="QUOTIENT">QUOTIENT</th>
+<th title="MOD">MOD</th>
+<th title="Mod/Div">Mod/Div</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-int">6</td>
+<td class="col-int">2</td>
+<td class="col-float">3.00</td>
+<td class="col-int">3</td>
+<td class="col-int">0</td>
+<td class="col-float">0.00</td>
+</tr>
+<tr>
+<td class="col-int">6</td>
+<td class="col-int">3</td>
+<td class="col-float">2.00</td>
+<td class="col-int">2</td>
+<td class="col-int">0</td>
+<td class="col-float">0.00</td>
+</tr>
+<tr>
+<td class="col-int">6</td>
+<td class="col-int">4</td>
+<td class="col-float">1.50</td>
+<td class="col-int">1</td>
+<td class="col-int">2</td>
+<td class="col-float">0.50</td>
+</tr>
+<tr>
+<td class="col-int">5</td>
+<td class="col-int">2</td>
+<td class="col-float">2.50</td>
+<td class="col-int">2</td>
+<td class="col-int">1</td>
+<td class="col-float">0.50</td>
+</tr>
+<tr>
+<td class="col-int">5</td>
+<td class="col-int">3</td>
+<td class="col-float">1.67</td>
+<td class="col-int">1</td>
+<td class="col-int">2</td>
+<td class="col-float">0.67</td>
+</tr>
+<tr>
+<td class="col-int">5</td>
+<td class="col-int">4</td>
+<td class="col-float">1.25</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+<td class="col-float">0.25</td>
+</tr>
+<tr>
+<td class="col-int">4</td>
+<td class="col-int">2</td>
+<td class="col-float">2.00</td>
+<td class="col-int">2</td>
+<td class="col-int">0</td>
+<td class="col-float">0.00</td>
+</tr>
+<tr>
+<td class="col-int">4</td>
+<td class="col-int">3</td>
+<td class="col-float">1.33</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+<td class="col-float">0.33</td>
+</tr>
+<tr>
+<td class="col-int">4</td>
+<td class="col-int">4</td>
+<td class="col-float">1.00</td>
+<td class="col-int">1</td>
+<td class="col-int">0</td>
+<td class="col-float">0.00</td>
+</tr>
+<tr>
+<td class="col-int">3</td>
+<td class="col-int">2</td>
+<td class="col-float">1.50</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+<td class="col-float">0.50</td>
+</tr>
+<tr>
+<td class="col-int">3</td>
+<td class="col-int">3</td>
+<td class="col-float">1.00</td>
+<td class="col-int">1</td>
+<td class="col-int">0</td>
+<td class="col-float">0.00</td>
+</tr>
+<tr>
+<td class="col-int">3</td>
+<td class="col-int">4</td>
+<td class="col-float">0.75</td>
+<td class="col-int">0</td>
+<td class="col-int">3</td>
+<td class="col-float">0.75</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/9IeQ8zGKb57d8W/; notranslate" title="">
+--  MOD returns the remainder of an integer division by A and B
+--  whereas QUOTIENT returns the integer part of the quotient.
+DEFINE
+    VAR Val1 = SELECTCOLUMNS ( GENERATESERIES ( 0.5, 3.3, 1.6 ), &quot;Val1&quot;, &#91;Value] )
+    VAR Val2 = SELECTCOLUMNS ( GENERATESERIES ( 0.5, 2.8, 1.1 ), &quot;Val2&quot;, &#91;Value] )
+EVALUATE
+ADDCOLUMNS ( 
+    CROSSJOIN ( Val1, Val2 ),
+    &quot;Division&quot;, DIVIDE   ( &#91;Val1], &#91;Val2] ),
+    &quot;QUOTIENT&quot;, QUOTIENT ( &#91;Val1], &#91;Val2] ),
+    &quot;MOD&quot;,      MOD      ( &#91;Val1], &#91;Val2] ),
+    &quot;Mod/Div&quot;,  MOD ( &#91;Val1], &#91;Val2] ) / &#91;Val2]
+)
+ORDER BY &#91;Val1] DESC, &#91;Val2] ASC
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Val1">Val1</th>
+<th title="Val2">Val2</th>
+<th title="Division">Division</th>
+<th title="QUOTIENT">QUOTIENT</th>
+<th title="MOD">MOD</th>
+<th title="Mod/Div">Mod/Div</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-float">2.10</td>
+<td class="col-float">0.50</td>
+<td class="col-float">4.20</td>
+<td class="col-int">4</td>
+<td class="col-float">0.10</td>
+<td class="col-float">0.20</td>
+</tr>
+<tr>
+<td class="col-float">2.10</td>
+<td class="col-float">1.60</td>
+<td class="col-float">1.31</td>
+<td class="col-int">1</td>
+<td class="col-float">0.50</td>
+<td class="col-float">0.31</td>
+</tr>
+<tr>
+<td class="col-float">2.10</td>
+<td class="col-float">2.70</td>
+<td class="col-float">0.78</td>
+<td class="col-int">0</td>
+<td class="col-float">2.10</td>
+<td class="col-float">0.78</td>
+</tr>
+<tr>
+<td class="col-float">0.50</td>
+<td class="col-float">0.50</td>
+<td class="col-float">1.00</td>
+<td class="col-int">1</td>
+<td class="col-float">0.00</td>
+<td class="col-float">0.00</td>
+</tr>
+<tr>
+<td class="col-float">0.50</td>
+<td class="col-float">1.60</td>
+<td class="col-float">0.31</td>
+<td class="col-int">0</td>
+<td class="col-float">0.50</td>
+<td class="col-float">0.31</td>
+</tr>
+<tr>
+<td class="col-float">0.50</td>
+<td class="col-float">2.70</td>
+<td class="col-float">0.19</td>
+<td class="col-int">0</td>
+<td class="col-float">0.50</td>
+<td class="col-float">0.19</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/divide/" class="ajax" data-id="78">DIVIDE</a></li>
+                                                    <li><a href="https://dax.guide/mod/" class="ajax" data-id="152">MOD</a></li>
+                                                    <li><a href="https://dax.guide/lcm/" class="ajax" data-id="134">LCM</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/guides/dax/?aff=learn-dax-promo" target="_top" class="sam-click" data-campaign="learn-dax-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/learn-dax-58090.png" title="Become a DAX guru" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/quotient-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/quotient-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

@@ -1,0 +1,126 @@
+
+            <header>
+                <h1 title="CALENDARAUTO"><a href="https://dax.guide/calendarauto/" rel="bookmark">CALENDARAUTO</a> <span class="smaller">DAX Function (Date and Time)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                         &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns a table with one column of dates calculated from the model automatically.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    CALENDARAUTO (  [&lt;FiscalYearEndMonth&gt;] )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        FiscalYearEndMonth                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Optional<br></td>
+                                    <td class="definition">
+                                        <p>An integer from 1 to 12 representing the end month of fiscal year.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="table-ret">Table</span> A table with a single column.</div></p>                    <p>Returns a table with a single column named “Date” containing a contiguous set of dates. The range of dates is calculated automatically based on data in the model.</p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>By default, the fiscal year ends in December (month 12).<br />
+CALENDARAUTO ignores calculated tables and calculated columns searching for date columns. Only the imported columns are analyzed to search for date columns.</p>
+<p>Internally, CALENDARAUTO calls <a href="https://dax.guide/calendar/" class="ajax" data-id="35">CALENDAR</a> providing a date range that include all the days in the range of years referenced by data in the model, according to the following rules:</p>
+<ul>
+<li>The earliest date in the model which is not in a calculated column or calculated table is taken as the MinDate.</li>
+<li>The latest date in the model which is not in a calculated column or calculated table is taken as the MaxDate.</li>
+<li>The date range returned is dates between the beginning of the fiscal year associated with MinDate and the end of the fiscal year associated with MaxDate.</li>
+</ul>
+<p>An error is returned if the model does not contain any datetime values which are not in calculated columns or calculated tables.</p>
+                </section>
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 1 related article</a><br>
+                                                    <a href="#alt" class="sliding">&raquo; 1 related function</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <p>In this example, the MinDate and MaxDate in the data model are July 1, 2010 and June 30, 2019.</p>
+<p>CALENDARAUTO ( ) will return all dates between January 1, 2010 and December 31, 2019.</p>
+<p>CALENDARAUTO ( 3 ) will return all dates between April 1, 2010 and March 31, 2020.</p>
+<p>The following expression will return all dates between January 1, 2015 and March 31, 2020.</p>
+<pre class="brush: dax; title: ; notranslate" title="">
+FILTER ( 
+    CALENDARAUTO ( 3 ),
+    YEAR ( &#91;Date] ) &gt;= 2015
+)
+</pre>
+<p>The following expression creates a simple calculated date table.</p>
+<pre class="brush: dax; title: ; notranslate" title="">
+ADDCOLUMNS (
+    CALENDARAUTO (),
+    &quot;Year&quot;, YEAR ( &#91;Date] ),
+    &quot;Quarter&quot;, &quot;Q&quot; &amp; QUARTER ( &#91;Date] ),
+    &quot;Month&quot;, FORMAT ( &#91;Date], &quot;mmmm&quot; ),
+    &quot;Month Number&quot;, MONTH ( &#91;Date] )
+)
+ORDER BY &#91;Date] ASC
+</pre>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about CALENDARAUTO in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/creating-a-simple-date-table-in-dax/"  class="low-key"><strong>Creating a simple date table in DAX</strong></a>
+                                <p>This article shows how to build a basic date table using a calculated table and DAX. <a href="https://www.sqlbi.com/articles/creating-a-simple-date-table-in-dax/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/calendar/" class="ajax" data-id="35">CALENDAR</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/data-modeling-for-power-bi-video-course/?aff=mod-promo" target="_top" class="sam-click" data-campaign="mod-video-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/mod-58090.png" title="Data Modeling for Power BI" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/calendarauto-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/calendarauto-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

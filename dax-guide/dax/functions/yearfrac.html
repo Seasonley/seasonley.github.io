@@ -1,0 +1,263 @@
+
+            <header>
+                <h1 title="YEARFRAC"><a href="https://dax.guide/yearfrac/" rel="bookmark">YEARFRAC</a> <span class="smaller">DAX Function (Date and Time)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                         &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns the year fraction representing the number of whole days between start_date and end_date.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    YEARFRAC ( &lt;StartDate&gt;, &lt;EndDate&gt; [, &lt;Basis&gt;] )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        StartDate                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The start date in datetime format.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        EndDate                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The end date in datetime format.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Basis                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Optional<br></td>
+                                    <td class="definition">
+                                        <p>The type of day count basis to use.<br />
+0 (default) : US (NASD) 30/360<br />
+1 : Actual/actual<br />
+2 : Actual/360<br />
+3 : Actual/365<br />
+4 : European 30/360</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single <a href="https://dax.guide/dt/decimal/" class="ajax" data-id="258">decimal</a> value.</div></p>                    <p>Fraction of the year.</p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>If the argument is a string, it is translated into a DateTime value using the same rules applied by the <a href="https://dax.guide/datevalue/" class="ajax" data-id="72">DATEVALUE</a> function.</p>
+<p>YEARFRAC can be used to compute the current age of a customer based on the difference between the current day and the customer&#8217;s birthdate, but because of a bug, it is suggested to use another technique (also faster) based on quotient and floor, as described in related content.</p>
+                </section>
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 1 related article</a><br>
+                                                    <a href="#alt" class="sliding">&raquo; 3 related functions</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/tEsAPbIRk0vStU/; notranslate" title="">
+--  DATEDIFF computes the delta between two dates, using different units of measure
+--  YEAFRAC returns the delta as a fraction (in years) 
+EVALUATE
+VAR StartDate =  DATE ( 2011, 01, 01 )
+VAR EndDate =    DATE ( 2012, 12, 15 )
+RETURN
+    { 
+        ( &quot;DATEDIFF Year&quot;,     DATEDIFF ( StartDate, EndDate, YEAR ) ),
+        ( &quot;DATEDIFF Quarter&quot;,  DATEDIFF ( StartDate, EndDate, QUARTER ) ),
+        ( &quot;DATEDIFF Month&quot;,    DATEDIFF ( StartDate, EndDate, MONTH ) ),
+        ( &quot;DATEDIFF Day&quot;,      DATEDIFF ( StartDate, EndDate, DAY ) ),
+        ( &quot;Subtraction&quot;,       INT ( EndDate - StartDate ) ),
+        ( &quot;YEARFRAC&quot;,          YEARFRAC ( StartDate, EndDate ) )
+    }    
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Value1">Value1</th>
+<th title="Value2">Value2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">DATEDIFF Year</td>
+<td class="col-float">1.00</td>
+</tr>
+<tr>
+<td class="col-string">DATEDIFF Quarter</td>
+<td class="col-float">7.00</td>
+</tr>
+<tr>
+<td class="col-string">DATEDIFF Month</td>
+<td class="col-float">23.00</td>
+</tr>
+<tr>
+<td class="col-string">DATEDIFF Day</td>
+<td class="col-float">714.00</td>
+</tr>
+<tr>
+<td class="col-string">Subtraction</td>
+<td class="col-float">714.00</td>
+</tr>
+<tr>
+<td class="col-string">YEARFRAC</td>
+<td class="col-float">1.96</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/xtUWQsWbsR2LPo/; notranslate" title="">
+--  The default of YEARFRAC is &quot;US 30/360&quot;
+EVALUATE
+VAR StartDate =  DATE ( 2010, 01, 01 )
+VAR EndDate =    DATE ( 2011, 12, 15 )
+RETURN
+    { 
+        ( &quot;YEARFRAC&quot;,       YEARFRAC ( StartDate, EndDate ) ),
+        ( &quot;Number of days&quot;, INT ( EndDate - StartDate ) ),
+        ( &quot;YEARFRAC *365&quot;,  YEARFRAC ( StartDate, EndDate ) * 365 )
+    }  
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Value1">Value1</th>
+<th title="Value2">Value2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">YEARFRAC</td>
+<td class="col-float">1.96</td>
+</tr>
+<tr>
+<td class="col-string">Number of days</td>
+<td class="col-float">713.00</td>
+</tr>
+<tr>
+<td class="col-string">YEARFRAC *365</td>
+<td class="col-float">713.78</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/ITSP2GWQ4vSqUX/; notranslate" title="">
+--  Different standards produce different fractions
+--  YEAFRAC is intended as a financial function, following the required
+--  standard of 30/360.
+EVALUATE
+VAR StartDate =  DATE ( 2011, 01, 01 )
+VAR EndDate =    DATE ( 2011, 12, 15 )
+RETURN
+    { 
+        ( &quot;YEARFRAC US 30/360&quot;,       FORMAT ( YEARFRAC ( StartDate, EndDate, 0 ), &quot;0.0000&quot; ) ),
+        ( &quot;YEARFRAC Actual / Actual&quot;, FORMAT ( YEARFRAC ( StartDate, EndDate, 1 ), &quot;0.0000&quot; ) ),
+        ( &quot;YEARFRAC Actual / 360&quot;,    FORMAT ( YEARFRAC ( StartDate, EndDate, 2 ), &quot;0.0000&quot; ) ),
+        ( &quot;YEARFRAC Actual / 365&quot;,    FORMAT ( YEARFRAC ( StartDate, EndDate, 3 ), &quot;0.0000&quot; ) ),
+        ( &quot;YEARFRAC EU 30/360&quot;,       FORMAT ( YEARFRAC ( StartDate, EndDate, 4 ), &quot;0.0000&quot; ) )
+    }    
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Value1">Value1</th>
+<th title="Value2">Value2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">YEARFRAC US 30/360</td>
+<td class="col-string">0.9556</td>
+</tr>
+<tr>
+<td class="col-string">YEARFRAC Actual / Actual</td>
+<td class="col-string">0.9534</td>
+</tr>
+<tr>
+<td class="col-string">YEARFRAC Actual / 360</td>
+<td class="col-string">0.9667</td>
+</tr>
+<tr>
+<td class="col-string">YEARFRAC Actual / 365</td>
+<td class="col-string">0.9534</td>
+</tr>
+<tr>
+<td class="col-string">YEARFRAC EU 30/360</td>
+<td class="col-string">0.9556</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about YEARFRAC in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/blog/marco/2018/06/24/correct-calculate-of-age-in-dax-from-birthday/"  class="low-key"><strong>Correct calculate of age in DAX from birthday</strong></a>
+                                <p>Consider alternative to YEARFRAC in order to get the right age based on birthday because of bugs in YEARFRAC. <a href="https://www.sqlbi.com/blog/marco/2018/06/24/correct-calculate-of-age-in-dax-from-birthday/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/weekday/" class="ajax" data-id="249">WEEKDAY</a></li>
+                                                    <li><a href="https://dax.guide/weeknum/" class="ajax" data-id="250">WEEKNUM</a></li>
+                                                    <li><a href="https://dax.guide/quarter/" class="ajax" data-id="589">QUARTER</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/dax-tools/?aff=tools-promo" target="_top" class="sam-click" data-campaign="dax-tools-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/tools-58090.png" title="DAX Tools Video Course" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/yearfrac-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/yearfrac-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

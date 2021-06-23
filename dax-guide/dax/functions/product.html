@@ -1,0 +1,221 @@
+
+            <header>
+                <h1 title="PRODUCT"><a href="https://dax.guide/product/" rel="bookmark">PRODUCT</a> <span class="smaller">DAX Function (Aggregation)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                                                 &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns the product of given column reference.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    PRODUCT ( &lt;ColumnName&gt; )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        ColumnName                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>Column that contains values for product.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single <a href="https://dax.guide/dt/decimal/" class="ajax" data-id="258">decimal</a> value.</div></p>                    <p>The product of the numbers in a column.</p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>The PRODUCT function internally executes <a href="https://dax.guide/productx/" class="ajax" data-id="182">PRODUCTX</a>, without any performance difference.<br />
+The following PRODUCT call:</p>
+<pre class="brush: dax; gutter: false; title: ; notranslate" title="">
+PRODUCT ( table&#91;column] )
+</pre>
+<p>corresponds to the following <a href="https://dax.guide/productx/" class="ajax" data-id="182">PRODUCTX</a> call:</p>
+<pre class="brush: dax; gutter: false; title: ; notranslate" title="">
+PRODUCTX (
+    table,
+    table&#91;column]
+)
+</pre>
+                </section>
+            
+            
+                                                    <a href="#alt" class="sliding">&raquo; 1 related function</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/NVa22R6ATfgceF/; notranslate" title="">
+-- PRODUCT is the short version of PRODUCTX
+-- PRODUCTX multiplies values in the rows it scans
+--
+-- The report shows the actualized sales in 2009 by applying 
+-- the inflation rate in sales made in previous years
+DEFINE
+    MEASURE Rates&#91;Compound Inflation Rate] =
+        PRODUCTX ( Rates, 1 + Rates&#91;InflationRate] )
+    MEASURE Sales&#91;Sales Amount] =
+        SUMX ( Sales, Sales&#91;Quantity] * Sales&#91;Net Price] )
+    MEASURE Sales&#91;Actualized Sales 2009] =
+        SUMX (
+            VALUES ( 'Date'&#91;Calendar Year Number] ),
+            VAR ReferenceYear = 2009
+            VAR BaseYear = 'Date'&#91;Calendar Year Number]
+            VAR CompoundRate =
+                CALCULATE (
+                    COALESCE ( &#91;Compound Inflation Rate], 1 ),
+                    Rates&#91;Year] &gt;= BaseYear &amp;&amp; Rates&#91;Year] &lt; ReferenceYear
+                )
+            RETURN &#91;Sales Amount] * CompoundRate
+        )
+    MEASURE Sales&#91;Adjustment %] =
+        VAR ReferenceYear = 2009
+        VAR BaseYear = SELECTEDVALUE ( 'Date'&#91;Calendar Year Number] )
+        VAR CompoundRate =
+            CALCULATE (
+                COALESCE ( &#91;Compound Inflation Rate], 1 ),
+                Rates&#91;Year] &gt;= BaseYear &amp;&amp; Rates&#91;Year] &lt; ReferenceYear
+            )
+        RETURN IF ( 
+            NOT ISBLANK ( BaseYear ) &amp;&amp; NOT ISBLANK ( &#91;Sales Amount] ), 
+            CompoundRate 
+        )
+        
+EVALUATE Rates 
+
+EVALUATE
+SUMMARIZECOLUMNS (
+    ROLLUPADDISSUBTOTAL ( 'Date'&#91;Calendar Year], &quot;IsTotal&quot; ),
+    &quot;Sales Amount&quot;, &#91;Sales Amount],
+    &quot;Adjustment %&quot;, &#91;Adjustment %],
+    &quot;Actualized Sales 2009&quot;, &#91;Actualized Sales 2009]
+)
+ORDER BY &#91;IsTotal], &#91;Calendar Year]
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Year">Year</th>
+<th title="InflationRate">InflationRate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-int">2,005</td>
+<td class="col-float">0.03</td>
+</tr>
+<tr>
+<td class="col-int">2,006</td>
+<td class="col-float">0.03</td>
+</tr>
+<tr>
+<td class="col-int">2,007</td>
+<td class="col-float">0.03</td>
+</tr>
+<tr>
+<td class="col-int">2,008</td>
+<td class="col-float">0.04</td>
+</tr>
+<tr>
+<td class="col-int">2,009</td>
+<td class="col-float">0.00</td>
+</tr>
+<tr>
+<td class="col-int">2,010</td>
+<td class="col-float">0.02</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th title="Calendar Year">Calendar Year</th>
+<th title="IsTotal">IsTotal</th>
+<th title="Sales Amount">Sales Amount</th>
+<th title="Adjustment %">Adjustment %</th>
+<th title="Actualized Sales 2009">Actualized Sales 2009</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-date">2007-01-01</td>
+<td class="col-string">false</td>
+<td class="col-float">11,309,946.12</td>
+<td class="col-percent">106.80%</td>
+<td class="col-float">12,078,959.12</td>
+</tr>
+<tr>
+<td class="col-date">2008-01-01</td>
+<td class="col-string">false</td>
+<td class="col-float">9,927,582.99</td>
+<td class="col-percent">103.84%</td>
+<td class="col-float">10,308,802.18</td>
+</tr>
+<tr>
+<td class="col-date">2009-01-01</td>
+<td class="col-string">false</td>
+<td class="col-float">9,353,814.87</td>
+<td class="col-percent">100.00%</td>
+<td class="col-float">9,353,814.87</td>
+</tr>
+<tr>
+<td class="col-date blank">(Blank)</td>
+<td class="col-string">true</td>
+<td class="col-float">30,591,343.98</td>
+<td class="col-percent blank">(Blank)</td>
+<td class="col-float">31,741,576.16</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/productx/" class="ajax" data-id="182">PRODUCTX</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/optimizing-dax-video-course/?aff=odax-promo" target="_top" class="sam-click" data-campaign="odax-video-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/odax-58090.png" title="Optimizing DAX" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/product-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/product-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

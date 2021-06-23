@@ -1,0 +1,219 @@
+
+            <header>
+                <h1 title="TODAY"><a href="https://dax.guide/today/" rel="bookmark">TODAY</a> <span class="smaller">DAX Function (Date and Time)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                                                 &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns the current date in datetime format.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    TODAY (  )                 </div>
+
+                                    <p>This expression has no parameters.</p>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single <a href="https://dax.guide/dt/datetime/" class="ajax" data-id="265">datetime</a> value.</div></p>                    <p>Current date.</p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>The time returned is always 12:00:00 AM and only the date is updated. </p>
+<p>The result of the TODAY function changes only when the column that contains the formula is refreshed. It is not updated continuously. </p>
+<p>The <a href="https://dax.guide/now/" class="ajax" data-id="162">NOW</a> function returns also the current time.</p>
+                </section>
+            
+            
+                                                    <a href="#alt" class="sliding">&raquo; 3 related functions</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/rHd3FvG20XXoAH/; notranslate" title="">
+--  TODAY returns today, as a date. NOW also includes the time
+--  UTCTODAY and UTCNOW return today using UTC standard.
+--  The timezone is the timezone of the server running DAX, your
+--  PC when executed in Power BI Desktop.
+--
+--  The Power BI Service alwyas uses UTC. 
+--  Therefore, no daylight saving applies.
+--  
+--  Keep in mind that DAX.do caches query results, so you will not see
+--  an updated result if you try this query without making any change.
+EVALUATE
+{ 
+    ( &quot;TODAY&quot;, TODAY () ),
+    ( &quot;UTCTODAY&quot;, UTCTODAY () ),
+    ( &quot;NOW&quot;, NOW () ),
+    ( &quot;UTC NOW&quot;, UTCNOW () )
+}
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Value1">Value1</th>
+<th title="Value2">Value2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">TODAY</td>
+<td class="col-dateTime">2021-02-26 00:00:00</td>
+</tr>
+<tr>
+<td class="col-string">UTCTODAY</td>
+<td class="col-dateTime">2021-02-26 00:00:00</td>
+</tr>
+<tr>
+<td class="col-string">NOW</td>
+<td class="col-dateTime">2021-02-26 10:31:35.75</td>
+</tr>
+<tr>
+<td class="col-string">UTC NOW</td>
+<td class="col-dateTime">2021-02-26 10:31:35.75</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<pre class="brush: dax; title: ; notranslate" title="">
+--  Compute the difference in days and hours between 
+--  current time zone and UTC.
+EVALUATE
+VAR DaysFromUTC = INT ( TODAY () - UTCTODAY () )
+VAR HoursFromUTC = ( NOW () - UTCNOW () ) * 24
+RETURN
+{ 
+    ( &quot;Days from UTC: &quot;,  DaysFromUTC  ),
+    ( &quot;Hours from UTC: &quot;,  HoursFromUTC)
+}
+</pre>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/0Q3VFgY0ntUBh9/; notranslate" title="">
+--  Example of using math over dates to compute 
+--  the age of the customers
+--  by subtracting from TODAY the order date
+--
+--  Keep in mind that DAX.do caches query results, so you will not see
+--  an updated result if you try this query without making any change.
+EVALUATE
+ADDCOLUMNS ( 
+    TOPN ( 10, ALL ( Customer&#91;Name], Customer&#91;Birth Date] ) ),
+    &quot;Customer Age&quot;, 
+    VAR Age = TODAY () - Customer&#91;Birth Date]
+    VAR AgeYears = YEAR ( Age ) - 1900
+    VAR AgeMonths = MONTH ( Age )
+    RETURN
+        FORMAT ( AgeYears, &quot;0&quot; ) &amp; &quot; years and &quot; &amp; FORMAT ( AgeMonths, &quot;0&quot; ) &amp; &quot; months&quot; 
+    )
+ORDER BY Customer&#91;Birth Date] DESC
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Name">Name</th>
+<th title="Birth Date">Birth Date</th>
+<th title="Customer Age">Customer Age</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Anderson, Chloe</td>
+<td class="col-date">1979-10-25</td>
+<td class="col-string">41 years and 5 months</td>
+</tr>
+<tr>
+<td class="col-string">Russell, Jennifer</td>
+<td class="col-date">1978-12-18</td>
+<td class="col-string">42 years and 3 months</td>
+</tr>
+<tr>
+<td class="col-string">Xie, Russell</td>
+<td class="col-date">1978-09-17</td>
+<td class="col-string">42 years and 6 months</td>
+</tr>
+<tr>
+<td class="col-string">Morris, Isabella</td>
+<td class="col-date">1978-09-07</td>
+<td class="col-string">42 years and 6 months</td>
+</tr>
+<tr>
+<td class="col-string">Carter, Amanda</td>
+<td class="col-date">1977-10-16</td>
+<td class="col-string">43 years and 5 months</td>
+</tr>
+<tr>
+<td class="col-string">Alexander, Seth</td>
+<td class="col-date">1977-09-21</td>
+<td class="col-string">43 years and 6 months</td>
+</tr>
+<tr>
+<td class="col-string">Lopez, Sophia</td>
+<td class="col-date">1977-07-13</td>
+<td class="col-string">43 years and 8 months</td>
+</tr>
+<tr>
+<td class="col-string">Simmons, Nathan</td>
+<td class="col-date">1976-02-24</td>
+<td class="col-string">45 years and 1 months</td>
+</tr>
+<tr>
+<td class="col-string">Garcia, Joseph</td>
+<td class="col-date">1975-08-17</td>
+<td class="col-string">45 years and 7 months</td>
+</tr>
+<tr>
+<td class="col-string">Green, Gabriel</td>
+<td class="col-date">1975-04-05</td>
+<td class="col-string">45 years and 11 months</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/now/" class="ajax" data-id="162">NOW</a></li>
+                                                    <li><a href="https://dax.guide/utcnow/" class="ajax" data-id="245">UTCNOW</a></li>
+                                                    <li><a href="https://dax.guide/utctoday/" class="ajax" data-id="246">UTCTODAY</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.youtube.com/c/sqlbi/" target="_top" class="sam-click" data-campaign="youtube-channel" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/youtube-58090.jpg" title="Subscribe to our Youtube channel" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/today-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/today-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

@@ -1,0 +1,204 @@
+
+            <header>
+                <h1 title="FIXED"><a href="https://dax.guide/fixed/" rel="bookmark">FIXED</a> <span class="smaller">DAX Function (Text)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                                                 &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Rounds a number to the specified number of decimals and returns the result as text with optional commas.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    FIXED ( &lt;Number&gt; [, &lt;Decimals&gt;] [, &lt;NoCommas&gt;] )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Number                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The number you want to round and convert to text.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Decimals                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Optional<br></td>
+                                    <td class="definition">
+                                        <p>The number of digits to the right of the decimal point; if omitted, 2. A negative number round to the left of the decimal point.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        NoCommas                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Optional<br></td>
+                                    <td class="definition">
+                                        <p>A logical value: if TRUE, do not display commas in the returned text; if FALSE or omitted, display commas in the returned text.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single <a href="https://dax.guide/dt/string/" class="ajax" data-id="261">string</a> value.</div></p>                    <p>A number represented as text. </p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>If the value used for the <strong>Decimals</strong> parameter is negative, <strong>Number</strong> is rounded to the left of the decimal point.</p>
+<p>If you omit <strong>Decimals</strong>, it is assumed to be 2.</p>
+<p>If <strong>NoCommas</strong> is 0 or is omitted, then the returned text includes commas as usual.</p>
+                </section>
+            
+            
+                                                    <a href="#alt" class="sliding">&raquo; 8 related functions</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/aFex0omEyPzhRJ/; notranslate" title="">
+--  FIXED returns a number as a string after having rounded to the
+--  desired number of decimals, adding commas by default.
+EVALUATE
+ADDCOLUMNS (
+    VALUES ( 'Product'&#91;Category] ),
+    &quot;FIXED with commas&quot;,      FIXED ( &#91;Sales Amount], 2, FALSE ),
+    &quot;FIXED without commas&quot;,   FIXED ( &#91;Sales Amount], 2, TRUE ),
+    &quot;FIXED without decimals&quot;, FIXED ( &#91;Sales Amount], 0, TRUE ),
+    &quot;FIXED rounded to 100&quot;,   FIXED ( &#91;Sales Amount], -2, FALSE ),
+    &quot;Sales Amount&quot;,           &#91;Sales Amount]
+)
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Category">Category</th>
+<th title="FIXED with commas">FIXED with commas</th>
+<th title="FIXED without commas">FIXED without commas</th>
+<th title="FIXED without decimals">FIXED without decimals</th>
+<th title="FIXED rounded to 100">FIXED rounded to 100</th>
+<th title="Sales Amount">Sales Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Audio</td>
+<td class="col-string">384,518.16</td>
+<td class="col-string">384518.16</td>
+<td class="col-string">384518</td>
+<td class="col-string">384,500</td>
+<td class="col-float">384,518.16</td>
+</tr>
+<tr>
+<td class="col-string">TV and Video</td>
+<td class="col-string">4,392,768.29</td>
+<td class="col-string">4392768.29</td>
+<td class="col-string">4392768</td>
+<td class="col-string">4,392,800</td>
+<td class="col-float">4,392,768.29</td>
+</tr>
+<tr>
+<td class="col-string">Computers</td>
+<td class="col-string">6,741,548.73</td>
+<td class="col-string">6741548.73</td>
+<td class="col-string">6741549</td>
+<td class="col-string">6,741,500</td>
+<td class="col-float">6,741,548.73</td>
+</tr>
+<tr>
+<td class="col-string">Cameras and camcorders</td>
+<td class="col-string">7,192,581.95</td>
+<td class="col-string">7192581.95</td>
+<td class="col-string">7192582</td>
+<td class="col-string">7,192,600</td>
+<td class="col-float">7,192,581.95</td>
+</tr>
+<tr>
+<td class="col-string">Cell phones</td>
+<td class="col-string">1,604,610.26</td>
+<td class="col-string">1604610.26</td>
+<td class="col-string">1604610</td>
+<td class="col-string">1,604,600</td>
+<td class="col-float">1,604,610.26</td>
+</tr>
+<tr>
+<td class="col-string">Music, Movies and Audio Books</td>
+<td class="col-string">314,206.74</td>
+<td class="col-string">314206.74</td>
+<td class="col-string">314207</td>
+<td class="col-string">314,200</td>
+<td class="col-float">314,206.74</td>
+</tr>
+<tr>
+<td class="col-string">Games and Toys</td>
+<td class="col-string">360,652.81</td>
+<td class="col-string">360652.81</td>
+<td class="col-string">360653</td>
+<td class="col-string">360,700</td>
+<td class="col-float">360,652.81</td>
+</tr>
+<tr>
+<td class="col-string">Home Appliances</td>
+<td class="col-string">9,600,457.04</td>
+<td class="col-string">9600457.04</td>
+<td class="col-string">9600457</td>
+<td class="col-string">9,600,500</td>
+<td class="col-float">9,600,457.04</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/ceiling/" class="ajax" data-id="37">CEILING</a></li>
+                                                    <li><a href="https://dax.guide/floor/" class="ajax" data-id="99">FLOOR</a></li>
+                                                    <li><a href="https://dax.guide/iso-ceiling/" class="ajax" data-id="311">ISO.CEILING</a></li>
+                                                    <li><a href="https://dax.guide/mround/" class="ajax" data-id="154">MROUND</a></li>
+                                                    <li><a href="https://dax.guide/round/" class="ajax" data-id="197">ROUND</a></li>
+                                                    <li><a href="https://dax.guide/rounddown/" class="ajax" data-id="198">ROUNDDOWN</a></li>
+                                                    <li><a href="https://dax.guide/roundup/" class="ajax" data-id="199">ROUNDUP</a></li>
+                                                    <li><a href="https://dax.guide/format/" class="ajax" data-id="100">FORMAT</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://dax.do/" target="_top" class="sam-click" data-campaign="dax-do" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/daxdo-58090.png" title="Run your DAX code with DAX.do" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/fixed-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/fixed-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

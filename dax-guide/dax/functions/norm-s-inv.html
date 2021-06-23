@@ -1,0 +1,223 @@
+
+            <header>
+                <h1 title="NORM.S.INV"><a href="https://dax.guide/norm-s-inv/" rel="bookmark">NORM.S.INV</a> <span class="smaller">DAX Function (Statistical)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                                                 &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                                                 &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns the inverse of the standard normal cumulative distribution. The distribution has a mean of zero and a standard deviation of one.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    NORM.S.INV ( &lt;Probability&gt; )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Probability                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>A probability corresponding to the normal distribution.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single <a href="https://dax.guide/dt/decimal/" class="ajax" data-id="258">decimal</a> value.</div></p>                    <p>The inverse of the standard normal cumulative distribution. The distribution has a mean of zero and a standard deviation of one.</p>
+                </section>
+            
+            
+            
+            
+                                                    <a href="#alt" class="sliding">&raquo; 3 related functions</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/7JortYWPVFvIKQ/; notranslate" title="">
+--  NORM.INV returns the inverse of the normal distribution 
+--  for the specified mean and standard deviation
+--
+--  NORM.S.INV returns the inverse of the standard normal distribution 
+--  (has a mean of zero and a standar deviation of one)
+--
+--  https://en.wikipedia.org/wiki/Normal_distribution
+DEFINE
+    TABLE SampleData    = { 2, 4, 4, 4, 5, 5, 7, 9 }
+    VAR Mean            = AVERAGE ( SampleData&#91;Value] )
+    VAR StandardDev     = STDEV.S ( SampleData&#91;Value] )
+    VAR Percs           = GENERATESERIES ( 0.05, 0.99, 0.05 )
+    VAR CumulativeTrue  = TRUE   -- Cumulative distribution function
+    VAR CumulativeFalse = FALSE  -- Probability density function
+EVALUATE
+SELECTCOLUMNS (
+    Percs,
+    &quot;Probability %&quot;, &#91;Value],
+    &quot;Inv. Normal Distr.&quot;,          -- Probability density function
+        FORMAT (
+            NORM.INV ( &#91;Value], Mean, StandardDev ),
+            &quot;#,0.00000&quot;
+        ),
+    &quot;Inv. Standard Normal Distr.&quot;, -- Probability density function
+        FORMAT (
+            NORM.S.INV ( &#91;Value] ),
+            &quot;#,0.00000&quot;
+        )
+)
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Probability %">Probability %</th>
+<th title="Inv. Normal Distr.">Inv. Normal Distr.</th>
+<th title="Inv. Standard Normal Distr.">Inv. Standard Normal Distr.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-percent">5.00%</td>
+<td class="col-string">1.48316</td>
+<td class="col-string">-1.64485</td>
+</tr>
+<tr>
+<td class="col-percent">10.00%</td>
+<td class="col-string">2.25993</td>
+<td class="col-string">-1.28155</td>
+</tr>
+<tr>
+<td class="col-percent">15.00%</td>
+<td class="col-string">2.78401</td>
+<td class="col-string">-1.03643</td>
+</tr>
+<tr>
+<td class="col-percent">20.00%</td>
+<td class="col-string">3.20054</td>
+<td class="col-string">-0.84162</td>
+</tr>
+<tr>
+<td class="col-percent">25.00%</td>
+<td class="col-string">3.55788</td>
+<td class="col-string">-0.67449</td>
+</tr>
+<tr>
+<td class="col-percent">30.00%</td>
+<td class="col-string">3.87878</td>
+<td class="col-string">-0.52440</td>
+</tr>
+<tr>
+<td class="col-percent">35.00%</td>
+<td class="col-string">4.17615</td>
+<td class="col-string">-0.38532</td>
+</tr>
+<tr>
+<td class="col-percent">40.00%</td>
+<td class="col-string">4.45832</td>
+<td class="col-string">-0.25335</td>
+</tr>
+<tr>
+<td class="col-percent">45.00%</td>
+<td class="col-string">4.73132</td>
+<td class="col-string">-0.12566</td>
+</tr>
+<tr>
+<td class="col-percent">50.00%</td>
+<td class="col-string">5.00000</td>
+<td class="col-string">0.00000</td>
+</tr>
+<tr>
+<td class="col-percent">55.00%</td>
+<td class="col-string">5.26868</td>
+<td class="col-string">0.12566</td>
+</tr>
+<tr>
+<td class="col-percent">60.00%</td>
+<td class="col-string">5.54168</td>
+<td class="col-string">0.25335</td>
+</tr>
+<tr>
+<td class="col-percent">65.00%</td>
+<td class="col-string">5.82385</td>
+<td class="col-string">0.38532</td>
+</tr>
+<tr>
+<td class="col-percent">70.00%</td>
+<td class="col-string">6.12122</td>
+<td class="col-string">0.52440</td>
+</tr>
+<tr>
+<td class="col-percent">75.00%</td>
+<td class="col-string">6.44212</td>
+<td class="col-string">0.67449</td>
+</tr>
+<tr>
+<td class="col-percent">80.00%</td>
+<td class="col-string">6.79946</td>
+<td class="col-string">0.84162</td>
+</tr>
+<tr>
+<td class="col-percent">85.00%</td>
+<td class="col-string">7.21599</td>
+<td class="col-string">1.03643</td>
+</tr>
+<tr>
+<td class="col-percent">90.00%</td>
+<td class="col-string">7.74007</td>
+<td class="col-string">1.28155</td>
+</tr>
+<tr>
+<td class="col-percent">95.00%</td>
+<td class="col-string">8.51684</td>
+<td class="col-string">1.64485</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/norm-dist/" class="ajax" data-id="353">NORM.DIST</a></li>
+                                                    <li><a href="https://dax.guide/norm-inv/" class="ajax" data-id="355">NORM.INV</a></li>
+                                                    <li><a href="https://dax.guide/norm-s-dist/" class="ajax" data-id="356">NORM.S.DIST</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/optimizing-dax-video-course/?aff=odax-promo" target="_top" class="sam-click" data-campaign="odax-video-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/odax-58090.png" title="Optimizing DAX" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/norm-s-inv-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/norm-s-inv-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

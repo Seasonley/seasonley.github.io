@@ -1,0 +1,119 @@
+
+            <header>
+                <h1 title="TOPNPERLEVEL"><a href="https://dax.guide/topnperlevel/" rel="bookmark">TOPNPERLEVEL</a> <span class="smaller">DAX Function (Table manipulation)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                                                                         &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    TOPNPERLEVEL ( &lt;Rows&gt;, &lt;Table&gt;, &lt;LevelsDefinition&gt;, &lt;NodesExpanded&gt;, &lt;LevelsBoundaries&gt;, &lt;RestartIndicatorColumnName&gt; )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Rows                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>Number of rows to return for each level</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Table                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>Table expression containing the columns used to define logical levels</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        LevelsDefinition                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>Table containing rows defining the levels considering in the logical filter by level. Every row has 4 arguments: LevelNumber, TotalColumnName, ColumnName, FlagOrder<br />
+FlagOrder is 1 for visible columns and 0 for columns defining the sort order of the level</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        NodesExpanded                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>Table containing rows defining the items selected for each level. Every row has 4 arguments: Unknown, LevelNumber, ColumnName, ItemSelected</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        LevelsBoundaries                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>Table containing rows defining the boundaries for each level. Every row has 5 arguments: Unknown, LevelNumber, ColumnName, BoundaryItemValue, BoundaryType<br />
+BoundaryType is 1 for the last item displayed in the level and 2 for the first item displayed in the level</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        RestartIndicatorColumnName                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>Name of the column added to the result containing to indicate the presence of items before the row (1) or after the row (2).</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="table-ret">Table</span> An entire table or a table with one or more columns.</div></p>                    <p>The table returned is not sorted, it is just filtered according to the required parameters.<br />
+The sort order of the result depends on the ORDER BY condition of EVALUATE.</p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>This is an undocumented extension function for Power BI that is not included in the Analysis Services engine.</p>
+                </section>
+            
+                        
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/topn/" class="ajax" data-id="229">TOPN</a></li>
+                                                    <li><a href="https://dax.guide/topnskip/" class="ajax" data-id="121">TOPNSKIP</a></li>
+                                                </ul>
+                                    </section>
+                        
+            
+            <section class="side-notes">
+                
+<p>Last update: <span>Feb 18, 2020</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

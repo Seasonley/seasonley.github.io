@@ -1,0 +1,146 @@
+
+            <header>
+                <h1 title="GCD"><a href="https://dax.guide/gcd/" rel="bookmark">GCD</a> <span class="smaller">DAX Function (Math and Trig)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                                                 &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                                                                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns the greatest common divisor of two integers. The greatest common divisor is the largest integer that divides both number1 and number2 without a remainder.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    GCD ( &lt;Number1&gt;, &lt;Number2&gt; )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Number1                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The first number, if value is not an integer, it is truncated.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Number2                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The second number, if value is not an integer, it is truncated.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single <a href="https://dax.guide/dt/integer/" class="ajax" data-id="257">integer</a> value.</div></p>                    <p><span style="display: inline !important; float: none; background-color: transparent; color: #333333; font-family: 'Segoe UI','Lucida Grande',Verdana,Arial,Helvetica,sans-serif; font-size: 15px; font-style: normal; font-variant: normal; font-weight: 400; letter-spacing: normal; line-height: 22.5px; orphans: 2; text-align: left; text-decoration: none; text-indent: 0px; text-transform: none; -webkit-text-stroke-width: 0px; white-space: normal; word-spacing: 0px;">The greatest common divisor of two or more integers. </span></p>
+                </section>
+            
+            
+            
+            
+                                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/QCqz9Bcrdb07V3/; notranslate" title="">
+--  GCD - Returns the greatest common divisor of two or more integers
+--  LCM - Returns the least common multiple of integers
+DEFINE
+    VAR Val1 = SELECTCOLUMNS ( GENERATESERIES ( 6, 25, 7 ), &quot;Val1&quot;, &#91;Value] )
+    VAR Val2 = SELECTCOLUMNS ( GENERATESERIES ( 2, 3, 1 ), &quot;Val2&quot;, &#91;Value] )
+EVALUATE
+ADDCOLUMNS ( 
+    CROSSJOIN ( Val1, Val2 ),
+    &quot;GCD&quot;, GCD ( &#91;Val1], &#91;Val2] ),
+    &quot;LCM&quot;, LCM ( &#91;Val1], &#91;Val2] )
+)
+ORDER BY &#91;Val1], &#91;Val2]
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Val1">Val1</th>
+<th title="Val2">Val2</th>
+<th title="GCD">GCD</th>
+<th title="LCM">LCM</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-int">6</td>
+<td class="col-int">2</td>
+<td class="col-int">2</td>
+<td class="col-int">6</td>
+</tr>
+<tr>
+<td class="col-int">6</td>
+<td class="col-int">3</td>
+<td class="col-int">3</td>
+<td class="col-int">6</td>
+</tr>
+<tr>
+<td class="col-int">13</td>
+<td class="col-int">2</td>
+<td class="col-int">1</td>
+<td class="col-int">26</td>
+</tr>
+<tr>
+<td class="col-int">13</td>
+<td class="col-int">3</td>
+<td class="col-int">1</td>
+<td class="col-int">39</td>
+</tr>
+<tr>
+<td class="col-int">20</td>
+<td class="col-int">2</td>
+<td class="col-int">2</td>
+<td class="col-int">20</td>
+</tr>
+<tr>
+<td class="col-int">20</td>
+<td class="col-int">3</td>
+<td class="col-int">1</td>
+<td class="col-int">60</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+            
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/dax-tools/?aff=tools-promo" target="_top" class="sam-click" data-campaign="dax-tools-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/tools-58090.png" title="DAX Tools Video Course" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/gcd-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/gcd-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

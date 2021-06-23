@@ -1,0 +1,275 @@
+
+            <header>
+                <h1 title="ISFILTERED"><a href="https://dax.guide/isfiltered/" rel="bookmark">ISFILTERED</a> <span class="smaller">DAX Function (Information)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                         &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns true when there are direct filters on the specified column.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    ISFILTERED ( &lt;TableNameOrColumnName&gt; )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        TableNameOrColumnName                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The table or column to check the filter info.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single <a href="https://dax.guide/dt/boolean/" class="ajax" data-id="264">boolean</a> value.</div></p>                    <p>TRUE when ColumnName is being filtered directly, or when any column of TableName is being filtered directly.</p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>A column is said to be filtered directly when the filter or filters apply over the column.<br />
+A column or table is said to be cross-filtered when a filter is applied to any column of the same table or in a related table.</p>
+<p>ISFILTERED can check whether a column is being filtered directly or if any of the columns of the table is being filtered directly.</p>
+<p>ISFILTERED supports a table argument since SSAS 2019 or Power BI April 2019. Former versions only support the column name argument.</p>
+                </section>
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 2 related articles</a><br>
+                                                    <a href="#alt" class="sliding">&raquo; 2 related functions</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/sbCceoKJXXspmq/; notranslate" title="">
+--  ISFILTERED checks whether a column has a direct filter
+--  ISCROSSFILTERED checks whether a column has either a direct
+--  or an indirect filter (which is a filter propagated from a related column)
+--
+--  In this example we place the filter on the 1 side of a 1:* relationship
+EVALUATE
+CALCULATETABLE (
+    {
+        ( &quot;ISFILTERED Product&#91;Color]&quot;,          ISFILTERED ( Product&#91;Color] ) ),
+        ( &quot;ISFILTERED Sales&#91;Quantity]&quot;,         ISFILTERED ( Sales&#91;Quantity] ) ),
+        ( &quot;ISCROSSFILTERED Product&#91;Category]&quot;,  ISCROSSFILTERED ( Product&#91;Category] ) ),
+        ( &quot;ISCROSSFILTERED Product&quot;,            ISCROSSFILTERED ( Product ) ),
+        ( &quot;ISCROSSFILTERED Sales&quot;,              ISCROSSFILTERED ( Sales ) )
+    },
+    'Product'&#91;Color] = &quot;Red&quot;
+)
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Value1">Value1</th>
+<th title="Value2">Value2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">ISFILTERED Product[Color]</td>
+<td class="col-string">true</td>
+</tr>
+<tr>
+<td class="col-string">ISFILTERED Sales[Quantity]</td>
+<td class="col-string">false</td>
+</tr>
+<tr>
+<td class="col-string">ISCROSSFILTERED Product[Category]</td>
+<td class="col-string">true</td>
+</tr>
+<tr>
+<td class="col-string">ISCROSSFILTERED Product</td>
+<td class="col-string">true</td>
+</tr>
+<tr>
+<td class="col-string">ISCROSSFILTERED Sales</td>
+<td class="col-string">true</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/FrLPKqFe9VLNxb/; notranslate" title="">
+--  ISFILTERED checks whether a column has a direct filter
+--  ISCROSSFILTERED checks whether a column has either a direct
+--  or an indirect filter (which is a filter propagated from a related column)
+--
+--  In this example we place the filter on the many side of a 1:* relationship
+EVALUATE
+CALCULATETABLE (
+    {
+        ( &quot;ISFILTERED Sales&#91;Quantity]&quot;,         ISFILTERED ( Sales&#91;Quantity] ) ),
+        ( &quot;ISFILTERED Product&#91;Color]&quot;,          ISFILTERED ( Product&#91;Color] ) ),
+        ( &quot;ISCROSSFILTERED Sales&quot;,              ISCROSSFILTERED ( Sales ) ),
+        ( &quot;ISCROSSFILTERED Product&#91;Category]&quot;,  ISCROSSFILTERED ( Product&#91;Category] ) ),
+        ( &quot;ISCROSSFILTERED Product&quot;,            ISCROSSFILTERED ( Product ) )
+    },
+    Sales&#91;Quantity] = 1
+)
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Value1">Value1</th>
+<th title="Value2">Value2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">ISFILTERED Sales[Quantity]</td>
+<td class="col-string">true</td>
+</tr>
+<tr>
+<td class="col-string">ISFILTERED Product[Color]</td>
+<td class="col-string">false</td>
+</tr>
+<tr>
+<td class="col-string">ISCROSSFILTERED Sales</td>
+<td class="col-string">true</td>
+</tr>
+<tr>
+<td class="col-string">ISCROSSFILTERED Product[Category]</td>
+<td class="col-string">false</td>
+</tr>
+<tr>
+<td class="col-string">ISCROSSFILTERED Product</td>
+<td class="col-string">false</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/PAAutAnHH9slbv/; notranslate" title="">
+--  ISFILTERED checks whether a column has a direct filter
+--  ISCROSSFILTERED checks whether a column has either a direct
+--  or an indirect filter (which is a filter propagated from a related column)
+--
+--  In this example we place the filter on the many side of a 1:* relationship
+--  enabling bidirectional cross-filter
+EVALUATE
+CALCULATETABLE (
+    {
+        ( &quot;ISFILTERED Sales&#91;Quantity]&quot;,         ISFILTERED ( Sales&#91;Quantity] ) ),
+        ( &quot;ISFILTERED Product&#91;Color]&quot;,          ISFILTERED ( Product&#91;Color] ) ),
+        ( &quot;ISCROSSFILTERED Sales&quot;,              ISCROSSFILTERED ( Sales ) ),
+        ( &quot;ISCROSSFILTERED Product&#91;Category]&quot;,  ISCROSSFILTERED ( Product&#91;Category] ) ),
+        ( &quot;ISCROSSFILTERED Product&quot;,            ISCROSSFILTERED ( Product ) )
+    },
+    Sales&#91;Quantity] = 1,
+    CROSSFILTER ( Sales&#91;ProductKey], 'Product'&#91;ProductKey], BOTH ) 
+)
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Value1">Value1</th>
+<th title="Value2">Value2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">ISFILTERED Sales[Quantity]</td>
+<td class="col-string">true</td>
+</tr>
+<tr>
+<td class="col-string">ISFILTERED Product[Color]</td>
+<td class="col-string">false</td>
+</tr>
+<tr>
+<td class="col-string">ISCROSSFILTERED Sales</td>
+<td class="col-string">true</td>
+</tr>
+<tr>
+<td class="col-string">ISCROSSFILTERED Product[Category]</td>
+<td class="col-string">true</td>
+</tr>
+<tr>
+<td class="col-string">ISCROSSFILTERED Product</td>
+<td class="col-string">true</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<pre class="brush: dax; title: ; notranslate" title="">
+-- These queries return FALSE
+EVALUATE { CALCULATE ( ISFILTERED ( Sales ), 'Product'&#91;Color] = &quot;Red&quot; ) }
+EVALUATE { CALCULATE ( ISFILTERED ( Sales&#91;Quantity] ), 'Product'&#91;Color] = &quot;Red&quot; ) }
+EVALUATE { CALCULATE ( ISFILTERED ( Sales&#91;Quantity] ), Sales&#91;Unit Price] &gt; 10 ) }
+
+--These queries return TRUE
+EVALUATE { CALCULATE ( ISFILTERED ( Sales ), Sales&#91;Unit Price] &gt; 10 ) }
+EVALUATE { CALCULATE ( ISFILTERED ( Sales&#91;Unit Price] ), Sales&#91;Unit Price] &gt; 10 ) }
+</pre>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about ISFILTERED in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/side-effects-in-dax-of-the-sort-by-column-setting/"  class="low-key"><strong>Side effects of the Sort By Column setting in DAX</strong></a>
+                                <p>The Sort By Column feature in Power BI causes side effects that are important to know when writing a DAX formula. This article explains these side effects and how to write correct DAX code to avoid getting incorrect results. <a href="https://www.sqlbi.com/articles/side-effects-in-dax-of-the-sort-by-column-setting/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/displaying-filter-context-in-power-bi-tooltips/"  class="low-key"><strong>Displaying filter context in Power BI Tooltips</strong></a>
+                                <p>This article describes how to display the filter context applied to a calculation using a special DAX measure in Power BI Tooltips. <a href="https://www.sqlbi.com/articles/displaying-filter-context-in-power-bi-tooltips/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/iscrossfiltered/" class="ajax" data-id="117">ISCROSSFILTERED</a></li>
+                                                    <li><a href="https://dax.guide/isinscope/" class="ajax" data-id="448">ISINSCOPE</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/data-modeling-for-power-bi-video-course/?aff=mod-promo" target="_top" class="sam-click" data-campaign="mod-video-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/mod-58090.png" title="Data Modeling for Power BI" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/isfiltered-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/isfiltered-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

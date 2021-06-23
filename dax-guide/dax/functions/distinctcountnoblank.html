@@ -1,0 +1,142 @@
+
+            <header>
+                <h1 title="DISTINCTCOUNTNOBLANK"><a href="https://dax.guide/distinctcountnoblank/" rel="bookmark">DISTINCTCOUNTNOBLANK</a> <span class="smaller">DAX Function (Aggregation)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                                                                         &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Counts the number of distinct values in a column.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    DISTINCTCOUNTNOBLANK ( &lt;ColumnName&gt; )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        ColumnName                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The column for which the distinct values are counted, no blank value included.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single <a href="https://dax.guide/dt/integer/" class="ajax" data-id="257">integer</a> value.</div></p>                    <p>The number of distinct values in ColumnName, ignoring the blank value.</p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/yFby9ojfhKz7Qz/; notranslate" title="">
+--
+--  DISTINCTCOUNT considers BLANK as a valid value, whereas
+--  DISTINCTCOUNTNOBLANK does not count any blank value
+-- 
+DEFINE
+    MEASURE Customer&#91;# Stores] =
+        COUNTROWS ( Store )
+    MEASURE Customer&#91;# Manager] =
+        DISTINCTCOUNT ( Store&#91;Area Manager] )
+    MEASURE Customer&#91;# Manager (no blank)] =
+        DISTINCTCOUNTNOBLANK ( Store&#91;Area Manager] )
+    MEASURE Customer&#91;# Stores without manager] =
+        COUNTBLANK ( Store&#91;Area Manager] )
+EVALUATE
+SUMMARIZECOLUMNS ( 
+    Store&#91;Continent],
+    &quot;# Stores&quot;, &#91;# Stores],
+    &quot;# Manager&quot;, &#91;# Manager],
+    &quot;# Manager (no blank)&quot;, &#91;# Manager (no blank)],
+    &quot;# Stores without manager&quot;, &#91;# Stores without manager]
+)
+ORDER BY
+    Store&#91;Continent]
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Continent">Continent</th>
+<th title="# Stores"># Stores</th>
+<th title="# Manager"># Manager</th>
+<th title="# Manager (no blank)"># Manager (no blank)</th>
+<th title="# Stores without manager"># Stores without manager</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Asia</td>
+<td class="col-int">41</td>
+<td class="col-int">5</td>
+<td class="col-int">5</td>
+<td class="col-int blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Europe</td>
+<td class="col-int">54</td>
+<td class="col-int">8</td>
+<td class="col-int">7</td>
+<td class="col-int">7</td>
+</tr>
+<tr>
+<td class="col-string">North America</td>
+<td class="col-int">209</td>
+<td class="col-int">40</td>
+<td class="col-int">39</td>
+<td class="col-int">5</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>More examples available for the <a href="https://dax.guide/distinctcount/" class="ajax" data-id="77">DISTINCTCOUNT</a> function.</p>
+                </section>
+            
+                        
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/approximatedistinctcount/" class="ajax" data-id="456">APPROXIMATEDISTINCTCOUNT</a></li>
+                                                    <li><a href="https://dax.guide/distinctcount/" class="ajax" data-id="77">DISTINCTCOUNT</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/data-modeling-for-power-bi-video-course/?aff=mod-promo" target="_top" class="sam-click" data-campaign="mod-video-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/mod-58090.png" title="Data Modeling for Power BI" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo, Imke Feldmann</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/distinctcountnoblank-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/distinctcountnoblank-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

@@ -1,0 +1,405 @@
+
+            <header>
+                <h1 title="ALL"><a href="https://dax.guide/all/" rel="bookmark">ALL</a> <span class="smaller">DAX Function (Filter)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                         &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns all the rows in a table, or all the values in a column, ignoring any filters that might have been applied.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    ALL (  [&lt;TableNameOrColumnName&gt;] [, &lt;ColumnName&gt; [, &lt;ColumnName&gt; [, … ] ] ] )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        TableNameOrColumnName                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Optional<br></td>
+                                    <td class="definition">
+                                        <p>The name of an existing table or column.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        ColumnName                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Optional<br>Repeatable<br></td>
+                                    <td class="definition">
+                                        <p>A column in the same base table. The column can be specified in optional parameters only when a column is used in the first argument, too.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="table-ret">Table</span> An entire table or a table with one or more columns.</div></p>                                    </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>This function removes the corresponding filters from the filter context, just as <a href="https://dax.guide/removefilters/" class="ajax" data-id="552">REMOVEFILTERS</a> does. It does not materialize the resulting table when called directly in a filter argument of <a href="https://dax.guide/calculate/" class="ajax" data-id="33">CALCULATE</a> or <a href="https://dax.guide/calculatetable/" class="ajax" data-id="34">CALCULATETABLE</a> .</p>
+<p>ALL can be used as a table expression when it has at least one argument.<br />
+ALL without arguments can be used only as a <a href="https://dax.guide/calculate/" class="ajax" data-id="33">CALCULATE</a> or <a href="https://dax.guide/calculatetable/" class="ajax" data-id="34">CALCULATETABLE</a> modifier and removes all the filters from the filter context.</p>
+<p>The following remarks are valid using ALL as a table expression:</p>
+<ul>
+<li>Using a table argument, ALL returns all the rows of the table including any duplicated rows.</li>
+<li>Using a single column argument, ALL returns all the unique values of the column.</li>
+<li>Using two or more columns arguments, ALL returns all the unique combinations of values in multiple columns.</li>
+<li>In every case, ALL includes in the result the additional blank row <a href="https://www.sqlbi.com/articles/blank-row-in-dax/">generated for invalid relationships</a>.</li>
+</ul>
+                </section>
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 4 related articles</a><br>
+                                                    <a href="#alt" class="sliding">&raquo; 4 related functions</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <p>The ALL function can be applied to either a table or a set of columns.</p>
+<pre class="brush: dax; title: ; notranslate" title="">
+ALL ( Customer )
+
+ALL ( Customer&#91;Country], Customer&#91;State] , Customer&#91;City] )
+</pre>
+<pre class="brush: dax; title: ; try: https://dax.do/wd1zrY8eJb1wuw/; notranslate" title="">
+--
+--  This query returns all the products, 
+--  ignoring the filter on product color
+--
+EVALUATE
+CALCULATETABLE (
+    ALL ( 'Product' ),
+    'Product'&#91;Color] = &quot;Red&quot;
+)
+</pre>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/aERgbPjk9wW40B/; notranslate" title="">
+EVALUATE 
+CALCULATETABLE (
+    ALL ( 'Product'&#91;Color] ),
+    'Product'&#91;Color] = &quot;Red&quot;
+)
+ORDER BY 'Product'&#91;Color]
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Color">Color</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Azure</td>
+</tr>
+<tr>
+<td class="col-string">Black</td>
+</tr>
+<tr>
+<td class="col-string">Blue</td>
+</tr>
+<tr>
+<td class="col-string">Brown</td>
+</tr>
+<tr>
+<td class="col-string">Gold</td>
+</tr>
+<tr>
+<td class="col-string">Green</td>
+</tr>
+<tr>
+<td class="col-string">Grey</td>
+</tr>
+<tr>
+<td class="col-string">Orange</td>
+</tr>
+<tr>
+<td class="col-string">Pink</td>
+</tr>
+<tr>
+<td class="col-string">Purple</td>
+</tr>
+<tr>
+<td class="col-string">Red</td>
+</tr>
+<tr>
+<td class="col-string">Silver</td>
+</tr>
+<tr>
+<td class="col-string">Silver Grey</td>
+</tr>
+<tr>
+<td class="col-string">Transparent</td>
+</tr>
+<tr>
+<td class="col-string">White</td>
+</tr>
+<tr>
+<td class="col-string">Yellow</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/YHIg1p9TGmMCNS/; notranslate" title="">
+EVALUATE
+CALCULATETABLE (
+    ALL (
+        'Product'&#91;Brand],
+        'Product'&#91;Color]
+    ),
+    'Product'&#91;Color] = &quot;Red&quot;
+)
+ORDER BY
+    'Product'&#91;Brand],
+    'Product'&#91;Color]
+
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Brand">Brand</th>
+<th title="Color">Color</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">A. Datum</td>
+<td class="col-string">Azure</td>
+</tr>
+<tr>
+<td class="col-string">A. Datum</td>
+<td class="col-string">Black</td>
+</tr>
+<tr>
+<td class="col-string">&#8230;</td>
+<td class="col-string">&#8230;</td>
+</tr>
+<tr>
+<td class="col-string">Contoso</td>
+<td class="col-string">Black</td>
+</tr>
+<tr>
+<td class="col-string">Contoso</td>
+<td class="col-string">Blue</td>
+</tr>
+<tr>
+<td class="col-string">&#8230;</td>
+<td class="col-string">&#8230;</td>
+</tr>
+<tr>
+<td class="col-string">The Phone Company</td>
+<td class="col-string">Black</td>
+</tr>
+<tr>
+<td class="col-string">The Phone Company</td>
+<td class="col-string">Gold</td>
+</tr>
+<tr>
+<td class="col-string">&#8230;</td>
+<td class="col-string">&#8230;</td>
+</tr>
+<tr>
+<td class="col-string">Wide World Importers</td>
+<td class="col-string">Black</td>
+</tr>
+<tr>
+<td class="col-string">Wide World Importers</td>
+<td class="col-string">Gold</td>
+</tr>
+<tr>
+<td class="col-string">&#8230;</td>
+<td class="col-string">&#8230;</td>
+</tr>
+<tr>
+<td class="col-string">Wide World Importers</td>
+<td class="col-string">White</td>
+</tr>
+<tr>
+<td class="col-string">Wide World Importers</td>
+<td class="col-string">Yellow</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<pre class="brush: dax; title: ; try: https://dax.do/vpDF7W7CtK68Em/; notranslate" title="">
+--
+--  This query returns all the products,
+--  ignoring the filter on product color
+--  ALL as a filter modifier is like REMOVEFILTERS
+--
+EVALUATE
+CALCULATETABLE (
+    CALCULATETABLE (
+        'Product',
+        ALL ( 'Product'&#91;Color] )   -- same as REMOVEFILTERS ( 'Product'&#91;Color] )
+    ),
+    'Product'&#91;Color] = &quot;Red&quot;
+)
+ORDER BY
+    'Product'&#91;Brand],
+    'Product'&#91;Color]
+</pre>
+<pre class="brush: dax; title: ; try: https://dax.do/dDMx9FqcCUEfwr/; notranslate" title="">
+--
+--  This query returns all the products,
+--  removing any filter from the filter context.
+--  ALL as a filter modifier is like REMOVEFILTERS.
+--
+EVALUATE
+CALCULATETABLE (
+    CALCULATETABLE (
+        'Product',
+        ALL ( )   -- same as REMOVEFILTERS (  )
+    ),
+    'Product'&#91;Color] = &quot;Red&quot;
+)
+ORDER BY
+    'Product'&#91;Brand],
+    'Product'&#91;Color]
+</pre>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/VPxXyyD7EQFzEe/; notranslate" title="">
+--
+--  ALL with a table works on the expanded table, removing filters
+--  from any column in the expanded table
+--
+EVALUATE
+CALCULATETABLE (
+    {
+         ( &quot;Sales Amount &quot;, &#91;Sales Amount] ),
+         ( &quot;Sales Amount (ALL Colors)&quot;, CALCULATE (
+            &#91;Sales Amount],
+            ALL ( 'Product'&#91;Color] )
+        ) ),
+         ( &quot;Sales Amount (ALL Products)&quot;, CALCULATE (
+            &#91;Sales Amount],
+            ALL ( 'Product' )
+        ) ),
+         ( &quot;Sales Amount (ALL)&quot;, CALCULATE (
+            &#91;Sales Amount],
+            ALL ()
+        ) ),
+         ( &quot;Sales Amount (ALL Sales)&quot;, CALCULATE (
+            &#91;Sales Amount],
+            ALL ( Sales )
+        ) )
+    },
+    'Product'&#91;Color] = &quot;Red&quot;,
+    'Date'&#91;Calendar Year] = &quot;CY 2008&quot;
+)
+
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Value1">Value1</th>
+<th title="Value2">Value2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Sales Amount </td>
+<td class="col-float">395,277.22</td>
+</tr>
+<tr>
+<td class="col-string">Sales Amount (ALL Colors)</td>
+<td class="col-float">9,927,582.99</td>
+</tr>
+<tr>
+<td class="col-string">Sales Amount (ALL Products)</td>
+<td class="col-float">9,927,582.99</td>
+</tr>
+<tr>
+<td class="col-string">Sales Amount (ALL)</td>
+<td class="col-float">30,591,343.98</td>
+</tr>
+<tr>
+<td class="col-string">Sales Amount (ALL Sales)</td>
+<td class="col-float">30,591,343.98</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about ALL in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/managing-all-functions-in-dax-all-allselected-allnoblankrow-allexcept/"  class="low-key"><strong>Managing “all” functions in DAX: ALL, ALLSELECTED, ALLNOBLANKROW, ALLEXCEPT</strong></a>
+                                <p>This article provides a complete explanation of the behavior of the ALLxxx functions in DAX. When used as filters in CALCULATE, ALLxxx functions might display unexpected behaviors. <a href="https://www.sqlbi.com/articles/managing-all-functions-in-dax-all-allselected-allnoblankrow-allexcept/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/using-allexcept-versus-all-and-values/"  class="low-key"><strong>Using ALLEXCEPT versus ALL and VALUES</strong></a>
+                                <p>This article describes the semantic difference between ALLEXCEPT and the joint use of ALL and VALUES, showing practical examples of the different results in Power BI and SSAS 2016. <a href="https://www.sqlbi.com/articles/using-allexcept-versus-all-and-values/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/context-transition-and-expanded-tables/"  class="low-key"><strong>Context Transition and Expanded Tables</strong></a>
+                                <p>This article describes how table expansion and filter context propagation are important DAX concepts to understand and fix small glitches in DAX expressions. <a href="https://www.sqlbi.com/articles/context-transition-and-expanded-tables/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/blank-row-in-dax/"  class="low-key"><strong>Blank row in DAX</strong></a>
+                                <p>There are two functions in DAX that return the list of values of a column: VALUES and DISTINCT. This article describes the difference between the two, explaining the details of the blank row added to tables for invalid relationships. <a href="https://www.sqlbi.com/articles/blank-row-in-dax/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/allexcept/" class="ajax" data-id="21">ALLEXCEPT</a></li>
+                                                    <li><a href="https://dax.guide/allnoblankrow/" class="ajax" data-id="22">ALLNOBLANKROW</a></li>
+                                                    <li><a href="https://dax.guide/allselected/" class="ajax" data-id="23">ALLSELECTED</a></li>
+                                                    <li><a href="https://dax.guide/removefilters/" class="ajax" data-id="552">REMOVEFILTERS</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/guides/dax/?aff=learn-dax-promo" target="_top" class="sam-click" data-campaign="learn-dax-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/learn-dax-58090.png" title="Become a DAX guru" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/all-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/all-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

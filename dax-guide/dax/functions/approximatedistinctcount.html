@@ -1,0 +1,103 @@
+
+            <header>
+                <h1 title="APPROXIMATEDISTINCTCOUNT"><a href="https://dax.guide/approximatedistinctcount/" rel="bookmark">APPROXIMATEDISTINCTCOUNT</a> <span class="smaller">DAX Function (Aggregation)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                                                 &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Counts the approximate number of distinct values in a column. Currently this function is only available on a DirectQuery table from Azure SQL or Azure SQL Data Warehouse.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    APPROXIMATEDISTINCTCOUNT ( &lt;ColumnName&gt; )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        ColumnName                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The column for which the distinct values are counted.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single <a href="https://dax.guide/dt/integer/" class="ajax" data-id="257">integer</a> value.</div></p>                    <p>The approximate number of distinct values in ColumnName.</p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>The SQL query generated uses the <a href="https://docs.microsoft.com/en-us/sql/t-sql/functions/approx-count-distinct-transact-sql?view=sql-server-2017">APPROX_COUNT_DISTINCT</a> in Transact-SQL to obtain the result.</p>
+                </section>
+            
+            
+                                                    <a href="#alt" class="sliding">&raquo; 2 related functions</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <pre class="brush: dax; title: ; notranslate" title="">
+--  APPROXIMATEDISTINCTCOUNT can be used only in models using DirectQuery
+--  on Azure SQL or Azure SQL Data Warehouse.
+--  It uses the faster (but less accurate) version of DISTINCT available 
+--  on these engines to compute distinct counts: APPROX_COUNT_DISTINCT 
+--  The function implementation guarantees up to a 2% error rate within 
+--  a 97% probability.
+DEFINE
+    MEASURE Sales&#91;#Prods] = DISTINCTCOUNT ( Sales&#91;ProductKey] )
+    MEASURE Sales&#91;#App Prods] = APPROXIMATEDISTINCTCOUNT ( Sales&#91;ProductKey] )
+EVALUATE
+SUMMARIZECOLUMNS (
+    'Date'&#91;Calendar Year],
+    TREATAS ( { &quot;CY 2007&quot;, &quot;CY 2008&quot;, &quot;CY 2009&quot; }, 'Date'&#91;Calendar Year] ),
+    &quot;#Prods&quot;,       &#91;#Prods],
+    &quot;#App Prods&quot;,   &#91;#App Prods]
+)
+</pre>
+                </section>
+                        
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/distinctcount/" class="ajax" data-id="77">DISTINCTCOUNT</a></li>
+                                                    <li><a href="https://dax.guide/distinctcountnoblank/" class="ajax" data-id="484">DISTINCTCOUNTNOBLANK</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/dax-tools/?aff=tools-promo" target="_top" class="sam-click" data-campaign="dax-tools-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/tools-58090.png" title="DAX Tools Video Course" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Feb 24, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo, Kenneth Barber</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/approximate-distinctcount-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/approximate-distinctcount-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

@@ -1,0 +1,614 @@
+
+            <header>
+                <h1 title="FORMAT"><a href="https://dax.guide/format/" rel="bookmark">FORMAT</a> <span class="smaller">DAX Function (Text)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                         &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Converts a value to text in the specified number format.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    FORMAT ( &lt;Value&gt;, &lt;Format&gt; )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Value                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>A number, or a formula that evaluates to a numeric value.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Format                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>A number format that you specify.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single <a href="https://dax.guide/dt/string/" class="ajax" data-id="261">string</a> value.</div></p>                    <p>A string containing <strong>Value</strong> formatted as defined by <strong>Format</strong> string.<br />
+The result is always a string, even when the value is blank.</p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>For information on how to use the <strong>Format</strong> string parameter:</p>
+<ul>
+<li><strong>Numbers</strong>: Use <a href="https://docs.microsoft.com/en-us/dax/pre-defined-numeric-formats-for-the-format-function">predefined numeric formats</a> or create <a href="https://docs.microsoft.com/en-us/dax/custom-numeric-formats-for-the-format-function">custom numeric formats</a>.</li>
+<li><strong>Dates and times</strong>: Use <a href="https://docs.microsoft.com/en-us/dax/pre-defined-date-and-time-formats-for-the-format-function">predefined date/time formats</a> or create <a href="https://docs.microsoft.com/en-us/dax/custom-date-and-time-formats-for-the-format-function">user-defined date/time formats</a>.</li>
+</ul>
+<p>The format strings supported as an argument to the DAX FORMAT function are based on the format strings used by Visual Basic (OLE Automation), not on the format strings used by the .NET Framework. Therefore, you might get unexpected results or an error if the argument does not match any defined format strings. For example, “p” as an abbreviation for “Percent” is not supported. Strings that you provide as an argument to the FORMAT function that are not included in the list of predefined format strings are handled as part of a custom format string, or as a string literal.</p>
+<p>In order to make sure a literal is not interpreted as a format string, embed the literal between double quotes as in the examples.</p>
+<p>The name of weekdays and months depends on the international settings of the database (or Power BI Desktop file).</p>
+                </section>
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 1 related article</a><br>
+                                                    <a href="#alt" class="sliding">&raquo; 1 related function</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/Gm97lhJu0d7rnB/; notranslate" title="">
+--  FORMAT is a formatting function that formats a value based
+--  on a format string.
+EVALUATE
+{
+    ( &quot;Percent&quot;,      FORMAT (                0.742, &quot;Percent&quot; )        ),
+    ( &quot;Currency (1)&quot;, FORMAT (             1234.567, &quot;$#,0.00&quot; )        ),
+    ( &quot;Currency (2)&quot;, FORMAT (             1234.567, &quot;&quot;&quot;US$&quot;&quot; #,0.00&quot; ) ),
+    ( &quot;Date (1)&quot;,     FORMAT ( DATE ( 2019, 3, 28 ), &quot;yyyy-mm-dd&quot; )     ),
+    ( &quot;Date (2)&quot;,     FORMAT ( DATE ( 2019, 3, 28 ), &quot;m/d/yy&quot; )         )
+}
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Value1">Value1</th>
+<th title="Value2">Value2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Percent</td>
+<td class="col-string">74.20%</td>
+</tr>
+<tr>
+<td class="col-string">Currency (1)</td>
+<td class="col-string">$1,234.57</td>
+</tr>
+<tr>
+<td class="col-string">Currency (2)</td>
+<td class="col-string">US$ 1,234.57</td>
+</tr>
+<tr>
+<td class="col-string">Date (1)</td>
+<td class="col-string">2019-03-28</td>
+</tr>
+<tr>
+<td class="col-string">Date (2)</td>
+<td class="col-string">3/28/19</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/Uf5qLNQKH1uXaY/; notranslate" title="">
+--  FORMAT accepts a set of predefined format strings to format numbers
+EVALUATE
+{
+    ( &quot;General Number&quot;,  FORMAT( 12345.67, &quot;General Number&quot; )  ),
+    ( &quot;Currency&quot;      ,  FORMAT( 12345.67, &quot;Currency&quot;       )  ),
+    ( &quot;Fixed&quot;         ,  FORMAT( 12345.67, &quot;Fixed&quot;          )  ),
+    ( &quot;Standard&quot;      ,  FORMAT( 12345.67, &quot;Standard&quot;       )  ),
+    ( &quot;Percent&quot;       ,  FORMAT( 12345.67, &quot;Percent&quot;        )  ),
+    ( &quot;Scientific&quot;    ,  FORMAT( 12345.67, &quot;Scientific&quot;     )  ),
+    ( &quot;True/False&quot;    ,  FORMAT( TRUE,     &quot;True/False&quot;     )  ),
+    ( &quot;On/Off&quot;        ,  FORMAT( FALSE,    &quot;On/Off&quot;         )  ),
+    ( &quot;Yes/No&quot;        ,  FORMAT( TRUE,     &quot;Yes/No&quot;         )  )
+}
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Value1">Value1</th>
+<th title="Value2">Value2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">General Number</td>
+<td class="col-string">12345.67</td>
+</tr>
+<tr>
+<td class="col-string">Currency</td>
+<td class="col-string">$12,345.67</td>
+</tr>
+<tr>
+<td class="col-string">Fixed</td>
+<td class="col-string">12345.67</td>
+</tr>
+<tr>
+<td class="col-string">Standard</td>
+<td class="col-string">12,345.67</td>
+</tr>
+<tr>
+<td class="col-string">Percent</td>
+<td class="col-string">1234567.00%</td>
+</tr>
+<tr>
+<td class="col-string">Scientific</td>
+<td class="col-string">1.23E+04</td>
+</tr>
+<tr>
+<td class="col-string">True/False</td>
+<td class="col-string">True</td>
+</tr>
+<tr>
+<td class="col-string">On/Off</td>
+<td class="col-string">Off</td>
+</tr>
+<tr>
+<td class="col-string">Yes/No</td>
+<td class="col-string">Yes</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/bsNXvWzzIBDs9Q/; notranslate" title="">
+--  Regardless of the format string, if the value argument is
+--  BLANK, FORMAT returns an empty string
+EVALUATE
+{
+    ( &quot;General Number&quot;,  FORMAT ( BLANK (), &quot;General Number&quot; ) ),
+    ( &quot;Currency&quot;      ,  FORMAT ( BLANK (), &quot;Currency&quot;       ) ),
+    ( &quot;Fixed&quot;         ,  FORMAT ( BLANK (), &quot;Fixed&quot;          ) ),
+    ( &quot;Standard&quot;      ,  FORMAT ( BLANK (), &quot;Standard&quot;       ) ),
+    ( &quot;Percent&quot;       ,  FORMAT ( BLANK (), &quot;Percent&quot;        ) ),
+    ( &quot;Scientific&quot;    ,  FORMAT ( BLANK (), &quot;Scientific&quot;     ) ),
+    ( &quot;True/False&quot;    ,  FORMAT ( BLANK (), &quot;True/False&quot;     ) ),
+    ( &quot;On/Off&quot;        ,  FORMAT ( BLANK (), &quot;On/Off&quot;         ) ),
+    ( &quot;Yes/No&quot;        ,  FORMAT ( BLANK (), &quot;Yes/No&quot;         ) )
+}
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Value1">Value1</th>
+<th title="Value2">Value2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">General Number</td>
+<td class="col-string"></td>
+</tr>
+<tr>
+<td class="col-string">Currency</td>
+<td class="col-string"></td>
+</tr>
+<tr>
+<td class="col-string">Fixed</td>
+<td class="col-string"></td>
+</tr>
+<tr>
+<td class="col-string">Standard</td>
+<td class="col-string"></td>
+</tr>
+<tr>
+<td class="col-string">Percent</td>
+<td class="col-string"></td>
+</tr>
+<tr>
+<td class="col-string">Scientific</td>
+<td class="col-string"></td>
+</tr>
+<tr>
+<td class="col-string">True/False</td>
+<td class="col-string"></td>
+</tr>
+<tr>
+<td class="col-string">On/Off</td>
+<td class="col-string"></td>
+</tr>
+<tr>
+<td class="col-string">Yes/No</td>
+<td class="col-string"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/PaAHaTTsUkFd45/; notranslate" title="">
+--  Custom numeric format string can have up to 3 sections:
+--      One section   : applied to all the values
+--      Two sections  : first for positive and zero, second for negative
+--      Three sections: first for positive, second for negative, third for zero
+EVALUATE
+{
+    ( &quot;Positive&quot;,  FORMAT (  1980.126, &quot;#,0.00&quot; ) ),
+    ( &quot;Negative&quot;,  FORMAT ( -1980.1  , &quot;#,0.00&quot; ) ),
+    ( &quot;Zero&quot;,      FORMAT (     0    , &quot;#,0.00&quot; ) ),
+    ( &quot;Blank&quot;,     FORMAT ( BLANK () , &quot;#,0.00&quot; ) )
+}
+
+EVALUATE
+{
+    ( &quot;Positive&quot;,  FORMAT (  1980.126, &quot;#,0.00;(#,0.00)&quot; ) ),
+    ( &quot;Negative&quot;,  FORMAT ( -1980.1  , &quot;#,0.00;(#,0.00)&quot; ) ),
+    ( &quot;Zero&quot;,      FORMAT (     0    , &quot;#,0.00;(#,0.00)&quot; ) ),
+    ( &quot;Blank&quot;,     FORMAT ( BLANK () , &quot;#,0.00;(#,0.00)&quot; ) )
+}
+
+EVALUATE
+{
+    ( &quot;Positive&quot;,  FORMAT (  1980.12, &quot;#,#.##;(#,#.##);-&quot; ) ),
+    ( &quot;Negative&quot;,  FORMAT ( -1980.12, &quot;#,#.##;(#,#.##);-&quot; ) ),
+    ( &quot;Zero&quot;,      FORMAT (     0   , &quot;#,#.##;(#,#.##);-&quot; ) ),
+    ( &quot;Blank&quot;,     FORMAT ( BLANK (), &quot;#,#.##;(#,#.##);-&quot; ) )
+}
+
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Value1">Value1</th>
+<th title="Value2">Value2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Positive</td>
+<td class="col-string">1,980.13</td>
+</tr>
+<tr>
+<td class="col-string">Negative</td>
+<td class="col-string">-1,980.10</td>
+</tr>
+<tr>
+<td class="col-string">Zero</td>
+<td class="col-string">0.00</td>
+</tr>
+<tr>
+<td class="col-string">Blank</td>
+<td class="col-string"></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th title="Value1">Value1</th>
+<th title="Value2">Value2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Positive</td>
+<td class="col-string">1,980.13</td>
+</tr>
+<tr>
+<td class="col-string">Negative</td>
+<td class="col-string">(1,980.10)</td>
+</tr>
+<tr>
+<td class="col-string">Zero</td>
+<td class="col-string">0.00</td>
+</tr>
+<tr>
+<td class="col-string">Blank</td>
+<td class="col-string"></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th title="Value1">Value1</th>
+<th title="Value2">Value2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Positive</td>
+<td class="col-string">1,980.12</td>
+</tr>
+<tr>
+<td class="col-string">Negative</td>
+<td class="col-string">(1,980.12)</td>
+</tr>
+<tr>
+<td class="col-string">Zero</td>
+<td class="col-string">&#8211;</td>
+</tr>
+<tr>
+<td class="col-string">Blank</td>
+<td class="col-string"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/MhMxhUtHzj6Acv/; notranslate" title="">
+--  FORMAT accepts a set of predefined format strings for Date/Time
+DEFINE 
+    VAR D  = DATE ( 2021, 1, 2 )
+    VAR T  = TIME ( 15, 30, 0 )
+    VAR DT = D + T
+EVALUATE
+{
+    ( &quot;General Date&quot;,  FORMAT ( DT, &quot;General Date&quot; ) ),
+    ( &quot;Long Date&quot;   ,  FORMAT ( DT, &quot;Long Date&quot;    ) ),
+    ( &quot;Medium Date&quot; ,  FORMAT ( DT, &quot;Medium Date&quot;  ) ),
+    ( &quot;Short Date&quot;  ,  FORMAT ( DT, &quot;Short Date&quot;   ) ),
+    ( &quot;Long Time&quot;   ,  FORMAT ( DT, &quot;Long Time&quot;    ) ),
+    ( &quot;Medium Time&quot; ,  FORMAT ( DT, &quot;Medium Time&quot;  ) ),
+    ( &quot;Short Time&quot;  ,  FORMAT ( DT, &quot;Short Time&quot;   ) )
+}
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Value1">Value1</th>
+<th title="Value2">Value2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">General Date</td>
+<td class="col-string">1/2/2021 3:30:00 PM</td>
+</tr>
+<tr>
+<td class="col-string">Long Date</td>
+<td class="col-string">Saturday, January 2, 2021</td>
+</tr>
+<tr>
+<td class="col-string">Medium Date</td>
+<td class="col-string">02-Jan-21</td>
+</tr>
+<tr>
+<td class="col-string">Short Date</td>
+<td class="col-string">1/2/2021</td>
+</tr>
+<tr>
+<td class="col-string">Long Time</td>
+<td class="col-string">3:30:00 PM</td>
+</tr>
+<tr>
+<td class="col-string">Medium Time</td>
+<td class="col-string">03:30 PM</td>
+</tr>
+<tr>
+<td class="col-string">Short Time</td>
+<td class="col-string">15:30</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/GErs2DVAYglowh/; notranslate" title="">
+--  You can use simple date formatting composing the format string 
+--  with dd, mm, yyyy, hh, mm and ss.
+--  The &quot;c&quot; format string adapts to the value, showing what is relevant
+DEFINE 
+    VAR D  = DATE ( 2020, 1, 2 )
+    VAR T  = TIME ( 15, 30, 0 )
+    VAR DT = D + T
+EVALUATE
+{
+    ( &quot;dd/mm/yyyy&quot;   ,  FORMAT ( DT, &quot;dd/mm/yyyy&quot; ) ),
+    ( &quot;hh:nn:ss&quot;     ,  FORMAT ( DT, &quot;hh:nn:ss&quot;   ) ),  -- &quot;nn&quot; for minutes
+    ( &quot;hh:mm:ss&quot;     ,  FORMAT ( DT, &quot;hh:mm:ss&quot;   ) ),  -- &quot;mm&quot; works too, if hh before
+    ( &quot;c (full)&quot;     ,  FORMAT ( DT, &quot;c&quot;          ) ),
+    ( &quot;c (Date only)&quot;,  FORMAT ( D,  &quot;c&quot;          ) ),
+    ( &quot;c (Time only)&quot;,  FORMAT ( T,  &quot;c&quot;          ) )
+}
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Value1">Value1</th>
+<th title="Value2">Value2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">dd/mm/yyyy</td>
+<td class="col-string">02/01/2020</td>
+</tr>
+<tr>
+<td class="col-string">hh:nn:ss</td>
+<td class="col-string">15:30:00</td>
+</tr>
+<tr>
+<td class="col-string">hh:mm:ss</td>
+<td class="col-string">15:30:00</td>
+</tr>
+<tr>
+<td class="col-string">c (full)</td>
+<td class="col-string">1/2/2020 3:30:00 PM</td>
+</tr>
+<tr>
+<td class="col-string">c (Date only)</td>
+<td class="col-string">1/2/2020</td>
+</tr>
+<tr>
+<td class="col-string">c (Time only)</td>
+<td class="col-string">3:30:00 PM</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/KrLIQxUsymy49g/; notranslate" title="">
+--  The &quot;m&quot; format string offers many options, depending on the 
+--  number of consecutive m
+DEFINE 
+    VAR D = DATE ( 2020, 1, 2 )
+EVALUATE
+{
+    ( &quot;m&quot;      ,  FORMAT ( D, &quot;m&quot;      ) ),    -- 1 or 2 digits 
+    ( &quot;mm&quot;     ,  FORMAT ( D, &quot;mm&quot;     ) ),    -- always 2 digits
+    ( &quot;mmm&quot;    ,  FORMAT ( D, &quot;mmm&quot;    ) ),    -- short day of month
+    ( &quot;mmmm&quot;   ,  FORMAT ( D, &quot;mmmm&quot;   ) )     -- long day of month
+}
+
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Value1">Value1</th>
+<th title="Value2">Value2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">m</td>
+<td class="col-string">1</td>
+</tr>
+<tr>
+<td class="col-string">mm</td>
+<td class="col-string">01</td>
+</tr>
+<tr>
+<td class="col-string">mmm</td>
+<td class="col-string">Jan</td>
+</tr>
+<tr>
+<td class="col-string">mmmm</td>
+<td class="col-string">January</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/R1J1PJa52NIIIf/; notranslate" title="">
+--  The &quot;d&quot; format string offers many options, depending on the 
+--  number of consecutive d
+DEFINE 
+    VAR D = DATE ( 2020, 1, 9 )
+EVALUATE
+{
+    ( &quot;d&quot;      ,  FORMAT ( D, &quot;d&quot;      ) ),    -- 1 or 2 digits
+    ( &quot;dd&quot;     ,  FORMAT ( D, &quot;dd&quot;     ) ),    -- always 2 digits
+    ( &quot;ddd&quot;    ,  FORMAT ( D, &quot;ddd&quot;    ) ),    -- short day of week
+    ( &quot;dddd&quot;   ,  FORMAT ( D, &quot;dddd&quot;   ) ),    -- long day of week
+    ( &quot;ddddd&quot;  ,  FORMAT ( D, &quot;ddddd&quot;  ) ),    -- short date
+    ( &quot;dddddd&quot; ,  FORMAT ( D, &quot;dddddd&quot; ) )     -- long date
+}
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Value1">Value1</th>
+<th title="Value2">Value2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">d</td>
+<td class="col-string">9</td>
+</tr>
+<tr>
+<td class="col-string">dd</td>
+<td class="col-string">09</td>
+</tr>
+<tr>
+<td class="col-string">ddd</td>
+<td class="col-string">Thu</td>
+</tr>
+<tr>
+<td class="col-string">dddd</td>
+<td class="col-string">Thursday</td>
+</tr>
+<tr>
+<td class="col-string">ddddd</td>
+<td class="col-string">1/9/2020</td>
+</tr>
+<tr>
+<td class="col-string">dddddd</td>
+<td class="col-string">Thursday, January 9, 2020</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about FORMAT in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/creating-a-simple-date-table-in-dax/"  class="low-key"><strong>Creating a simple date table in DAX</strong></a>
+                                <p>This article shows how to build a basic date table using a calculated table and DAX. <a href="https://www.sqlbi.com/articles/creating-a-simple-date-table-in-dax/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/fixed/" class="ajax" data-id="98">FIXED</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/dax-patterns/?aff=daxp-promo" target="_top" class="sam-click" data-campaign="dax-patterns-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/daxp-58090.png" title="DAX Patterns" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/format-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/format-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

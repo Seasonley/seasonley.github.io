@@ -1,0 +1,353 @@
+
+            <header>
+                <h1 title="EARLIER"><a href="https://dax.guide/earlier/" rel="bookmark">EARLIER</a> <span class="smaller">DAX Function&nbsp;<span class="not-suggested icon icon-rinfo tooltip" data-tooltip-content="#fnnotsuggested">Not recommended</span></span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                         &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns the value in the column prior to the specified number of table scans (default is 1).</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    EARLIER ( &lt;ColumnName&gt; [, &lt;Number&gt;] )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        ColumnName                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The column that contains the desired value.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Number                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Optional<br></td>
+                                    <td class="definition">
+                                        <p>The number of table scan.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single value of any type.</div></p>                    <p>The current value of row, from ColumnName, at Number of outer evaluation passes. </p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>EARLIER succeeds if there is a row context prior to the beginning of the table scan. Otherwise it returns an error.<br />
+It is recommended using variable (VAR) saving the value when it is still accessible, before a new row context hides the required row context to access the desired value.</p>
+                </section>
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 2 related articles</a><br>
+                                                    <a href="#alt" class="sliding">&raquo; 1 related function</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/Hj5IhItXdY0ETA/; notranslate" title="">
+--  EARLIER evaluates a column in the outer row context, in case there
+--  are multiple row contexts open in the same expression
+--
+--  EARLIER accepts a second argument that represents the number of steps
+--  EARLIEST retrieves the first ever row context
+EVALUATE
+ADDCOLUMNS (
+    VALUES ( Customer&#91;Yearly Income] ),
+    &quot;Customers&quot;, CALCULATE ( COUNTROWS ( Customer ) ),
+    &quot;RT Customers&quot;,
+        COUNTROWS (
+            FILTER (
+                Customer,
+                Customer&#91;Yearly Income] &lt;= EARLIER ( Customer&#91;Yearly Income] )
+            )
+        )
+)
+ORDER BY &#91;Yearly Income]
+
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Yearly Income">Yearly Income</th>
+<th title="Customers">Customers</th>
+<th title="RT Customers">RT Customers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-int">10,000</td>
+<td class="col-int">1,155</td>
+<td class="col-int">1,155</td>
+</tr>
+<tr>
+<td class="col-int">20,000</td>
+<td class="col-int">1,767</td>
+<td class="col-int">2,922</td>
+</tr>
+<tr>
+<td class="col-int">30,000</td>
+<td class="col-int">2,287</td>
+<td class="col-int">5,209</td>
+</tr>
+<tr>
+<td class="col-int">40,000</td>
+<td class="col-int">2,747</td>
+<td class="col-int">7,956</td>
+</tr>
+<tr>
+<td class="col-int">50,000</td>
+<td class="col-int">670</td>
+<td class="col-int">8,626</td>
+</tr>
+<tr>
+<td class="col-int">60,000</td>
+<td class="col-int">3,127</td>
+<td class="col-int">11,753</td>
+</tr>
+<tr>
+<td class="col-int">70,000</td>
+<td class="col-int">2,349</td>
+<td class="col-int">14,102</td>
+</tr>
+<tr>
+<td class="col-int">80,000</td>
+<td class="col-int">1,342</td>
+<td class="col-int">15,444</td>
+</tr>
+<tr>
+<td class="col-int">90,000</td>
+<td class="col-int">842</td>
+<td class="col-int">16,286</td>
+</tr>
+<tr>
+<td class="col-int">100,000</td>
+<td class="col-int">571</td>
+<td class="col-int">16,857</td>
+</tr>
+<tr>
+<td class="col-int">110,000</td>
+<td class="col-int">474</td>
+<td class="col-int">17,331</td>
+</tr>
+<tr>
+<td class="col-int">120,000</td>
+<td class="col-int">332</td>
+<td class="col-int">17,663</td>
+</tr>
+<tr>
+<td class="col-int">130,000</td>
+<td class="col-int">512</td>
+<td class="col-int">18,175</td>
+</tr>
+<tr>
+<td class="col-int">150,000</td>
+<td class="col-int">103</td>
+<td class="col-int">18,278</td>
+</tr>
+<tr>
+<td class="col-int">160,000</td>
+<td class="col-int">94</td>
+<td class="col-int">18,372</td>
+</tr>
+<tr>
+<td class="col-int">170,000</td>
+<td class="col-int">112</td>
+<td class="col-int">18,484</td>
+</tr>
+<tr>
+<td class="col-int">10,000,000</td>
+<td class="col-int">385</td>
+<td class="col-int">18,869</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/y1Gq6HQTQCJVek/; notranslate" title="">
+--  EARLIER is superseeded by a careful usage of variables.
+--  It is a best practice to avoid using EARLIER to make the code easier
+--  to author and maintain.
+EVALUATE
+ADDCOLUMNS (
+    VALUES ( Customer&#91;Yearly Income] ),
+    &quot;Customers&quot;, CALCULATE ( COUNTROWS ( Customer ) ),
+    &quot;RT Customers&quot;,
+        VAR CurrentYearlyIncome = Customer&#91;Yearly Income]
+        RETURN
+        COUNTROWS (
+            FILTER (
+                Customer,
+                Customer&#91;Yearly Income] &lt;= CurrentYearlyIncome 
+            )
+        )
+)
+ORDER BY &#91;Yearly Income]
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Yearly Income">Yearly Income</th>
+<th title="Customers">Customers</th>
+<th title="RT Customers">RT Customers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-int">10,000</td>
+<td class="col-int">1,155</td>
+<td class="col-int">1,155</td>
+</tr>
+<tr>
+<td class="col-int">20,000</td>
+<td class="col-int">1,767</td>
+<td class="col-int">2,922</td>
+</tr>
+<tr>
+<td class="col-int">30,000</td>
+<td class="col-int">2,287</td>
+<td class="col-int">5,209</td>
+</tr>
+<tr>
+<td class="col-int">40,000</td>
+<td class="col-int">2,747</td>
+<td class="col-int">7,956</td>
+</tr>
+<tr>
+<td class="col-int">50,000</td>
+<td class="col-int">670</td>
+<td class="col-int">8,626</td>
+</tr>
+<tr>
+<td class="col-int">60,000</td>
+<td class="col-int">3,127</td>
+<td class="col-int">11,753</td>
+</tr>
+<tr>
+<td class="col-int">70,000</td>
+<td class="col-int">2,349</td>
+<td class="col-int">14,102</td>
+</tr>
+<tr>
+<td class="col-int">80,000</td>
+<td class="col-int">1,342</td>
+<td class="col-int">15,444</td>
+</tr>
+<tr>
+<td class="col-int">90,000</td>
+<td class="col-int">842</td>
+<td class="col-int">16,286</td>
+</tr>
+<tr>
+<td class="col-int">100,000</td>
+<td class="col-int">571</td>
+<td class="col-int">16,857</td>
+</tr>
+<tr>
+<td class="col-int">110,000</td>
+<td class="col-int">474</td>
+<td class="col-int">17,331</td>
+</tr>
+<tr>
+<td class="col-int">120,000</td>
+<td class="col-int">332</td>
+<td class="col-int">17,663</td>
+</tr>
+<tr>
+<td class="col-int">130,000</td>
+<td class="col-int">512</td>
+<td class="col-int">18,175</td>
+</tr>
+<tr>
+<td class="col-int">150,000</td>
+<td class="col-int">103</td>
+<td class="col-int">18,278</td>
+</tr>
+<tr>
+<td class="col-int">160,000</td>
+<td class="col-int">94</td>
+<td class="col-int">18,372</td>
+</tr>
+<tr>
+<td class="col-int">170,000</td>
+<td class="col-int">112</td>
+<td class="col-int">18,484</td>
+</tr>
+<tr>
+<td class="col-int">10,000,000</td>
+<td class="col-int">385</td>
+<td class="col-int">18,869</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about EARLIER in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/variables-in-dax/"  class="low-key"><strong>Variables in DAX</strong></a>
+                                <p>In this article, you learn a new feature in DAX 2015: variables. The 2015 version of the DAX language has many new functions, but none of them is a game changer for the language as variables are. <a href="https://www.sqlbi.com/articles/variables-in-dax/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/dax-coding-style-using-variables/"  class="low-key"><strong>DAX coding style using variables</strong></a>
+                                <p>This article shows how variables in DAX can impact the coding style, simplifying a step-by-step approach and improving the readability of your code.  <a href="https://www.sqlbi.com/articles/dax-coding-style-using-variables/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/earliest/" class="ajax" data-id="80">EARLIEST</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/optimizing-dax-video-course/?aff=odax-promo" target="_top" class="sam-click" data-campaign="odax-video-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/odax-58090.png" title="Optimizing DAX" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/earlier-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/earlier-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

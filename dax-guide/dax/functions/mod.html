@@ -1,0 +1,322 @@
+
+            <header>
+                <h1 title="MOD"><a href="https://dax.guide/mod/" rel="bookmark">MOD</a> <span class="smaller">DAX Function (Math and Trig)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                                                 &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                         &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns the remainder after a number is divided by a divisor.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    MOD ( &lt;Number&gt;, &lt;Divisor&gt; )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Number                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The number for which you want to find the remainder after the division is performed.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Divisor                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The number by which you want to divide.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single <a href="https://dax.guide/dt/integer/" class="ajax" data-id="257">integer</a> value.</div></p>                    <p>An integer number.</p>
+                </section>
+            
+            
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 1 related article</a><br>
+                                                    <a href="#alt" class="sliding">&raquo; 3 related functions</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <pre class="brush: dax; title: ; notranslate" title="">
+MOD ( 0, 2 ) -- returns 0
+MOD ( 5, 2 ) -- returns 1
+MOD ( 6, 3 ) -- returns 0
+MOD ( 7, 3 ) -- returns 1
+MOD ( 8, 3 ) -- returns 2
+</pre>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/dY17RadhoxfEuL/; notranslate" title="">
+--  MOD returns the remainder of an integer division by A and B
+--  whereas QUOTIENT returns the integer part of the quotient
+DEFINE
+    VAR Val1 = SELECTCOLUMNS ( GENERATESERIES ( 3, 6, 1 ), &quot;Val1&quot;, &#91;Value] )
+    VAR Val2 = SELECTCOLUMNS ( GENERATESERIES ( 2, 4, 1 ), &quot;Val2&quot;, &#91;Value] )
+EVALUATE
+ADDCOLUMNS ( 
+    CROSSJOIN ( Val1, Val2 ),
+    &quot;Division&quot;, DIVIDE   ( &#91;Val1], &#91;Val2] ),
+    &quot;QUOTIENT&quot;, QUOTIENT ( &#91;Val1], &#91;Val2] ),
+    &quot;MOD&quot;,      MOD      ( &#91;Val1], &#91;Val2] ),
+    &quot;Mod/Div&quot;,  MOD ( &#91;Val1], &#91;Val2] ) / &#91;Val2]
+)
+ORDER BY &#91;Val1] DESC, &#91;Val2] ASC
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Val1">Val1</th>
+<th title="Val2">Val2</th>
+<th title="Division">Division</th>
+<th title="Quotient">Quotient</th>
+<th title="MOD">MOD</th>
+<th title="Mod/Div">Mod/Div</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-int">6</td>
+<td class="col-int">2</td>
+<td class="col-float">3.00</td>
+<td class="col-int">3</td>
+<td class="col-int">0</td>
+<td class="col-float">0.00</td>
+</tr>
+<tr>
+<td class="col-int">6</td>
+<td class="col-int">3</td>
+<td class="col-float">2.00</td>
+<td class="col-int">2</td>
+<td class="col-int">0</td>
+<td class="col-float">0.00</td>
+</tr>
+<tr>
+<td class="col-int">6</td>
+<td class="col-int">4</td>
+<td class="col-float">1.50</td>
+<td class="col-int">1</td>
+<td class="col-int">2</td>
+<td class="col-float">0.50</td>
+</tr>
+<tr>
+<td class="col-int">5</td>
+<td class="col-int">2</td>
+<td class="col-float">2.50</td>
+<td class="col-int">2</td>
+<td class="col-int">1</td>
+<td class="col-float">0.50</td>
+</tr>
+<tr>
+<td class="col-int">5</td>
+<td class="col-int">3</td>
+<td class="col-float">1.67</td>
+<td class="col-int">1</td>
+<td class="col-int">2</td>
+<td class="col-float">0.67</td>
+</tr>
+<tr>
+<td class="col-int">5</td>
+<td class="col-int">4</td>
+<td class="col-float">1.25</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+<td class="col-float">0.25</td>
+</tr>
+<tr>
+<td class="col-int">4</td>
+<td class="col-int">2</td>
+<td class="col-float">2.00</td>
+<td class="col-int">2</td>
+<td class="col-int">0</td>
+<td class="col-float">0.00</td>
+</tr>
+<tr>
+<td class="col-int">4</td>
+<td class="col-int">3</td>
+<td class="col-float">1.33</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+<td class="col-float">0.33</td>
+</tr>
+<tr>
+<td class="col-int">4</td>
+<td class="col-int">4</td>
+<td class="col-float">1.00</td>
+<td class="col-int">1</td>
+<td class="col-int">0</td>
+<td class="col-float">0.00</td>
+</tr>
+<tr>
+<td class="col-int">3</td>
+<td class="col-int">2</td>
+<td class="col-float">1.50</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+<td class="col-float">0.50</td>
+</tr>
+<tr>
+<td class="col-int">3</td>
+<td class="col-int">3</td>
+<td class="col-float">1.00</td>
+<td class="col-int">1</td>
+<td class="col-int">0</td>
+<td class="col-float">0.00</td>
+</tr>
+<tr>
+<td class="col-int">3</td>
+<td class="col-int">4</td>
+<td class="col-float">0.75</td>
+<td class="col-int">0</td>
+<td class="col-int">3</td>
+<td class="col-float">0.75</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/pzFQrFWzI93ECI/; notranslate" title="">
+--  MOD returns the remainder of an integer division by A and B
+--  whereas QUOTIENT returns the integer part of the quotient.
+DEFINE
+    VAR Val1 = SELECTCOLUMNS ( GENERATESERIES ( 0.5, 3.3, 1.6 ), &quot;Val1&quot;, &#91;Value] )
+    VAR Val2 = SELECTCOLUMNS ( GENERATESERIES ( 0.5, 2.8, 1.1 ), &quot;Val2&quot;, &#91;Value] )
+EVALUATE
+ADDCOLUMNS ( 
+    CROSSJOIN ( Val1, Val2 ),
+    &quot;Division&quot;, DIVIDE   ( &#91;Val1], &#91;Val2] ),
+    &quot;QUOTIENT&quot;, QUOTIENT ( &#91;Val1], &#91;Val2] ),
+    &quot;MOD&quot;,      MOD      ( &#91;Val1], &#91;Val2] ),
+    &quot;Mod/Div&quot;,  MOD ( &#91;Val1], &#91;Val2] ) / &#91;Val2]
+)
+ORDER BY &#91;Val1] DESC, &#91;Val2] ASC
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Val1">Val1</th>
+<th title="Val2">Val2</th>
+<th title="Division">Division</th>
+<th title="Quotient">Quotient</th>
+<th title="MOD">MOD</th>
+<th title="Mod/Div">Mod/Div</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-float">2.10</td>
+<td class="col-float">0.50</td>
+<td class="col-float">4.20</td>
+<td class="col-int">4</td>
+<td class="col-float">0.10</td>
+<td class="col-float">0.20</td>
+</tr>
+<tr>
+<td class="col-float">2.10</td>
+<td class="col-float">1.60</td>
+<td class="col-float">1.31</td>
+<td class="col-int">1</td>
+<td class="col-float">0.50</td>
+<td class="col-float">0.31</td>
+</tr>
+<tr>
+<td class="col-float">2.10</td>
+<td class="col-float">2.70</td>
+<td class="col-float">0.78</td>
+<td class="col-int">0</td>
+<td class="col-float">2.10</td>
+<td class="col-float">0.78</td>
+</tr>
+<tr>
+<td class="col-float">0.50</td>
+<td class="col-float">0.50</td>
+<td class="col-float">1.00</td>
+<td class="col-int">1</td>
+<td class="col-float">0.00</td>
+<td class="col-float">0.00</td>
+</tr>
+<tr>
+<td class="col-float">0.50</td>
+<td class="col-float">1.60</td>
+<td class="col-float">0.31</td>
+<td class="col-int">0</td>
+<td class="col-float">0.50</td>
+<td class="col-float">0.31</td>
+</tr>
+<tr>
+<td class="col-float">0.50</td>
+<td class="col-float">2.70</td>
+<td class="col-float">0.19</td>
+<td class="col-int">0</td>
+<td class="col-float">0.50</td>
+<td class="col-float">0.19</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about MOD in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/applying-color-banding-by-document-number-in-power-bi/"  class="low-key"><strong>Applying color banding by document number in Power BI</strong></a>
+                                <p>This article describes how to use conditional formatting with a DAX expression to color the rows of a table in Power BI based on the order number instead of using the alternate rows color formatting option. <a href="https://www.sqlbi.com/articles/applying-color-banding-by-document-number-in-power-bi/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/divide/" class="ajax" data-id="78">DIVIDE</a></li>
+                                                    <li><a href="https://dax.guide/lcm/" class="ajax" data-id="134">LCM</a></li>
+                                                    <li><a href="https://dax.guide/quotient/" class="ajax" data-id="183">QUOTIENT</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://dax.do/" target="_top" class="sam-click" data-campaign="dax-do" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/daxdo-58090.png" title="Run your DAX code with DAX.do" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/mod-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/mod-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

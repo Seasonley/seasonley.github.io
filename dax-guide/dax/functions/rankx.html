@@ -1,0 +1,545 @@
+
+            <header>
+                <h1 title="RANKX"><a href="https://dax.guide/rankx/" rel="bookmark">RANKX</a> <span class="smaller">DAX Function (Statistical)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                         &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns the rank of an expression evaluated in the current context in the list of values for the expression evaluated for each row in the specified table.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    RANKX ( &lt;Table&gt;, &lt;Expression&gt; [, &lt;Value&gt;] [, &lt;Order&gt;] [, &lt;Ties&gt;] )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Table                                                                                                                            <br><a href="https://www.sqlbi.com/articles/row-context-and-filter-context-in-dax/" class="feature2 icon icon-rinfo tooltip"  data-tooltip-content="#iterator">Iterator</section>
+                                                                                                                                                            </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>A table expression.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Expression                                                                                    <br><a href="https://www.sqlbi.com/articles/row-context-and-filter-context-in-dax/" class="feature icon icon-rinfo tooltip"  data-tooltip-content="#rowcontext">Row Context</a>
+                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>An expression that will be evaluated for row of the table.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Value                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Optional<br></td>
+                                    <td class="definition">
+                                        <p>An expression that will be evaluated in the current context. If omitted, the Expression argument will be used.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Order                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Optional<br></td>
+                                    <td class="definition">
+                                        <p>The order to be applied. 0/FALSE/DESC &#8211; descending; 1/TRUE/ASC &#8211; ascending.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Ties                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Optional<br></td>
+                                    <td class="definition">
+                                        <p>Function behavior in the event of ties. Skip &#8211; ranks that correspond to elements in ties will be skipped; Dense &#8211; all elements in a tie are counted as one.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single <a href="https://dax.guide/dt/integer/" class="ajax" data-id="257">integer</a> value.</div></p>                    <p>The rank number of Value among all possible values of Expression evaluated for all rows of Table numbers. </p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>The default value for the Order argument is DESC.<br />
+The default value for the Ties argument is SKIP.</p>
+                </section>
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 5 related articles</a><br>
+                                                    <a href="#alt" class="sliding">&raquo; 1 related function</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/7B0Ryv5jEpPsjK/; notranslate" title="">
+--  RANKX computes the ranking of an expression over a table
+--  The expression is evaluated during the iteration over the
+--  table and then in the evaluation context of RANKX.
+--  The result is the position of the outer evaluation in the 
+--  lookup table built during the iteration
+DEFINE
+    VAR BrandsAndSales =
+        ADDCOLUMNS (
+            VALUES ( 'Product'&#91;Brand] ),
+            &quot;@Amt&quot;, &#91;Sales Amount]
+        )
+EVALUATE
+ADDCOLUMNS (
+    BrandsAndSales,
+    &quot;Rank&quot;,
+        RANKX (
+            BrandsAndSales,
+            &#91;@Amt]
+        )
+)
+ORDER BY &#91;@Amt] DESC
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Brand">Brand</th>
+<th title="@Amt">@Amt</th>
+<th title="Rank">Rank</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Contoso</td>
+<td class="col-float">7,352,399.03</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Fabrikam</td>
+<td class="col-float">5,554,015.73</td>
+<td class="col-int">2</td>
+</tr>
+<tr>
+<td class="col-string">Adventure Works</td>
+<td class="col-float">4,011,112.28</td>
+<td class="col-int">3</td>
+</tr>
+<tr>
+<td class="col-string">Litware</td>
+<td class="col-float">3,255,704.03</td>
+<td class="col-int">4</td>
+</tr>
+<tr>
+<td class="col-string">Proseware</td>
+<td class="col-float">2,546,144.16</td>
+<td class="col-int">5</td>
+</tr>
+<tr>
+<td class="col-string">A. Datum</td>
+<td class="col-float">2,096,184.64</td>
+<td class="col-int">6</td>
+</tr>
+<tr>
+<td class="col-string">Wide World Importers</td>
+<td class="col-float">1,901,956.66</td>
+<td class="col-int">7</td>
+</tr>
+<tr>
+<td class="col-string">Southridge Video</td>
+<td class="col-float">1,384,413.85</td>
+<td class="col-int">8</td>
+</tr>
+<tr>
+<td class="col-string">The Phone Company</td>
+<td class="col-float">1,123,819.07</td>
+<td class="col-int">9</td>
+</tr>
+<tr>
+<td class="col-string">Northwind Traders</td>
+<td class="col-float">1,040,552.13</td>
+<td class="col-int">10</td>
+</tr>
+<tr>
+<td class="col-string">Tailspin Toys</td>
+<td class="col-float">325,042.42</td>
+<td class="col-int">11</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/kAeJHjUxVHmkXy/; notranslate" title="">
+--  The third argument of RANKX is useful when the outer 
+--  evaluation requires a different expression than the
+--  inner one. For example, when ranking an expression over
+--  a pre-built lookup table
+DEFINE
+    VAR SalesLevels =
+        SELECTCOLUMNS ( { 6000000, 3000000, 1500000, 750000, 0 }, &quot;@Limit&quot;, &#91;Value] )
+
+EVALUATE
+ADDCOLUMNS (
+    VALUES ( Product&#91;Brand] ),
+    &quot;Sales Amount&quot;, &#91;Sales Amount],
+    &quot;Level&quot;, RANKX ( SalesLevels, &#91;@Limit], &#91;Sales Amount] )
+)
+ORDER BY &#91;Level] ASC
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Brand">Brand</th>
+<th title="Sales Amount">Sales Amount</th>
+<th title="Level">Level</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Contoso</td>
+<td class="col-float">7,352,399.03</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Litware</td>
+<td class="col-float">3,255,704.03</td>
+<td class="col-int">2</td>
+</tr>
+<tr>
+<td class="col-string">Adventure Works</td>
+<td class="col-float">4,011,112.28</td>
+<td class="col-int">2</td>
+</tr>
+<tr>
+<td class="col-string">Fabrikam</td>
+<td class="col-float">5,554,015.73</td>
+<td class="col-int">2</td>
+</tr>
+<tr>
+<td class="col-string">Wide World Importers</td>
+<td class="col-float">1,901,956.66</td>
+<td class="col-int">3</td>
+</tr>
+<tr>
+<td class="col-string">Proseware</td>
+<td class="col-float">2,546,144.16</td>
+<td class="col-int">3</td>
+</tr>
+<tr>
+<td class="col-string">A. Datum</td>
+<td class="col-float">2,096,184.64</td>
+<td class="col-int">3</td>
+</tr>
+<tr>
+<td class="col-string">Southridge Video</td>
+<td class="col-float">1,384,413.85</td>
+<td class="col-int">4</td>
+</tr>
+<tr>
+<td class="col-string">Northwind Traders</td>
+<td class="col-float">1,040,552.13</td>
+<td class="col-int">4</td>
+</tr>
+<tr>
+<td class="col-string">The Phone Company</td>
+<td class="col-float">1,123,819.07</td>
+<td class="col-int">4</td>
+</tr>
+<tr>
+<td class="col-string">Tailspin Toys</td>
+<td class="col-float">325,042.42</td>
+<td class="col-int">5</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/81duJcPBJhoyEE/; notranslate" title="">
+--  The fourth argument of RANKX specifies the order of ranking
+--  it can be DESC (default) or ASC
+DEFINE
+    VAR BrandsAndSales =
+        ADDCOLUMNS ( VALUES ( 'Product'&#91;Brand] ), &quot;@Amt&quot;, &#91;Sales Amount] )
+EVALUATE
+ADDCOLUMNS (
+    BrandsAndSales,
+    &quot;Rank ASC&quot;,  RANKX ( BrandsAndSales, &#91;@Amt], &#91;@Amt], ASC ),
+    &quot;Rank DESC&quot;, RANKX ( BrandsAndSales, &#91;@Amt], &#91;@Amt], DESC ),
+    &quot;Rank (default)&quot;, RANKX ( BrandsAndSales, &#91;@Amt], &#91;@Amt] )
+)
+ORDER BY &#91;@Amt] DESC
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Brand">Brand</th>
+<th title="@Amt">@Amt</th>
+<th title="Rank ASC">Rank ASC</th>
+<th title="Rank DESC">Rank DESC</th>
+<th title="Rank (default)">Rank (default)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Contoso</td>
+<td class="col-float">7,352,399.03</td>
+<td class="col-int">11</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Fabrikam</td>
+<td class="col-float">5,554,015.73</td>
+<td class="col-int">10</td>
+<td class="col-int">2</td>
+<td class="col-int">2</td>
+</tr>
+<tr>
+<td class="col-string">Adventure Works</td>
+<td class="col-float">4,011,112.28</td>
+<td class="col-int">9</td>
+<td class="col-int">3</td>
+<td class="col-int">3</td>
+</tr>
+<tr>
+<td class="col-string">Litware</td>
+<td class="col-float">3,255,704.03</td>
+<td class="col-int">8</td>
+<td class="col-int">4</td>
+<td class="col-int">4</td>
+</tr>
+<tr>
+<td class="col-string">Proseware</td>
+<td class="col-float">2,546,144.16</td>
+<td class="col-int">7</td>
+<td class="col-int">5</td>
+<td class="col-int">5</td>
+</tr>
+<tr>
+<td class="col-string">A. Datum</td>
+<td class="col-float">2,096,184.64</td>
+<td class="col-int">6</td>
+<td class="col-int">6</td>
+<td class="col-int">6</td>
+</tr>
+<tr>
+<td class="col-string">Wide World Importers</td>
+<td class="col-float">1,901,956.66</td>
+<td class="col-int">5</td>
+<td class="col-int">7</td>
+<td class="col-int">7</td>
+</tr>
+<tr>
+<td class="col-string">Southridge Video</td>
+<td class="col-float">1,384,413.85</td>
+<td class="col-int">4</td>
+<td class="col-int">8</td>
+<td class="col-int">8</td>
+</tr>
+<tr>
+<td class="col-string">The Phone Company</td>
+<td class="col-float">1,123,819.07</td>
+<td class="col-int">3</td>
+<td class="col-int">9</td>
+<td class="col-int">9</td>
+</tr>
+<tr>
+<td class="col-string">Northwind Traders</td>
+<td class="col-float">1,040,552.13</td>
+<td class="col-int">2</td>
+<td class="col-int">10</td>
+<td class="col-int">10</td>
+</tr>
+<tr>
+<td class="col-string">Tailspin Toys</td>
+<td class="col-float">325,042.42</td>
+<td class="col-int">1</td>
+<td class="col-int">11</td>
+<td class="col-int">11</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/b9vTPeT0qReSpo/; notranslate" title="">
+--  The fifth argument of RANKX specifies the behavior in
+--  case of ties. SKIP (default) skips positions, whereas
+--  DENSE guarantees a 1-step increment in the ranking
+DEFINE
+    VAR BrandsAndSales =
+        ADDCOLUMNS (
+            VALUES ( 'Product'&#91;Brand] ),
+            &quot;@Amt&quot;, MROUND ( &#91;Sales Amount], 1E6 )
+        )
+EVALUATE
+ADDCOLUMNS (
+    BrandsAndSales,
+    &quot;Rank SKIP&quot;,  RANKX ( BrandsAndSales, &#91;@Amt], &#91;@Amt], DESC, SKIP ),
+    &quot;Rank DENSE&quot;, RANKX ( BrandsAndSales, &#91;@Amt], &#91;@Amt], DESC, DENSE )
+)
+ORDER BY &#91;@Amt] DESC
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Brand">Brand</th>
+<th title="@Amt">@Amt</th>
+<th title="Rank SKIP">Rank SKIP</th>
+<th title="Rank DENSE">Rank DENSE</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Contoso</td>
+<td class="col-int">7,000,000</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Fabrikam</td>
+<td class="col-int">6,000,000</td>
+<td class="col-int">2</td>
+<td class="col-int">2</td>
+</tr>
+<tr>
+<td class="col-string">Adventure Works</td>
+<td class="col-int">4,000,000</td>
+<td class="col-int">3</td>
+<td class="col-int">3</td>
+</tr>
+<tr>
+<td class="col-string">Litware</td>
+<td class="col-int">3,000,000</td>
+<td class="col-int">4</td>
+<td class="col-int">4</td>
+</tr>
+<tr>
+<td class="col-string">Proseware</td>
+<td class="col-int">3,000,000</td>
+<td class="col-int">4</td>
+<td class="col-int">4</td>
+</tr>
+<tr>
+<td class="col-string">Wide World Importers</td>
+<td class="col-int">2,000,000</td>
+<td class="col-int">6</td>
+<td class="col-int">5</td>
+</tr>
+<tr>
+<td class="col-string">A. Datum</td>
+<td class="col-int">2,000,000</td>
+<td class="col-int">6</td>
+<td class="col-int">5</td>
+</tr>
+<tr>
+<td class="col-string">Northwind Traders</td>
+<td class="col-int">1,000,000</td>
+<td class="col-int">8</td>
+<td class="col-int">6</td>
+</tr>
+<tr>
+<td class="col-string">The Phone Company</td>
+<td class="col-int">1,000,000</td>
+<td class="col-int">8</td>
+<td class="col-int">6</td>
+</tr>
+<tr>
+<td class="col-string">Southridge Video</td>
+<td class="col-int">1,000,000</td>
+<td class="col-int">8</td>
+<td class="col-int">6</td>
+</tr>
+<tr>
+<td class="col-string">Tailspin Toys</td>
+<td class="col-int">0</td>
+<td class="col-int">11</td>
+<td class="col-int">7</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about RANKX in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/use-of-rankx-in-power-bi-measures/"  class="low-key"><strong>Use of RANKX in Power BI measures</strong></a>
+                                <p>The RANKX function in Power BI might have an unexpected behavior when applied to a column that has a specific sort order in the data model. This article explains why, and how to address this issue. <a href="https://www.sqlbi.com/articles/use-of-rankx-in-power-bi-measures/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/handling-customers-with-the-same-name-in-power-bi/"  class="low-key"><strong>Handling customers with the same name in Power BI</strong></a>
+                                <p>This article explains how to show different customers with the same name in a Power BI report by using zero-width spaces, thus simplifying the presentation without adding visible characters to make the names unique. <a href="https://www.sqlbi.com/articles/handling-customers-with-the-same-name-in-power-bi/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/sorting-duplicated-names-in-a-level-of-a-hierarchy-with-dax/"  class="low-key"><strong>Sorting duplicated names in a level of a hierarchy with DAX</strong></a>
+                                <p>This article describes how to use DAX calculated columns to sort names that look like duplicates at a certain level of a hierarchy, but are unique when considering their full path within the hierarchy. <a href="https://www.sqlbi.com/articles/sorting-duplicated-names-in-a-level-of-a-hierarchy-with-dax/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/how-to-compute-index-numbers-at-top-speed/"  class="low-key"><strong>How to compute index numbers at top speed</strong></a>
+                                <p>This article presents different techniques to compute a rownumber column in DAX based on a specific ranking, comparing slow and optimized approaches. <a href="https://www.sqlbi.com/articles/how-to-compute-index-numbers-at-top-speed/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/displaying-nth-element-in-dax/"  class="low-key"><strong>Displaying Nth Element in DAX</strong></a>
+                                <p>This article describes how to create a measure displaying the name or value of an element that has a specific ranking, with different option for managing ties. <a href="https://www.sqlbi.com/articles/displaying-nth-element-in-dax/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/rank-eq/" class="ajax" data-id="317">RANK.EQ</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/optimizing-dax-video-course/?aff=odax-promo" target="_top" class="sam-click" data-campaign="odax-video-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/odax-58090.png" title="Optimizing DAX" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/rankx-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/rankx-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

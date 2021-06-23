@@ -1,0 +1,261 @@
+
+            <header>
+                <h1 title="REMOVEFILTERS"><a href="https://dax.guide/removefilters/" rel="bookmark">REMOVEFILTERS</a> <span class="smaller">DAX Function (Filter)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                                                 &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                         &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Clear filters from the specified tables or columns.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    REMOVEFILTERS (  [&lt;TableNameOrColumnName&gt;] [, &lt;ColumnName&gt; [, &lt;ColumnName&gt; [, … ] ] ] )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        TableNameOrColumnName                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Optional<br></td>
+                                    <td class="definition">
+                                        <p>The name of an existing table or column.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        ColumnName                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Optional<br>Repeatable<br></td>
+                                    <td class="definition">
+                                        <p>A column in the same base table.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>REMOVEFILTERS is an alias for <a href="https://dax.guide/all/" class="ajax" data-id="20">ALL</a>, but it can be used only as a <a href="https://dax.guide/calculate/" class="ajax" data-id="33">CALCULATE</a> modifier and not as a table expression like <a href="https://dax.guide/all/" class="ajax" data-id="20">ALL</a> .</p>
+                </section>
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 3 related articles</a><br>
+                                                    <a href="#alt" class="sliding">&raquo; 1 related function</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/oKXJ01sA8k0pk6/; notranslate" title="">
+-- Filter Litware/Red
+EVALUATE
+CALCULATETABLE (
+    SUMMARIZE ( 'Product', 'Product'&#91;Category], 'Product'&#91;Brand], 'Product'&#91;Color] ),
+    Product&#91;Brand] = &quot;Litware&quot;,
+    Product&#91;Color] = &quot;Red&quot;
+)
+
+-- Remove Red filter, as a result the filter is Litware only
+EVALUATE
+CALCULATETABLE (
+    CALCULATETABLE (
+        SUMMARIZE ( 'Product', 'Product'&#91;Category], 'Product'&#91;Brand], 'Product'&#91;Color] ),
+        REMOVEFILTERS ( 'Product'&#91;Color] )
+    ),
+    Product&#91;Brand] = &quot;Litware&quot;,
+    Product&#91;Color] = &quot;Red&quot;
+)
+
+
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Category">Category</th>
+<th title="Brand">Brand</th>
+<th title="Color">Color</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Home Appliances</td>
+<td class="col-string">Litware</td>
+<td class="col-string">Red</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th title="Category">Category</th>
+<th title="Brand">Brand</th>
+<th title="Color">Color</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">TV and Video</td>
+<td class="col-string">Litware</td>
+<td class="col-string">Silver</td>
+</tr>
+<tr>
+<td class="col-string">Home Appliances</td>
+<td class="col-string">Litware</td>
+<td class="col-string">Silver</td>
+</tr>
+<tr>
+<td class="col-string">Home Appliances</td>
+<td class="col-string">Litware</td>
+<td class="col-string">Blue</td>
+</tr>
+<tr>
+<td class="col-string">Home Appliances</td>
+<td class="col-string">Litware</td>
+<td class="col-string">White</td>
+</tr>
+<tr>
+<td class="col-string">Home Appliances</td>
+<td class="col-string">Litware</td>
+<td class="col-string">Red</td>
+</tr>
+<tr>
+<td class="col-string">TV and Video</td>
+<td class="col-string">Litware</td>
+<td class="col-string">Black</td>
+</tr>
+<tr>
+<td class="col-string">Home Appliances</td>
+<td class="col-string">Litware</td>
+<td class="col-string">Black</td>
+</tr>
+<tr>
+<td class="col-string">Home Appliances</td>
+<td class="col-string">Litware</td>
+<td class="col-string">Green</td>
+</tr>
+<tr>
+<td class="col-string">Home Appliances</td>
+<td class="col-string">Litware</td>
+<td class="col-string">Orange</td>
+</tr>
+<tr>
+<td class="col-string">Home Appliances</td>
+<td class="col-string">Litware</td>
+<td class="col-string">Pink</td>
+</tr>
+<tr>
+<td class="col-string">Home Appliances</td>
+<td class="col-string">Litware</td>
+<td class="col-string">Yellow</td>
+</tr>
+<tr>
+<td class="col-string">Home Appliances</td>
+<td class="col-string">Litware</td>
+<td class="col-string">Purple</td>
+</tr>
+<tr>
+<td class="col-string">TV and Video</td>
+<td class="col-string">Litware</td>
+<td class="col-string">Brown</td>
+</tr>
+<tr>
+<td class="col-string">Home Appliances</td>
+<td class="col-string">Litware</td>
+<td class="col-string">Brown</td>
+</tr>
+<tr>
+<td class="col-string">Home Appliances</td>
+<td class="col-string">Litware</td>
+<td class="col-string">Grey</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<pre class="brush: dax; title: ; try: https://dax.do/aaab56r8tx0ruM/; notranslate" title="">
+-- Filter Litware/Red
+EVALUATE
+CALCULATETABLE (
+    SUMMARIZE ( 'Product', 'Product'&#91;Category], 'Product'&#91;Brand], 'Product'&#91;Color] ),
+    Product&#91;Brand] = &quot;Litware&quot;,
+    Product&#91;Color] = &quot;Red&quot;
+)
+
+-- Remove all the filters from Product: as a result, both Litware and Red filters are removed
+EVALUATE
+CALCULATETABLE (
+    CALCULATETABLE (
+        SUMMARIZE ( 'Product', 'Product'&#91;Category], 'Product'&#91;Brand], 'Product'&#91;Color] ),
+        REMOVEFILTERS ( 'Product' )
+    ),
+    Product&#91;Brand] = &quot;Litware&quot;,
+    Product&#91;Color] = &quot;Red&quot;
+)
+</pre>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about REMOVEFILTERS in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/managing-all-functions-in-dax-all-allselected-allnoblankrow-allexcept/"  class="low-key"><strong>Managing “all” functions in DAX: ALL, ALLSELECTED, ALLNOBLANKROW, ALLEXCEPT</strong></a>
+                                <p>This article provides a complete explanation of the behavior of the ALLxxx functions in DAX. When used as filters in CALCULATE, ALLxxx functions might display unexpected behaviors. <a href="https://www.sqlbi.com/articles/managing-all-functions-in-dax-all-allselected-allnoblankrow-allexcept/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/mark-as-date-table/"  class="low-key"><strong>Mark as Date table</strong></a>
+                                <p>Tabular models (including Power BI) require marking the Date table as a date table to get appropriate results with time intelligence calculations. This article explains why this setting is required. <a href="https://www.sqlbi.com/articles/mark-as-date-table/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/userelationship-in-calculated-columns/"  class="low-key"><strong>USERELATIONSHIP in Calculated Columns</strong></a>
+                                <p>USERELATIONSHIP lets you temporarily change which relationship is active. Even though USERELATIONSHIP is easy to work with in measures, it can be challenging and give you inaccurate results when used in calculated columns. In this article we describe the details&hellip; <a href="https://www.sqlbi.com/articles/userelationship-in-calculated-columns/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/all/" class="ajax" data-id="20">ALL</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/dax-patterns/?aff=daxp-promo" target="_top" class="sam-click" data-campaign="dax-patterns-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/daxp-58090.png" title="DAX Patterns" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/removefilters-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/removefilters-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

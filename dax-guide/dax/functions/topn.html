@@ -1,0 +1,270 @@
+
+            <header>
+                <h1 title="TOPN"><a href="https://dax.guide/topn/" rel="bookmark">TOPN</a> <span class="smaller">DAX Function (Table manipulation)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                         &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns a given number of top rows according to a specified expression.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    TOPN ( &lt;N_Value&gt;, &lt;Table&gt; [, &lt;OrderBy_Expression&gt; [, [&lt;Order&gt;] [, &lt;OrderBy_Expression&gt; [, [&lt;Order&gt;] [, … ] ] ] ] ] )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        N_Value                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The number of rows to return.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Table                                                                                                                            <br><a href="https://www.sqlbi.com/articles/row-context-and-filter-context-in-dax/" class="feature2 icon icon-rinfo tooltip"  data-tooltip-content="#iterator">Iterator</section>
+                                                                                                                                                            </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>An expression that defines the table from which rows are to be returned.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        OrderBy_Expression                                                                                    <br><a href="https://www.sqlbi.com/articles/row-context-and-filter-context-in-dax/" class="feature icon icon-rinfo tooltip"  data-tooltip-content="#rowcontext">Row Context</a>
+                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Optional<br>Repeatable<br></td>
+                                    <td class="definition">
+                                        <p>Expression to be used for sorting the table.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Order                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Optional<br>Repeatable<br></td>
+                                    <td class="definition">
+                                        <p>The order to be applied. 0/FALSE/DESC &#8211; descending; 1/TRUE/ASC &#8211; ascending.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="table-ret">Table</span> An entire table or a table with one or more columns.</div></p>                    <p>A table with the top N_value rows of Table or an empty table if N_value is 0 (zero).</p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>If there is a tie, in OrderBy_Expression values, at the N-th row of the table, then all tied rows are returned. Then, when there are ties at the N-th row the function might return more than n rows. </p>
+<p>If N_Value is 0 (zero) then TOPN returns an empty table. </p>
+<p>TOPN does not guarantee any sort order for the results. </p>
+                </section>
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 4 related articles</a><br>
+                                                    <a href="#alt" class="sliding">&raquo; 1 related function</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/prCe5DGcGhcv2G/; notranslate" title="">
+--  TOPN retrieves the top N items from a table after sorting
+--  them by the result of the third argument.
+--  Multiple sorting criteria can be provided in further parameters.
+EVALUATE
+    TOPN ( 
+        3, 
+        ADDCOLUMNS ( 
+            VALUES ( 'Product'&#91;Product Name] ),
+            &quot;@Sales Amount&quot;, &#91;Sales Amount]
+        ),
+        &#91;@Sales Amount],
+        DESC
+    )
+ORDER BY &#91;@Sales Amount] DESC
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Product Name">Product Name</th>
+<th title="@Sales Amount">@Sales Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Adventure Works 26&#8243; 720p LCD HDTV M140 Silver</td>
+<td class="col-float">1,303,983.46</td>
+</tr>
+<tr>
+<td class="col-string">A. Datum SLR Camera X137 Grey</td>
+<td class="col-float">725,840.28</td>
+</tr>
+<tr>
+<td class="col-string">Contoso Telephoto Conversion Lens X400 Silver</td>
+<td class="col-float">683,779.95</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/aFKPv6xk71yKo7/; notranslate" title="">
+--  TOPN might return more than the requested rows in presence of ties.
+EVALUATE
+    TOPN ( 
+        3, 
+        ADDCOLUMNS ( 
+            VALUES ( 'Product'&#91;Product Name] ),
+            &quot;@Sales Amount&quot;, MROUND ( &#91;Sales Amount], 500000 )
+        ),
+        &#91;@Sales Amount],
+        DESC
+    )
+ORDER BY &#91;@Sales Amount] DESC
+
+--  Multiple sorting criteria can be provided in further parameters.
+EVALUATE
+    TOPN ( 
+        3, 
+        ADDCOLUMNS ( 
+            VALUES ( 'Product'&#91;Product Name] ),
+            &quot;@Sales Amount&quot;, MROUND ( &#91;Sales Amount], 500000 )
+        ),
+        &#91;@Sales Amount],
+        DESC,
+        &#91;Product Name], 
+        ASC
+    )
+ORDER BY &#91;@Sales Amount] DESC
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Product Name">Product Name</th>
+<th title="@Sales Amount">@Sales Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Adventure Works 26&#8243; 720p LCD HDTV M140 Silver</td>
+<td class="col-int">1500000</td>
+</tr>
+<tr>
+<td class="col-string">Contoso Projector 1080p X980 White</td>
+<td class="col-int">500000</td>
+</tr>
+<tr>
+<td class="col-string">SV 16xDVD M360 Black</td>
+<td class="col-int">500000</td>
+</tr>
+<tr>
+<td class="col-string">A. Datum SLR Camera X137 Grey</td>
+<td class="col-int">500000</td>
+</tr>
+<tr>
+<td class="col-string">Contoso Telephoto Conversion Lens X400 Silver</td>
+<td class="col-int">500000</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th title="Product Name">Product Name</th>
+<th title="@Sales Amount">@Sales Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Adventure Works 26&#8243; 720p LCD HDTV M140 Silver</td>
+<td class="col-int">1500000</td>
+</tr>
+<tr>
+<td class="col-string">Contoso Projector 1080p X980 White</td>
+<td class="col-int">500000</td>
+</tr>
+<tr>
+<td class="col-string">A. Datum SLR Camera X137 Grey</td>
+<td class="col-int">500000</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about TOPN in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/displaying-filter-context-in-power-bi-tooltips/"  class="low-key"><strong>Displaying filter context in Power BI Tooltips</strong></a>
+                                <p>This article describes how to display the filter context applied to a calculation using a special DAX measure in Power BI Tooltips. <a href="https://www.sqlbi.com/articles/displaying-filter-context-in-power-bi-tooltips/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/table-and-column-references-using-dax-variables/"  class="low-key"><strong>Table and column references using DAX variables</strong></a>
+                                <p>This article describes how to correctly use column references when manipulating tables assigned to DAX variables, avoiding syntax errors and making the code easier to read and maintain. <a href="https://www.sqlbi.com/articles/table-and-column-references-using-dax-variables/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/filtering-the-top-3-products-for-each-category-in-power-bi/"  class="low-key"><strong>Filtering the Top 3 products for each category in Power BI</strong></a>
+                                <p>This article describes different techniques to display the first three products for each category in Power BI. It includes considerations on how to adapt the technique to different models and requirements. <a href="https://www.sqlbi.com/articles/filtering-the-top-3-products-for-each-category-in-power-bi/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/showing-the-top-5-products-and-others-row/"  class="low-key"><strong>Showing the top 5 products and Other row</strong></a>
+                                <p>This article shows how to add an additional “other” row to the selection obtained using the Top N filter in a Power BI report. <a href="https://www.sqlbi.com/articles/showing-the-top-5-products-and-others-row/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/topnskip/" class="ajax" data-id="121">TOPNSKIP</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/optimizing-dax-video-course/?aff=odax-promo" target="_top" class="sam-click" data-campaign="odax-video-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/odax-58090.png" title="Optimizing DAX" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/topn-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/topn-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

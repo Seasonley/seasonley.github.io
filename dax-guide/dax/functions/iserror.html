@@ -1,0 +1,147 @@
+
+            <header>
+                <h1 title="ISERROR"><a href="https://dax.guide/iserror/" rel="bookmark">ISERROR</a> <span class="smaller">DAX Function (Information)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                                                 &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                                                 &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Checks whether a value is an error, and returns TRUE or FALSE.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    ISERROR ( &lt;Value&gt; )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Value                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The value you want to test.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single <a href="https://dax.guide/dt/boolean/" class="ajax" data-id="264">boolean</a> value.</div></p>                    <p>A Boolean value of TRUE if the value is an error; otherwise FALSE. </p>
+                </section>
+            
+            
+            
+            
+                                                    <a href="#alt" class="sliding">&raquo; 1 related function</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/bRAz1J5xw86Uc7/; notranslate" title="">
+--  ISERROR detects if its argument produces an error.
+--
+--  It is commonly replaced by IFERROR, that includes in the 
+--  same function both IF and ISERROR.
+DEFINE
+MEASURE Sales&#91;Year Value unprotected] = 
+    VAR CurrentYear = SELECTEDVALUE ( 'Date'&#91;Calendar Year] )
+    RETURN VALUE ( CurrentYear )
+MEASURE Sales&#91;Year Value] = 
+    VAR CurrentYear = SELECTEDVALUE ( 'Date'&#91;Calendar Year] )
+    RETURN 
+        IF (
+            ISERROR ( INT ( VALUE ( CurrentYear ) ) ),
+            INT ( VALUE ( RIGHT ( CurrentYear, 4 ) ) ),
+            INT ( VALUE ( CurrentYear ) )
+        )
+EVALUATE
+    SUMMARIZECOLUMNS ( 
+        'Date'&#91;Calendar Year], 
+        --&quot;Year Value unprotected&quot;, &#91;Year Value unprotected]
+        &quot;Year Value&quot;, &#91;Year Value]
+       )
+ORDER BY &#91;Calendar Year]
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Calendar Year">Calendar Year</th>
+<th title="Year Value">Year Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-date">2005-01-01</td>
+<td class="col-int">2,005</td>
+</tr>
+<tr>
+<td class="col-date">2006-01-01</td>
+<td class="col-int">2,006</td>
+</tr>
+<tr>
+<td class="col-date">2007-01-01</td>
+<td class="col-int">2,007</td>
+</tr>
+<tr>
+<td class="col-date">2008-01-01</td>
+<td class="col-int">2,008</td>
+</tr>
+<tr>
+<td class="col-date">2009-01-01</td>
+<td class="col-int">2,009</td>
+</tr>
+<tr>
+<td class="col-date">2010-01-01</td>
+<td class="col-int">2,010</td>
+</tr>
+<tr>
+<td class="col-date">2011-01-01</td>
+<td class="col-int">2,011</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/iferror/" class="ajax" data-id="112">IFERROR</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://dax.guide/" target="_top" class="sam-click" data-campaign="dax-guide" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/daxguide-58090.png" title="DAX Guide" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo, Imke Feldmann</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/iserror-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/iserror-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

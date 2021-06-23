@@ -1,0 +1,142 @@
+
+            <header>
+                <h1 title="ABS"><a href="https://dax.guide/abs/" rel="bookmark">ABS</a> <span class="smaller">DAX Function (Math and Trig)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                                                                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns the absolute value of a number.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    ABS ( &lt;Number&gt; )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Number                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The number for which you want the absolute value.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single value of one these types: <a href="https://dax.guide/dt/currency" class="ajax" data-id="259">currency</a>, <a href="https://dax.guide/dt/decimal" class="ajax" data-id="258">decimal</a>, <a href="https://dax.guide/dt/integer" class="ajax" data-id="257">integer</a>.</div></p>                                    </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>The absolute value of a number with the same data type and without its sign.</p>
+                </section>
+            
+            
+                                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/YYGUzRnGSAGkh8/; notranslate" title="">
+--  ABS returns the absolute value of a number
+--  SIGN returns:
+--      +1 if the number is positive
+--       0 if the number is zero
+--      -1 if the number is negative
+DEFINE
+    VAR Vals = GENERATESERIES ( -2, +2, 0.5 )
+EVALUATE
+ADDCOLUMNS ( 
+    Vals, 
+    &quot;ABS&quot;, ABS ( &#91;Value] ), 
+    &quot;SIGN&quot;, SIGN ( &#91;Value] )
+)
+ORDER BY &#91;Value] DESC
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Value">Value</th>
+<th title="ABS">ABS</th>
+<th title="SIGN">SIGN</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-float">2.00</td>
+<td class="col-float">2.00</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-float">1.50</td>
+<td class="col-float">1.50</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-float">1.00</td>
+<td class="col-float">1.00</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-float">0.50</td>
+<td class="col-float">0.50</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-float">0.00</td>
+<td class="col-float">0.00</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-float">-0.50</td>
+<td class="col-float">0.50</td>
+<td class="col-int">-1</td>
+</tr>
+<tr>
+<td class="col-float">-1.00</td>
+<td class="col-float">1.00</td>
+<td class="col-int">-1</td>
+</tr>
+<tr>
+<td class="col-float">-1.50</td>
+<td class="col-float">1.50</td>
+<td class="col-int">-1</td>
+</tr>
+<tr>
+<td class="col-float">-2.00</td>
+<td class="col-float">2.00</td>
+<td class="col-int">-1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+            
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.youtube.com/c/sqlbi/" target="_top" class="sam-click" data-campaign="youtube-channel" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/youtube-58090.jpg" title="Subscribe to our Youtube channel" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/abs-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://d

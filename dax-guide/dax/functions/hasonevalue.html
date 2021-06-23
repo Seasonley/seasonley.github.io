@@ -1,0 +1,159 @@
+
+            <header>
+                <h1 title="HASONEVALUE"><a href="https://dax.guide/hasonevalue/" rel="bookmark">HASONEVALUE</a> <span class="smaller">DAX Function (Information)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                         &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns true when there&#8217;s only one value in the specified column.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    HASONEVALUE ( &lt;ColumnName&gt; )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        ColumnName                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The column to check the filter info.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single <a href="https://dax.guide/dt/boolean/" class="ajax" data-id="264">boolean</a> value.</div></p>                    <p>TRUE when the context for ColumnName has been filtered down to one distinct value only. Otherwise is FALSE. </p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>HASONEVALUE corresponds to the following code:</p>
+<pre class="brush: dax; title: ; notranslate" title="">
+COUNTROWS ( VALUES ( &lt;ColumnName&gt; ) ) = 1
+</pre>
+                </section>
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 2 related articles</a><br>
+                                                    <a href="#alt" class="sliding">&raquo; 2 related functions</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/gDGcK5VC6IU2XY/; notranslate" title="">
+--  HASONEVALUE checks that a column has only one value 
+--  visible in the current filter context
+DEFINE
+    MEASURE Sales&#91;Audio only] =
+        CALCULATE (
+            HASONEVALUE ( 'Product'&#91;Category] ),
+            'Product'&#91;Category] = &quot;Audio&quot;
+        )
+    MEASURE Sales&#91;Audio and computers] =
+        CALCULATE (
+            HASONEVALUE ( 'Product'&#91;Category] ),
+            'Product'&#91;Category] IN { &quot;Audio&quot;, &quot;Computers&quot; }
+        )
+    MEASURE Sales&#91;Audio and bananas] =
+        CALCULATE (
+            HASONEVALUE ( 'Product'&#91;Category] ),
+            'Product'&#91;Category] IN { &quot;Audio&quot;, &quot;Bananas&quot; }
+        )
+EVALUATE
+{
+     ( &quot;Audio only&quot;, &#91;Audio only] ),
+     ( &quot;Audio and computers&quot;, &#91;Audio and computers] ),
+     ( &quot;Audio and bananas&quot;, &#91;Audio and bananas] )
+}
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Value1">Value1</th>
+<th title="Value2">Value2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Audio only</td>
+<td class="col-string">true</td>
+</tr>
+<tr>
+<td class="col-string">Audio and computers</td>
+<td class="col-string">false</td>
+</tr>
+<tr>
+<td class="col-string">Audio and bananas</td>
+<td class="col-string">true</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about HASONEVALUE in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/using-the-selectedvalue-function-in-dax/"  class="low-key"><strong>Using the SELECTEDVALUE function in DAX</strong></a>
+                                <p>This article describes how the SELECTEDVALUE DAX function simplifies the syntax required in many scenarios where you need to read a single value selected in the filter context. <a href="https://www.sqlbi.com/articles/using-the-selectedvalue-function-in-dax/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/distinguishing-hasonevalue-from-isinscope/"  class="low-key"><strong>Distinguishing HASONEVALUE from ISINSCOPE</strong></a>
+                                <p>This article describes the differences between HASONEVALUE and ISINSCOPE, which are two useful DAX functions to control the filters and the grouping that are active in a report. <a href="https://www.sqlbi.com/articles/distinguishing-hasonevalue-from-isinscope/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/hasonefilter/" class="ajax" data-id="108">HASONEFILTER</a></li>
+                                                    <li><a href="https://dax.guide/values/" class="ajax" data-id="248">VALUES</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/dax-tools/?aff=tools-promo" target="_top" class="sam-click" data-campaign="dax-tools-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/tools-58090.png" title="DAX Tools Video Course" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/hasonevalue-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/hasonevalue-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

@@ -1,0 +1,317 @@
+
+            <header>
+                <h1 title="WEEKDAY"><a href="https://dax.guide/weekday/" rel="bookmark">WEEKDAY</a> <span class="smaller">DAX Function (Date and Time)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                         &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns a number identifying the day of the week of a date. The number is in a range 1-7 or 0-6 according to the choice of the ReturnType parameter.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    WEEKDAY ( &lt;Date&gt; [, &lt;ReturnType&gt;] )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Date                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>A date in datetime format.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        ReturnType                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Optional<br></td>
+                                    <td class="definition">
+                                        <p>A number that determines the return value: </p>
+<table>
+<thead>
+<tr>
+<th><b>ReturnType</b></th>
+<th><b>Return value</b></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="">1 or omitted</td>
+<td>Numbers 1 (Sunday) through 7 (Saturday).</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Numbers 1 (Monday) through 7 (Sunday).</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Numbers 0 (Monday) through 6 (Sunday).</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Numbers 1 (Monday) through 7 (Sunday).</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Numbers 1 (Tuesday) through 7 (Monday).</td>
+</tr>
+<tr>
+<td>13</td>
+<td>Numbers 1 (Wednesday) through 7 (Tuesday).</td>
+</tr>
+<tr>
+<td>14</td>
+<td>Numbers 1 (Thursday) through 7 (Wednesday).</td>
+</tr>
+<tr>
+<td>15</td>
+<td>Numbers 1 (Friday) through 7 (Thursday).</td>
+</tr>
+<tr>
+<td>16</td>
+<td>Numbers 1 (Saturday) through 7 (Friday).</td>
+</tr>
+<tr>
+<td>17</td>
+<td>
+<p class="">Numbers 1 (Sunday) through 7 (Saturday).</p>
+</td>
+</tr>
+</tbody>
+</table>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single <a href="https://dax.guide/dt/integer/" class="ajax" data-id="257">integer</a> value.</div></p>                    <p>An integer number in a range 1-7 or 0-6 according to the choice of the ReturnType parameter.</p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>If the argument is a string, it is translated into a datetime value using the same rules applied by the <a href="https://dax.guide/datevalue/" class="ajax" data-id="72">DATEVALUE</a> function.</p>
+                </section>
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 1 related article</a><br>
+                                                    <a href="#alt" class="sliding">&raquo; 2 related functions</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/vThdoGJ2zBYKz4/; notranslate" title="">
+--  WEEKDAY returns the day of the week using different standards
+EVALUATE
+ADDCOLUMNS (
+    TOPN ( 10, VALUES ( 'Date'&#91;Date] ), 'Date'&#91;Date], ASC ),
+    &quot;Day of week&quot;, FORMAT  ( 'Date'&#91;Date], &quot;dddd&quot; ),
+    &quot;Weekday&quot;,     WEEKDAY ( 'Date'&#91;Date]      ),    -- 1 is Sunday (Default)
+    &quot;Weekday 1&quot;,   WEEKDAY ( 'Date'&#91;Date], 1   ),    -- 1 is Sunday
+    &quot;Weekday 2&quot;,   WEEKDAY ( 'Date'&#91;Date], 2   ),    -- 1 is Monday
+    &quot;Weekday 3&quot;,   WEEKDAY ( 'Date'&#91;Date], 3   ),    -- 0 is Monday
+    &quot;Weekday 11&quot;,  WEEKDAY ( 'Date'&#91;Date], 11  ),    -- 1 is Monday
+    &quot;Weekday 12&quot;,  WEEKDAY ( 'Date'&#91;Date], 12  ),    -- 1 is Tuesday
+    &quot;Weekday 13&quot;,  WEEKDAY ( 'Date'&#91;Date], 13  ),    -- 1 is Wednesday
+    &quot;Weekday 14&quot;,  WEEKDAY ( 'Date'&#91;Date], 14  )     -- ... 
+)
+ORDER BY &#91;Date]
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Date">Date</th>
+<th title="Day of week">Day of week</th>
+<th title="Weekday">Weekday</th>
+<th title="Weekday 1">Weekday 1</th>
+<th title="Weekday 2">Weekday 2</th>
+<th title="Weekday 3">Weekday 3</th>
+<th title="Weekday 11">Weekday 11</th>
+<th title="Weekday 12">Weekday 12</th>
+<th title="Weekday 13">Weekday 13</th>
+<th title="Weekday 14">Weekday 14</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-date">2005-01-01</td>
+<td class="col-string">Saturday</td>
+<td class="col-int">7</td>
+<td class="col-int">7</td>
+<td class="col-int">6</td>
+<td class="col-int">5</td>
+<td class="col-int">6</td>
+<td class="col-int">5</td>
+<td class="col-int">4</td>
+<td class="col-int">3</td>
+</tr>
+<tr>
+<td class="col-date">2005-01-02</td>
+<td class="col-string">Sunday</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+<td class="col-int">7</td>
+<td class="col-int">6</td>
+<td class="col-int">7</td>
+<td class="col-int">6</td>
+<td class="col-int">5</td>
+<td class="col-int">4</td>
+</tr>
+<tr>
+<td class="col-date">2005-01-03</td>
+<td class="col-string">Monday</td>
+<td class="col-int">2</td>
+<td class="col-int">2</td>
+<td class="col-int">1</td>
+<td class="col-int">0</td>
+<td class="col-int">1</td>
+<td class="col-int">7</td>
+<td class="col-int">6</td>
+<td class="col-int">5</td>
+</tr>
+<tr>
+<td class="col-date">2005-01-04</td>
+<td class="col-string">Tuesday</td>
+<td class="col-int">3</td>
+<td class="col-int">3</td>
+<td class="col-int">2</td>
+<td class="col-int">1</td>
+<td class="col-int">2</td>
+<td class="col-int">1</td>
+<td class="col-int">7</td>
+<td class="col-int">6</td>
+</tr>
+<tr>
+<td class="col-date">2005-01-05</td>
+<td class="col-string">Wednesday</td>
+<td class="col-int">4</td>
+<td class="col-int">4</td>
+<td class="col-int">3</td>
+<td class="col-int">2</td>
+<td class="col-int">3</td>
+<td class="col-int">2</td>
+<td class="col-int">1</td>
+<td class="col-int">7</td>
+</tr>
+<tr>
+<td class="col-date">2005-01-06</td>
+<td class="col-string">Thursday</td>
+<td class="col-int">5</td>
+<td class="col-int">5</td>
+<td class="col-int">4</td>
+<td class="col-int">3</td>
+<td class="col-int">4</td>
+<td class="col-int">3</td>
+<td class="col-int">2</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-date">2005-01-07</td>
+<td class="col-string">Friday</td>
+<td class="col-int">6</td>
+<td class="col-int">6</td>
+<td class="col-int">5</td>
+<td class="col-int">4</td>
+<td class="col-int">5</td>
+<td class="col-int">4</td>
+<td class="col-int">3</td>
+<td class="col-int">2</td>
+</tr>
+<tr>
+<td class="col-date">2005-01-08</td>
+<td class="col-string">Saturday</td>
+<td class="col-int">7</td>
+<td class="col-int">7</td>
+<td class="col-int">6</td>
+<td class="col-int">5</td>
+<td class="col-int">6</td>
+<td class="col-int">5</td>
+<td class="col-int">4</td>
+<td class="col-int">3</td>
+</tr>
+<tr>
+<td class="col-date">2005-01-09</td>
+<td class="col-string">Sunday</td>
+<td class="col-int">1</td>
+<td class="col-int">1</td>
+<td class="col-int">7</td>
+<td class="col-int">6</td>
+<td class="col-int">7</td>
+<td class="col-int">6</td>
+<td class="col-int">5</td>
+<td class="col-int">4</td>
+</tr>
+<tr>
+<td class="col-date">2005-01-10</td>
+<td class="col-string">Monday</td>
+<td class="col-int">2</td>
+<td class="col-int">2</td>
+<td class="col-int">1</td>
+<td class="col-int">0</td>
+<td class="col-int">1</td>
+<td class="col-int">7</td>
+<td class="col-int">6</td>
+<td class="col-int">5</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about WEEKDAY in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/counting-working-days-in-dax/"  class="low-key"><strong>Counting working days in DAX</strong></a>
+                                <p>This article shows a DAX technique to compute the number of working days between two dates. <a href="https://www.sqlbi.com/articles/counting-working-days-in-dax/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/weeknum/" class="ajax" data-id="250">WEEKNUM</a></li>
+                                                    <li><a href="https://dax.guide/yearfrac/" class="ajax" data-id="254">YEARFRAC</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/guides/dax/?aff=learn-dax-promo" target="_top" class="sam-click" data-campaign="learn-dax-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/learn-dax-58090.png" title="Become a DAX guru" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/weekday-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/weekday-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

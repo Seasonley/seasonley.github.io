@@ -1,0 +1,336 @@
+
+            <header>
+                <h1 title="LOOKUPVALUE"><a href="https://dax.guide/lookupvalue/" rel="bookmark">LOOKUPVALUE</a> <span class="smaller">DAX Function (Filter)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                                            </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Retrieves a value from a table.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    LOOKUPVALUE ( &lt;Result_ColumnName&gt;, &lt;Search_ColumnName&gt;, &lt;Search_Value&gt; [, &lt;Search_ColumnName&gt;, &lt;Search_Value&gt; [, … ] ] [, &lt;Alternate_Result&gt;] )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Result_ColumnName                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The column that contains the desired value.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Search_ColumnName                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Repeatable<br></td>
+                                    <td class="definition">
+                                        <p>The column that contains search_value.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Search_Value                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Repeatable<br></td>
+                                    <td class="definition">
+                                        <p>The value that you want to find in search_column.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Alternate_Result                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Optional<br></td>
+                                    <td class="definition">
+                                        <p>The value that is returned when there is no value or more than one value in the specified column; if omitted, <a href="https://dax.guide/blank/" class="ajax" data-id="32">BLANK</a> is returned for no value and an error is returned for more than one value.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single value of any type.</div></p>                    <p>The value of Result_Column at the row where all pairs of Search_Column and Search_Value have a match. </p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>If there is no match that satisfies all the search values, a <a href="https://dax.guide/blank/" class="ajax" data-id="32">BLANK</a> is returned. In other words, the function will not return a lookup value if only some of the criteria match.</p>
+<p>If multiple rows match the search values and in all cases Result_Column values are identical then that value is returned. However, if Result_Column returns different values an error is returned. </p>
+<p>The Search_ColumnName can be any column of the expanded table referenced by Result_ColumnName.</p>
+<p>Internally LOOKUPVALUE generates this equivalent syntax:</p>
+<pre class="brush: dax; title: ; notranslate" title="">
+VAR SearchValue = &lt;Search_Value&gt;
+RETURN
+    CALCULATE (
+        SELECTEDVALUE ( &lt;Result_ColumnName&gt;, &lt;Alternate_Result&gt; ),
+        FILTER (
+            ALLNOBLANKROW ( &lt;Search_ColumnName&gt; ),
+            &lt;Search_ColumnName&gt; == SearchValue      -- The == operator distinguishes between blank and 0/empty string
+        ),
+        ALL ( &lt;table_of_Result_ColumnName&gt; )        -- If Result_ColumnName is t&#91;c], this is ALL ( t )
+    )
+</pre>
+<h2>Performance considerations</h2>
+<p>Consider using LOOKUPVALUE when it is not possible to rely on <a href="https://dax.guide/related/" class="ajax" data-id="188">RELATED</a> to leverage an existing relationship in the data model, because <a href="https://dax.guide/related/" class="ajax" data-id="188">RELATED</a> is faster.<br />
+The query plan generated by LOOKUPVALUE is usually relatively optimized. However, in certain conditions it could include CallbackDataID requests in storage engine queries, resulting in slower execution, lower performance and missed cache hits. When this happens, alternative approaches should be considered.</p>
+<p>Consider the LOOKUPVALUE syntax:</p>
+<pre class="brush: dax; title: ; notranslate" title="">
+LOOKUPVALUE (
+    table&#91;result_column],
+    table&#91;search_column_1], &lt;expression_1&gt;,
+    table&#91;search_column_2], &lt;expression_2&gt;,
+    &lt;alternate_result&gt;
+)
+</pre>
+<p>You can write LOOKUPVALUE using <a href="https://dax.guide/calculate/" class="ajax" data-id="33">CALCULATE</a> this way:</p>
+<pre class="brush: dax; title: ; notranslate" title="">
+CALCULATE (
+    SELECTEDVALUE ( table&#91;result_column], &lt;alternate_result&gt; ),
+    FILTER (
+        ALLNOBLANKROW ( table&#91;search_column_1] ),
+        table&#91;search_column_1] == &lt;expression_1&gt;
+    ),
+    FILTER (
+        ALLNOBLANKROW ( table&#91;search_column_2] ),
+        table&#91;search_column_2] == &lt;expression_2&gt;
+    ),
+    REMOVEFILTERS ( ) 
+)
+</pre>
+<p>When <em>&lt;expression_1&gt;</em> and <em>&lt;expression_2&gt;</em> are constant values, there shouldn’t be any issue. However, it is often the case that these expressions are more dynamic, and this could generate a more expensive query plan that includes CallbackDataID requests to the storage engine. This might also be the case for the LOOKUPVALUE function.<br />
+In order to reduce this effort, you can move the expression outside of the filter predicates in <a href="https://dax.guide/calculate/" class="ajax" data-id="33">CALCULATE</a>; a similar approach in LOOKUPVALUE might not produce a similar level of optimization:</p>
+<pre class="brush: dax; title: ; notranslate" title="">
+VAR filterValue1 = &lt;expression_1&gt;
+VAR filterValue2 = &lt;expression_2&gt;
+RETURN CALCULATE (
+    DISTINCT ( table&#91;result_column] ),
+    table&#91;search_column_1] = filterValue1,
+    table&#91;search_column_2] = filterValue2,
+    REMOVEFILTERS ( ) 
+)
+</pre>
+<p>The code above corresponds to the following approach using <a href="https://dax.guide/treatas/" class="ajax" data-id="233">TREATAS</a>:</p>
+<pre class="brush: dax; title: ; notranslate" title="">
+CALCULATE (
+    DISTINCT ( table&#91;result_column] ),
+    TREATAS ( { &lt;expression_1&gt; }, table&#91;search_column_1] ),
+    TREATAS ( { &lt;expression_2&gt; }, table&#91;search_column_2] ),
+    REMOVEFILTERS ( ) 
+)
+</pre>
+<p>It is better to store the <a href="https://dax.guide/treatas/" class="ajax" data-id="233">TREATAS</a> result in a variable for readability reasons, but the following code is also identical to the previous code from a query plan perspective:</p>
+<pre class="brush: dax; title: ; notranslate" title="">
+VAR filter1 = TREATAS ( { &lt;expression_1&gt; }, table&#91;search_column_1] )
+VAR filter2 = TREATAS ( { &lt;expression_2&gt; }, table&#91;search_column_2] )
+RETURN CALCULATE (
+    DISTINCT ( table&#91;result_column] ),
+    filter1,
+    filter2,
+    REMOVEFILTERS ( ) 
+)
+</pre>
+<p>For the LOOKUPVALUE use case, it is possible to create a single multi-column filter instead of multiple filters – possibly resulting in a better query plan. A benchmark of different solutions is always a good idea:</p>
+<pre class="brush: dax; title: ; notranslate" title="">
+VAR filterLookup = 
+    TREATAS ( 
+        { ( &lt;expression_1&gt;, &lt;expression_2&gt; ) }, 
+        table&#91;search_column_1], 
+        table&#91;search_column_2] 
+    ) 
+RETURN CALCULATE (
+    DISTINCT ( table&#91;result_column] ),
+    filterLookup,
+    REMOVEFILTERS ( ) 
+)
+</pre>
+<p>This latter alternative to LOOKUPVALUE could optimize complex scenarios where the presence of LOOKUPVALUE in an iterator produces poor performance – mainly when the storage engine queries include CallbackDataID calls and are not stored in cache.</p>
+                </section>
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 6 related articles</a><br>
+                                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <p>Search the Rate for a given date and currency included in the same table:</p>
+<pre class="brush: dax; title: ; notranslate" title="">
+LOOKUPVALUE (
+    ExchangeRates&#91;Rate],
+    ExchangeRates&#91;Date], DATE ( 2018, 4, 15 ),
+    ExchangeRates&#91;Currency], &quot;EUR&quot;
+)
+</pre>
+<p>Search the Rate for a given date and currency code defined in a related table:</p>
+<pre class="brush: dax; title: ; notranslate" title="">
+LOOKUPVALUE (
+    ExchangeRates&#91;AverageRate],
+    ExchangeRates&#91;Date], DATE ( 2018, 4, 15 ),
+    Currency&#91;Currency Code], &quot;EUR&quot;
+)
+</pre>
+<p>Returns the 2009 birthday of customers.</p>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/EEqIhvhdrchH3S/; notranslate" title="">
+--  LOOKUPVALUE searches in a table for the value of a column in a row
+--  that satisfy a set of equality conditions
+EVALUATE
+VAR SampleCustomers = SAMPLE ( 10, Customer, Customer&#91;Customer Code] )
+RETURN
+    ADDCOLUMNS ( 
+        SUMMARIZE ( SampleCustomers, Customer&#91;Customer Name], Customer&#91;Birth Date] ),
+        &quot;Day of week on birthday in 2009&quot;,
+        VAR BirthDate = Customer&#91;Birth Date]
+        VAR ReferenceYear = 2009
+        VAR WeekdayOnBirthday = 
+            LOOKUPVALUE ( 
+                'Date'&#91;Day of Week],
+                'Date'&#91;Calendar Year Number], ReferenceYear,
+                'Date'&#91;Month Number], MONTH ( BirthDate ),
+                'Date'&#91;Day], DAY ( BirthDate )
+            )
+        RETURN
+            WeekdayOnBirthday
+    )
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Customer[Customer Name]">Customer[Customer Name]</th>
+<th title="Customer[Birth Date]">Customer[Birth Date]</th>
+<th title="Day of week on birthday in 2009">Day of week on birthday in 2009</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string"></td>
+<td class="col-date blank">(Blank)</td>
+<td class="col-string blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Goel, Darrell</td>
+<td class="col-date">1966-03-23</td>
+<td class="col-string">Monday</td>
+</tr>
+<tr>
+<td class="col-string">Blanco, Joe</td>
+<td class="col-date">1976-06-11</td>
+<td class="col-string">Thursday</td>
+</tr>
+<tr>
+<td class="col-string">Richardson, Jared</td>
+<td class="col-date">1975-10-19</td>
+<td class="col-string">Monday</td>
+</tr>
+<tr>
+<td class="col-string">Flores, Haley</td>
+<td class="col-date">1949-10-08</td>
+<td class="col-string">Thursday</td>
+</tr>
+<tr>
+<td class="col-string">Martinez, Allen</td>
+<td class="col-date">1974-06-25</td>
+<td class="col-string">Thursday</td>
+</tr>
+<tr>
+<td class="col-string">Diaz, Mallory</td>
+<td class="col-date">1967-06-03</td>
+<td class="col-string">Wednesday</td>
+</tr>
+<tr>
+<td class="col-string">King, Samuel</td>
+<td class="col-date">1966-03-18</td>
+<td class="col-string">Wednesday</td>
+</tr>
+<tr>
+<td class="col-string">Chen, Jonathan</td>
+<td class="col-date">1957-10-20</td>
+<td class="col-string">Tuesday</td>
+</tr>
+<tr>
+<td class="col-string">Yang, Jon</td>
+<td class="col-date">1966-04-08</td>
+<td class="col-string">Wednesday</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about LOOKUPVALUE in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/lookup-multiple-values-in-dax/"  class="low-key"><strong>Lookup multiple values in DAX</strong></a>
+                                <p>This article describes different techniques to retrieve multiple values from a lookup table in DAX, improving code readability and performance. <a href="https://www.sqlbi.com/articles/lookup-multiple-values-in-dax/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/from-sql-to-dax-joining-tables/"  class="low-key"><strong>From SQL to DAX: Joining Tables</strong></a>
+                                <p>In SQL there are different types of JOIN, available for different purposes. This article shows the equivalent syntaxes supported in DAX and it was updated in May 2018. <a href="https://www.sqlbi.com/articles/from-sql-to-dax-joining-tables/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/userelationship-in-calculated-columns/"  class="low-key"><strong>USERELATIONSHIP in Calculated Columns</strong></a>
+                                <p>In a Power Pivot or Tabular model with inactive relationships, one can rely on the USERELATIONSHIP function to apply an inactive relationship to a particular DAX expression. Its usage is simple in a measure, but one might consider alternative syntax in calculated columns, as is explained in this article. <a href="https://www.sqlbi.com/articles/userelationship-in-calculated-columns/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/expanded-tables-in-dax/"  class="low-key"><strong>Expanded tables in DAX</strong></a>
+                                <p>Expanded tables are the core of DAX; understanding how they work is of paramount importance. This article provides a theoretical foundation of what expanded tables are, along with fundamental concepts useful when reading DAX code. <a href="https://www.sqlbi.com/articles/expanded-tables-in-dax/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/introducing-lookupvalue/"  class="low-key"><strong>Introducing LOOKUPVALUE</strong></a>
+                                <p>This article shows the reader how to use LOOKUPVALUE, which is a handy function for any developer to have in their toolbelt. <a href="https://www.sqlbi.com/articles/introducing-lookupvalue/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/understanding-lookupvalue/"  class="low-key"><strong>Understanding LOOKUPVALUE</strong></a>
+                                <p>The LOOKUPVALUE function retrieves values from a table in a simple way, but it involves a hidden level of complexity. This article provides full coverage of the LOOKUPVALUE internals, alongside several performance considerations. <a href="https://www.sqlbi.com/articles/understanding-lookupvalue/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/optimizing-dax-video-course/?aff=odax-promo" target="_top" class="sam-click" data-campaign="odax-video-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/odax-58090.png" title="Optimizing DAX" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/lookupvalue-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/lookupvalue-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

@@ -1,0 +1,287 @@
+
+            <header>
+                <h1 title="UNION"><a href="https://dax.guide/union/" rel="bookmark">UNION</a> <span class="smaller">DAX Function (Table manipulation)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                         &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns the union of the tables whose columns match.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    UNION ( &lt;Table&gt;, &lt;Table&gt; [, &lt;Table&gt; [, … ] ] )                </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Table                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Repeatable<br></td>
+                                    <td class="definition">
+                                        <p>A table that will participate in the union.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="table-ret">Table</span> An entire table or a table with one or more columns.</div></p>                    <p>A table that contains all the rows from each of the table expressions. </p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>The tables must have the same number of columns.</p>
+<p>Columns are combined by position in their respective tables. </p>
+<p>The column names in the return table will match the column names in the first Table. </p>
+<p>Duplicate rows are retained. </p>
+<p>The returned table has lineage where possible. For example, if the first column of each Table has lineage to the same base column C1 in the model, the first column in the UNION result will have lineage to C1. However, if combined columns have lineage to different base columns, or if there is an extension column, the resulting column in UNION will have no lineage. </p>
+<p>When data types differ, the resulting data type is determined based on the rules for data type coercion. </p>
+<p>The returned table will not contain columns from related tables. Therefore, when the result corresponds to a base table, once applied to the filter context it does not involve the expanded table and it only filters columns of he base table. </p>
+                </section>
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 3 related articles</a><br>
+                                                    <a href="#alt" class="sliding">&raquo; 2 related functions</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/4xY30HfMxRdEa6/; notranslate" title="">
+--  UNION performs set addition: the second parameter rows 
+--  are added to the first, keeping duplicates
+EVALUATE 
+VAR Days        = VALUES ( 'Date'&#91;Day of Week] )
+VAR WeekendDays = { &quot;Saturday&quot;, &quot;Sunday&quot; }
+VAR UnionDays   = UNION ( Days, WeekendDays )
+RETURN 
+    UnionDays
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Day of Week">Day of Week</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Saturday</td>
+</tr>
+<tr>
+<td class="col-string">Sunday</td>
+</tr>
+<tr>
+<td class="col-string">Monday</td>
+</tr>
+<tr>
+<td class="col-string">Tuesday</td>
+</tr>
+<tr>
+<td class="col-string">Wednesday</td>
+</tr>
+<tr>
+<td class="col-string">Thursday</td>
+</tr>
+<tr>
+<td class="col-string">Friday</td>
+</tr>
+<tr>
+<td class="col-string">Saturday</td>
+</tr>
+<tr>
+<td class="col-string">Sunday</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/3H6gTpEdKNB1j8/; notranslate" title="">
+--  UNION keeps the data lineage only if all its arguments share
+--  the same data lineage
+DEFINE
+VAR Days        = VALUES ( 'Date'&#91;Day of Week] )
+VAR WeekendDays = { &quot;Saturday&quot;, &quot;Sunday&quot; }
+VAR UnionDays   = UNION ( Days, WeekendDays )
+
+EVALUATE
+    ADDCOLUMNS ( 
+        Days,
+        &quot;Sales Amount&quot;, &#91;Sales Amount] 
+    )
+    
+EVALUATE
+    ADDCOLUMNS ( 
+        UnionDays,
+        &quot;Sales Amount&quot;, &#91;Sales Amount] 
+    )
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Day of Week">Day of Week</th>
+<th title="Sales Amount">Sales Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Saturday</td>
+<td class="col-float">4,332,879.26</td>
+</tr>
+<tr>
+<td class="col-string">Sunday</td>
+<td class="col-float">4,255,613.01</td>
+</tr>
+<tr>
+<td class="col-string">Monday</td>
+<td class="col-float">4,251,342.00</td>
+</tr>
+<tr>
+<td class="col-string">Tuesday</td>
+<td class="col-float">4,643,891.92</td>
+</tr>
+<tr>
+<td class="col-string">Wednesday</td>
+<td class="col-float">4,021,583.39</td>
+</tr>
+<tr>
+<td class="col-string">Thursday</td>
+<td class="col-float">4,653,030.30</td>
+</tr>
+<tr>
+<td class="col-string">Friday</td>
+<td class="col-float">4,433,004.10</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th title="Day of Week">Day of Week</th>
+<th title="Sales Amount">Sales Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Saturday</td>
+<td class="col-float">30,591,343.98</td>
+</tr>
+<tr>
+<td class="col-string">Sunday</td>
+<td class="col-float">30,591,343.98</td>
+</tr>
+<tr>
+<td class="col-string">Monday</td>
+<td class="col-float">30,591,343.98</td>
+</tr>
+<tr>
+<td class="col-string">Tuesday</td>
+<td class="col-float">30,591,343.98</td>
+</tr>
+<tr>
+<td class="col-string">Wednesday</td>
+<td class="col-float">30,591,343.98</td>
+</tr>
+<tr>
+<td class="col-string">Thursday</td>
+<td class="col-float">30,591,343.98</td>
+</tr>
+<tr>
+<td class="col-string">Friday</td>
+<td class="col-float">30,591,343.98</td>
+</tr>
+<tr>
+<td class="col-string">Saturday</td>
+<td class="col-float">30,591,343.98</td>
+</tr>
+<tr>
+<td class="col-string">Sunday</td>
+<td class="col-float">30,591,343.98</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>The arguments of UNION must have the same number of columns.<br />
+The following query throws an error: <em>Date </em>contains more columns than <em>WeekendDays</em>.</p>
+<pre class="brush: dax; title: ; notranslate" title="">
+EVALUATE 
+VAR Days        = Date
+VAR WeekendDays = { &quot;Saturday&quot;, &quot;Sunday&quot; }
+VAR UnionDays   = UNION ( Days, WeekendDays )
+RETURN 
+    ADDCOLUMNS ( 
+        UnionDays,
+        &quot;Sales Amount&quot;, &#91;Sales Amount] 
+    )
+</pre>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about UNION in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/transition-matrix-using-calculated-tables/"  class="low-key"><strong>Transition Matrix Using Calculated Tables</strong></a>
+                                <p>In the 2015 September update, Power BI introduced calculated tables, which are computed using DAX expressions instead of being loaded from a data source. This article shows the usage of calculated tables to solve the pattern of transition matrix for&hellip; <a href="https://www.sqlbi.com/articles/transition-matrix-using-calculated-tables/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/creating-a-slicer-that-filters-multiple-columns-in-power-bi/"  class="low-key"><strong>Creating a slicer that filters multiple columns in Power BI</strong></a>
+                                <p>This article describes how to create a slicer showing the values of multiple columns, applying the filter on any of the underlying columns. <a href="https://www.sqlbi.com/articles/creating-a-slicer-that-filters-multiple-columns-in-power-bi/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/showing-the-top-5-products-and-others-row/"  class="low-key"><strong>Showing the top 5 products and Other row</strong></a>
+                                <p>This article shows how to add an additional “other” row to the selection obtained using the Top N filter in a Power BI report. <a href="https://www.sqlbi.com/articles/showing-the-top-5-products-and-others-row/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/except/" class="ajax" data-id="89">EXCEPT</a></li>
+                                                    <li><a href="https://dax.guide/intersect/" class="ajax" data-id="115">INTERSECT</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/dax-patterns/?aff=daxp-promo" target="_top" class="sam-click" data-campaign="dax-patterns-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/daxp-58090.png" title="DAX Patterns" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/union-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/union-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

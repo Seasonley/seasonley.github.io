@@ -1,0 +1,322 @@
+
+            <header>
+                <h1 title="MINX"><a href="https://dax.guide/minx/" rel="bookmark">MINX</a> <span class="smaller">DAX Function (Aggregation)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                                                 &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                         &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns the smallest value that results from evaluating an expression for each row of a table. Strings are compared according to alphabetical order.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    MINX ( &lt;Table&gt;, &lt;Expression&gt; )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Table                                                                                                                            <br><a href="https://www.sqlbi.com/articles/row-context-and-filter-context-in-dax/" class="feature2 icon icon-rinfo tooltip"  data-tooltip-content="#iterator">Iterator</section>
+                                                                                                                                                            </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The table containing the rows for which the expression will be evaluated.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Expression                                                                                    <br><a href="https://www.sqlbi.com/articles/row-context-and-filter-context-in-dax/" class="feature icon icon-rinfo tooltip"  data-tooltip-content="#rowcontext">Row Context</a>
+                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The expression to be evaluated for each row of the table.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single value of any type.</div></p>                    <p>Smallest value found in the expression.</p>
+                </section>
+            
+            
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 1 related article</a><br>
+                                                    <a href="#alt" class="sliding">&raquo; 2 related functions</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/nqy2bg4zT5QyQG/; notranslate" title="">
+--  MIN is the short version of MINX, when used with one column only
+DEFINE
+    MEASURE Sales&#91;MIN Net Price 1] = MIN ( Sales&#91;Net Price] )
+    MEASURE Sales&#91;MIN Net Price 2] = MINX ( Sales, Sales&#91;Net Price] )
+    MEASURE Sales&#91;MIN Line Amount] =
+        MINX ( Sales, Sales&#91;Quantity] * Sales&#91;Net Price] )
+EVALUATE
+SUMMARIZECOLUMNS (
+    'Product'&#91;Color],
+    &quot;MIN Net Price 1&quot;, &#91;MIN Net Price 1],
+    &quot;MIN Net Price 2&quot;, &#91;MIN Net Price 2],
+    &quot;MIN Line Amount&quot;, &#91;MIN Line Amount]
+)
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Color">Color</th>
+<th title="MIN Net Price 1">MIN Net Price 1</th>
+<th title="MIN Net Price 2">MIN Net Price 2</th>
+<th title="MIN Line Amount">MIN Line Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Silver</td>
+<td class="col-float">0.76</td>
+<td class="col-float">0.76</td>
+<td class="col-float">0.76</td>
+</tr>
+<tr>
+<td class="col-string">Blue</td>
+<td class="col-float">8.99</td>
+<td class="col-float">8.99</td>
+<td class="col-float">8.99</td>
+</tr>
+<tr>
+<td class="col-string">White</td>
+<td class="col-float">1.79</td>
+<td class="col-float">1.79</td>
+<td class="col-float">1.79</td>
+</tr>
+<tr>
+<td class="col-string">Red</td>
+<td class="col-float">3.98</td>
+<td class="col-float">3.98</td>
+<td class="col-float">3.98</td>
+</tr>
+<tr>
+<td class="col-string">Black</td>
+<td class="col-float">0.88</td>
+<td class="col-float">0.88</td>
+<td class="col-float">0.88</td>
+</tr>
+<tr>
+<td class="col-string">Green</td>
+<td class="col-float">3.99</td>
+<td class="col-float">3.99</td>
+<td class="col-float">3.99</td>
+</tr>
+<tr>
+<td class="col-string">Orange</td>
+<td class="col-float">23.96</td>
+<td class="col-float">23.96</td>
+<td class="col-float">23.96</td>
+</tr>
+<tr>
+<td class="col-string">Pink</td>
+<td class="col-float">0.76</td>
+<td class="col-float">0.76</td>
+<td class="col-float">0.76</td>
+</tr>
+<tr>
+<td class="col-string">Yellow</td>
+<td class="col-float">3.99</td>
+<td class="col-float">3.99</td>
+<td class="col-float">3.99</td>
+</tr>
+<tr>
+<td class="col-string">Purple</td>
+<td class="col-float">22.40</td>
+<td class="col-float">22.40</td>
+<td class="col-float">22.40</td>
+</tr>
+<tr>
+<td class="col-string">Brown</td>
+<td class="col-float">23.99</td>
+<td class="col-float">23.99</td>
+<td class="col-float">23.99</td>
+</tr>
+<tr>
+<td class="col-string">Grey</td>
+<td class="col-float">0.95</td>
+<td class="col-float">0.95</td>
+<td class="col-float">0.95</td>
+</tr>
+<tr>
+<td class="col-string">Gold</td>
+<td class="col-float">13.90</td>
+<td class="col-float">13.90</td>
+<td class="col-float">13.90</td>
+</tr>
+<tr>
+<td class="col-string">Azure</td>
+<td class="col-float">103.20</td>
+<td class="col-float">103.20</td>
+<td class="col-float">103.20</td>
+</tr>
+<tr>
+<td class="col-string">Silver Grey</td>
+<td class="col-float">158.40</td>
+<td class="col-float">158.40</td>
+<td class="col-float">158.40</td>
+</tr>
+<tr>
+<td class="col-string">Transparent</td>
+<td class="col-float">2.35</td>
+<td class="col-float">2.35</td>
+<td class="col-float">2.35</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/P6BMsgFlcX90kq/; notranslate" title="">
+--  MINX is needed to iterate the content of a variable,
+--  indeed MIN works only with columns in the model
+DEFINE
+    MEASURE Sales&#91;Sales Amount] =
+        SUMX ( Sales, Sales&#91;Quantity] * Sales&#91;Net Price] )
+    MEASURE Sales&#91;MIN Monthly Sales] =
+        VAR MonthlySales =
+            ADDCOLUMNS (
+                DISTINCT ( 'Date'&#91;Calendar Year Month] ),
+                &quot;@MonthlySales&quot;, &#91;Sales Amount]
+            )
+        VAR FilteredSales =
+            FILTER ( MonthlySales, &#91;@MonthlySales] &gt; 10000 )
+        VAR Result =
+            -- Iterator required to aggregate the @MonthlySales column        
+            MINX ( FilteredSales, &#91;@MonthlySales] )
+        RETURN
+            Result
+EVALUATE
+SUMMARIZECOLUMNS ( 
+    'Product'&#91;Color], 
+    &quot;MINX Monthly Sales&quot;, &#91;MIN Monthly Sales] 
+)
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Color">Color</th>
+<th title="MINX Monthly Sales">MINX Monthly Sales</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Silver</td>
+<td class="col-float">64,226.40</td>
+</tr>
+<tr>
+<td class="col-string">Blue</td>
+<td class="col-float">21,907.71</td>
+</tr>
+<tr>
+<td class="col-string">White</td>
+<td class="col-float">65,678.96</td>
+</tr>
+<tr>
+<td class="col-string">Red</td>
+<td class="col-float">11,202.40</td>
+</tr>
+<tr>
+<td class="col-string">Black</td>
+<td class="col-float">94,310.36</td>
+</tr>
+<tr>
+<td class="col-string">Green</td>
+<td class="col-float">13,555.70</td>
+</tr>
+<tr>
+<td class="col-string">Orange</td>
+<td class="col-float">11,399.62</td>
+</tr>
+<tr>
+<td class="col-string">Pink</td>
+<td class="col-float">10,333.59</td>
+</tr>
+<tr>
+<td class="col-string">Grey</td>
+<td class="col-float">28,463.19</td>
+</tr>
+<tr>
+<td class="col-string">Silver Grey</td>
+<td class="col-float">10,565.60</td>
+</tr>
+<tr>
+<td class="col-string">Brown</td>
+<td class="col-float">10,972.75</td>
+</tr>
+<tr>
+<td class="col-string">Gold</td>
+<td class="col-float">10,056.00</td>
+</tr>
+<tr>
+<td class="col-string">Yellow</td>
+<td class="col-float">11,256.69</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about MINX in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/highlighting-the-minimum-and-maximum-values-in-a-power-bi-matrix/"  class="low-key"><strong>Highlighting the minimum and maximum values in a Power BI matrix</strong></a>
+                                <p>This article shows how to use DAX and conditional formatting together to highlight the minimum and maximum values in a matrix in Power BI. <a href="https://www.sqlbi.com/articles/highlighting-the-minimum-and-maximum-values-in-a-power-bi-matrix/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/min/" class="ajax" data-id="148">MIN</a></li>
+                                                    <li><a href="https://dax.guide/mina/" class="ajax" data-id="149">MINA</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.youtube.com/c/sqlbi/" target="_top" class="sam-click" data-campaign="youtube-channel" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/youtube-58090.jpg" title="Subscribe to our Youtube channel" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/minx-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/minx-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

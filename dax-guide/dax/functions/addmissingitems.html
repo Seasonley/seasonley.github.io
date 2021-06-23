@@ -1,0 +1,251 @@
+
+            <header>
+                <h1 title="ADDMISSINGITEMS"><a href="https://dax.guide/addmissingitems/" rel="bookmark">ADDMISSINGITEMS</a> <span class="smaller">DAX Function (Table manipulation)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                                                 &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                                                                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Add the rows with empty measure values back.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    ADDMISSINGITEMS (  [&lt;ShowAll_ColumnName&gt; [, &lt;ShowAll_ColumnName&gt; [, … ] ] ], &lt;Table&gt; [, &lt;GroupBy_ColumnName&gt; [, [&lt;FilterTable&gt;] [, &lt;GroupBy_ColumnName&gt; [, [&lt;FilterTable&gt;] [, … ] ] ] ] ] ] )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        ShowAll_ColumnName                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Optional<br>Repeatable<br></td>
+                                    <td class="definition">
+                                        <p>ShowAll columns.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Table                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>A SummarizeColumns table.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        GroupBy_ColumnName                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Optional<br>Repeatable<br></td>
+                                    <td class="definition">
+                                        <p>A column to group by or a call to <a href="https://dax.guide/rollupgroup/" class="ajax" data-id="195">ROLLUPGROUP</a> function and <a href="https://dax.guide/rollupaddissubtotal/" class="ajax" data-id="194">ROLLUPADDISSUBTOTAL</a> function to specify a list of columns to group by with subtotals.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        FilterTable                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Optional<br>Repeatable<br></td>
+                                    <td class="definition">
+                                        <p>An expression that defines the table from which rows are to be returned.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="table-ret">Table</span> An entire table or a table with one or more columns.</div></p>                                    </section>
+            
+            
+            
+            
+                                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/g0nJB0WmsWWL27/; notranslate" title="">
+--  ADDMISSINGITEMS adds rows that would be skipped by SUMMARIZECOLUMNS
+--  when the value of all the measures is blank.
+--  In the example, years 2005, 2006 and 2010 and 2011 are added back by
+--  ADDMISSINGITEMS in the second result.
+--  SUMMARIZECOLUMNS in the first query does not return them, because there
+--  were no sales.
+EVALUATE 
+SUMMARIZECOLUMNS (
+    'Date'&#91;Calendar Year],
+    &quot;Amt&quot;, &#91;Sales Amount]
+)
+
+EVALUATE
+ADDMISSINGITEMS (
+    'Date'&#91;Calendar Year],
+    SUMMARIZECOLUMNS (
+        'Date'&#91;Calendar Year],
+        &quot;Amt&quot;, &#91;Sales Amount]
+    ),
+    'Date'&#91;Calendar Year]
+)
+ORDER BY &#91;Calendar Year] ASC
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Calendar Year">Calendar Year</th>
+<th title="Amt">Amt</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-date">2007-01-01</td>
+<td class="col-float">11,309,946.12</td>
+</tr>
+<tr>
+<td class="col-date">2008-01-01</td>
+<td class="col-float">9,927,582.99</td>
+</tr>
+<tr>
+<td class="col-date">2009-01-01</td>
+<td class="col-float">9,353,814.87</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th title="Calendar Year">Calendar Year</th>
+<th title="Amt">Amt</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-date">2005-01-01</td>
+<td class="col-float blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-date">2006-01-01</td>
+<td class="col-float blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-date">2007-01-01</td>
+<td class="col-float">11,309,946.12</td>
+</tr>
+<tr>
+<td class="col-date">2008-01-01</td>
+<td class="col-float">9,927,582.99</td>
+</tr>
+<tr>
+<td class="col-date">2009-01-01</td>
+<td class="col-float">9,353,814.87</td>
+</tr>
+<tr>
+<td class="col-date">2010-01-01</td>
+<td class="col-float blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-date">2011-01-01</td>
+<td class="col-float blank">(Blank)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<pre class="brush: dax; title: ; try: https://dax.do/r7yGl7tLCSL8h1/; notranslate" title="">
+--  With ADDMISSINGITEMS you specify the columns to add (first set)
+--  and the column used to group by (second set)
+--  In the example, even though the grouping happens by year and month
+--  ADDMISSINGITEMS adds back only the year rows
+EVALUATE
+ADDMISSINGITEMS (
+    'Date'&#91;Calendar Year],
+    'Date'&#91;Calendar Year Month],
+    SUMMARIZECOLUMNS (
+        'Date'&#91;Calendar Year],
+        'Date'&#91;Calendar Year Month],
+        &quot;Amt&quot;, &#91;Sales Amount]
+    ),
+    'Date'&#91;Calendar Year],
+    'Date'&#91;Calendar Year Month]
+)
+</pre>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/FyAqpM7m8dkSc9/; notranslate" title="">
+--  You can also specify table filters applied to the filter context
+--  while retrieving the missing items.
+--  In this example, ADDMISSINGITEMS only returns 2010 and 2011, 
+--  because of the last filter that removes 2005 and 2006
+EVALUATE
+ADDMISSINGITEMS (
+    'Date'&#91;Calendar Year],
+    SUMMARIZECOLUMNS (
+        'Date'&#91;Calendar Year],
+        &quot;Amt&quot;, &#91;Sales Amount]
+    ),
+    'Date'&#91;Calendar Year],
+    EXCEPT ( ALL ( 'Date'&#91;Calendar Year] ), { &quot;CY 2005&quot;, &quot;CY 2006&quot; } )
+)
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Calendar Year">Calendar Year</th>
+<th title="Amt">Amt</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-date">2007-01-01</td>
+<td class="col-float">11,309,946.12</td>
+</tr>
+<tr>
+<td class="col-date">2008-01-01</td>
+<td class="col-float">9,927,582.99</td>
+</tr>
+<tr>
+<td class="col-date">2009-01-01</td>
+<td class="col-float">9,353,814.87</td>
+</tr>
+<tr>
+<td class="col-date">2010-01-01</td>
+<td class="col-float blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-date">2011-01-01</td>
+<td class="col-float blank">(Blank)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+            
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/mastering-dax-video-course/?aff=mdax-promo" target="_top" class="sam-click" data-campaign="mdax-video-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/mdax-58090.jpg" title="Mastering DAX Video Course" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/addmissingitems-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/addmissingitems-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

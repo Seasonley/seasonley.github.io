@@ -1,0 +1,154 @@
+
+            <header>
+                <h1 title="NONVISUAL"><a href="https://dax.guide/nonvisual/" rel="bookmark">NONVISUAL</a> <span class="smaller">DAX Function (Table manipulation)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                                                 &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Mark the filter as NonVisual.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    NONVISUAL ( &lt;Expression&gt; )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Expression                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>Filter expression.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="table-ret">Table</span> An entire table or a table with one or more columns.</div></p>                    <p>A table of values.</p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>Marks a value filter in <a href="https://dax.guide/summarizecolumns/" class="ajax" data-id="221">SUMMARIZECOLUMNS</a> function as not affecting measure values, but only applying to group-by columns.</p>
+                </section>
+            
+            
+                                                    <a href="#alt" class="sliding">&raquo; 1 related function</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/VBUGWHUUgwsmad/; notranslate" title="">
+--  NONVISUAL marks a SUMMARIZECOLUMNS filter so that it does
+--  not affect measures using ALLSELECTED as part of their
+--  calculation.
+--  It can be used to obtain non-visual totals at the query level.
+DEFINE MEASURE Sales&#91;Amount ALLSELECTED] =
+    CALCULATE ( &#91;Sales Amount], ALLSELECTED ( 'Date'&#91;Calendar Year] ) )
+    
+EVALUATE
+SUMMARIZECOLUMNS (
+    'Date'&#91;Calendar Year],
+    TREATAS ( { &quot;CY 2008&quot;, &quot;CY 2009&quot; }, 'Date'&#91;Calendar Year] ),
+    &quot;Amount&quot;, &#91;Sales Amount],
+    &quot;Amount ALLSELECTED&quot;, &#91;Amount ALLSELECTED]
+)
+
+EVALUATE
+SUMMARIZECOLUMNS (
+    'Date'&#91;Calendar Year],
+    NONVISUAL ( TREATAS ( { &quot;CY 2008&quot;, &quot;CY 2009&quot; }, 'Date'&#91;Calendar Year] ) ),
+    &quot;Amount&quot;, &#91;Sales Amount],
+    &quot;Amount ALLSELECTED&quot;, &#91;Amount ALLSELECTED]
+)
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Calendar Year">Calendar Year</th>
+<th title="Amount">Amount</th>
+<th title="Amount ALLSELECTED">Amount ALLSELECTED</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-date">2008-01-01</td>
+<td class="col-float">9,927,582.99</td>
+<td class="col-float">19,281,397.86</td>
+</tr>
+<tr>
+<td class="col-date">2009-01-01</td>
+<td class="col-float">9,353,814.87</td>
+<td class="col-float">19,281,397.86</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th title="Calendar Year">Calendar Year</th>
+<th title="Amount">Amount</th>
+<th title="Amount ALLSELECTED">Amount ALLSELECTED</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-date">2008-01-01</td>
+<td class="col-float">9,927,582.99</td>
+<td class="col-float">30,591,343.98</td>
+</tr>
+<tr>
+<td class="col-date">2009-01-01</td>
+<td class="col-float">9,353,814.87</td>
+<td class="col-float">30,591,343.98</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/summarizecolumns/" class="ajax" data-id="221">SUMMARIZECOLUMNS</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/dax-patterns/?aff=daxp-promo" target="_top" class="sam-click" data-campaign="dax-patterns-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/daxp-58090.png" title="DAX Patterns" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/nonvisual-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/nonvisual-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

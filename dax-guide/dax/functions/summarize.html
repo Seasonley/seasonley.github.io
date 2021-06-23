@@ -1,0 +1,398 @@
+
+            <header>
+                <h1 title="SUMMARIZE"><a href="https://dax.guide/summarize/" rel="bookmark">SUMMARIZE</a> <span class="smaller">DAX Function (Table manipulation)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                         &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Creates a summary of the input table grouped by the specified columns.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    SUMMARIZE ( &lt;Table&gt; [, &lt;GroupBy_ColumnName&gt; [, [&lt;Name&gt;] [, [&lt;Expression&gt;] [, &lt;GroupBy_ColumnName&gt; [, [&lt;Name&gt;] [, [&lt;Expression&gt;] [, … ] ] ] ] ] ] ] )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Table                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The input table.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        GroupBy_ColumnName                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Optional<br>Repeatable<br></td>
+                                    <td class="definition">
+                                        <p>A column to group by or a call to <a href="https://dax.guide/rollup/" class="ajax" data-id="193">ROLLUP</a> function to specify a list of columns to group by with subtotals.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Name                                                                                                                                                                    <br><span class="not-suggested icon icon-rinfo tooltip" data-tooltip-content="#paramnotsuggested">Not recommended</span>
+                                                                                                                            <br><span class="deprecated icon icon-rinfo tooltip" data-tooltip-content="#paramdeprecated">Deprecated</span>
+                                                                            </td>
+                                    <td class="attributes">Optional<br>Repeatable<br></td>
+                                    <td class="definition">
+                                        <p>A column name to be added.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Expression                                                                                    <br><a href="https://www.sqlbi.com/articles/row-context-and-filter-context-in-dax/" class="feature icon icon-rinfo tooltip"  data-tooltip-content="#rowcontext">Row Context</a>
+                                                                                                                                                                    <br><span class="not-suggested icon icon-rinfo tooltip" data-tooltip-content="#paramnotsuggested">Not recommended</span>
+                                                                                                                            <br><span class="deprecated icon icon-rinfo tooltip" data-tooltip-content="#paramdeprecated">Deprecated</span>
+                                                                            </td>
+                                    <td class="attributes">Optional<br>Repeatable<br></td>
+                                    <td class="definition">
+                                        <p>The expression of the new column is executed in both a row context and a filter context.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="table-ret">Table</span> An entire table or a table with one or more columns.</div></p>                    <p>A table with the selected columns for the GroupBy_ColumnName arguments and the summarized columns designed by the name arguments. </p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>The GroupBy_ColumnName must be either in table or in a related table to Table.</p>
+<p>SUMMARIZE should not be used to add columns. As an alternative, use <a href="https://dax.guide/summarizecolumns/" class="ajax" data-id="221">SUMMARIZECOLUMNS</a> or <a href="https://dax.guide/addcolumns/" class="ajax" data-id="16">ADDCOLUMNS</a> / SUMMARIZE.</p>
+                </section>
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 4 related articles</a><br>
+                                                    <a href="#alt" class="sliding">&raquo; 1 related function</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/bgPjgTrFgsdoIP/; notranslate" title="">
+--  SUMMARIZE groups its first argument by the set of columns 
+--  provided in the next parameters.
+--  The groupby columns can be any column of the expanded table.
+EVALUATE
+CALCULATETABLE (
+    SUMMARIZE ( 
+        Sales,
+        'Product'&#91;Brand],
+        'Date'&#91;Calendar Year]
+    ),
+    'Product'&#91;Color] = &quot;Silver Grey&quot;
+)
+
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Brand">Brand</th>
+<th title="Calendar Year">Calendar Year</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Contoso</td>
+<td class="col-date">2007-01-01</td>
+</tr>
+<tr>
+<td class="col-string">Fabrikam</td>
+<td class="col-date">2007-01-01</td>
+</tr>
+<tr>
+<td class="col-string">A. Datum</td>
+<td class="col-date">2007-01-01</td>
+</tr>
+<tr>
+<td class="col-string">Contoso</td>
+<td class="col-date">2008-01-01</td>
+</tr>
+<tr>
+<td class="col-string">Fabrikam</td>
+<td class="col-date">2008-01-01</td>
+</tr>
+<tr>
+<td class="col-string">A. Datum</td>
+<td class="col-date">2008-01-01</td>
+</tr>
+<tr>
+<td class="col-string">Contoso</td>
+<td class="col-date">2009-01-01</td>
+</tr>
+<tr>
+<td class="col-string">Fabrikam</td>
+<td class="col-date">2009-01-01</td>
+</tr>
+<tr>
+<td class="col-string">A. Datum</td>
+<td class="col-date">2009-01-01</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/x5TkfAhhv3sJYW/; notranslate" title="">
+--  SUMMARIZE can also create new columns like ADDCOLUMNS does
+--  even though we strongly discourage using this feature due
+--  to the complexity of the result in some scenarios.
+--  Columns are computed in both a row and a filter context
+--  filtering the currently iterated row.
+EVALUATE
+CALCULATETABLE (
+    SUMMARIZE ( 
+        Sales,
+        'Product'&#91;Brand],
+        'Date'&#91;Calendar Year],
+        &quot;Qty&quot;, SUM ( Sales&#91;Quantity] ),
+        &quot;Brand &amp; Year&quot;, 'Product'&#91;Brand] &amp; &quot; - &quot; &amp; 'Date'&#91;Calendar Year]
+    ),
+    'Product'&#91;Color] = &quot;Silver Grey&quot;
+)
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Brand">Brand</th>
+<th title="Calendar Year">Calendar Year</th>
+<th title="Qty">Qty</th>
+<th title="Brand &#038; Year">Brand &#038; Year</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Contoso</td>
+<td class="col-date">2007-01-01</td>
+<td class="col-int">51</td>
+<td class="col-date">2007-01-01</td>
+</tr>
+<tr>
+<td class="col-string">Fabrikam</td>
+<td class="col-date">2007-01-01</td>
+<td class="col-int">64</td>
+<td class="col-date">2007-01-01</td>
+</tr>
+<tr>
+<td class="col-string">A. Datum</td>
+<td class="col-date">2007-01-01</td>
+<td class="col-int">173</td>
+<td class="col-date">2007-01-01</td>
+</tr>
+<tr>
+<td class="col-string">Contoso</td>
+<td class="col-date">2008-01-01</td>
+<td class="col-int">96</td>
+<td class="col-date">2008-01-01</td>
+</tr>
+<tr>
+<td class="col-string">Fabrikam</td>
+<td class="col-date">2008-01-01</td>
+<td class="col-int">90</td>
+<td class="col-date">2008-01-01</td>
+</tr>
+<tr>
+<td class="col-string">A. Datum</td>
+<td class="col-date">2008-01-01</td>
+<td class="col-int">149</td>
+<td class="col-date">2008-01-01</td>
+</tr>
+<tr>
+<td class="col-string">Contoso</td>
+<td class="col-date">2009-01-01</td>
+<td class="col-int">58</td>
+<td class="col-date">2009-01-01</td>
+</tr>
+<tr>
+<td class="col-string">Fabrikam</td>
+<td class="col-date">2009-01-01</td>
+<td class="col-int">121</td>
+<td class="col-date">2009-01-01</td>
+</tr>
+<tr>
+<td class="col-string">A. Datum</td>
+<td class="col-date">2009-01-01</td>
+<td class="col-int">157</td>
+<td class="col-date">2009-01-01</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/xxEdhoghJWJmM7/; notranslate" title="">
+--  SUMMARIZE can produce subtotals using the ROLLUP
+--  function to group columns.
+EVALUATE
+CALCULATETABLE (
+    SUMMARIZE (
+        Sales,
+        ROLLUP ( 'Product'&#91;Brand], 'Date'&#91;Calendar Year] ),
+        &quot;Amt&quot;, &#91;Sales Amount]
+    ),
+    'Product'&#91;Brand] IN { &quot;Contoso&quot;, &quot;Litware&quot; },
+    'Date'&#91;Calendar Year] IN { &quot;CY 2008&quot;, &quot;CY 2007&quot; }
+)
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Brand">Brand</th>
+<th title="Calendar Year">Calendar Year</th>
+<th title="Amt">Amt</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Contoso</td>
+<td class="col-date">2007-01-01</td>
+<td class="col-float">2,729,818.54</td>
+</tr>
+<tr>
+<td class="col-string">Litware</td>
+<td class="col-date">2007-01-01</td>
+<td class="col-float">647,385.82</td>
+</tr>
+<tr>
+<td class="col-string">Contoso</td>
+<td class="col-date">2008-01-01</td>
+<td class="col-float">2,369,167.68</td>
+</tr>
+<tr>
+<td class="col-string">Litware</td>
+<td class="col-date">2008-01-01</td>
+<td class="col-float">1,487,846.74</td>
+</tr>
+<tr>
+<td class="col-string">Contoso</td>
+<td class="col-date blank">(Blank)</td>
+<td class="col-float">5,098,986.22</td>
+</tr>
+<tr>
+<td class="col-string">Litware</td>
+<td class="col-date blank">(Blank)</td>
+<td class="col-float">2,135,232.56</td>
+</tr>
+<tr>
+<td class="col-string blank">(Blank)</td>
+<td class="col-date blank">(Blank)</td>
+<td class="col-float">7,234,218.78</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/CxwSG9oTlUKk63/; notranslate" title="">
+--  SUMMARIZE has the option of grouping by columns computed
+--  in the query.
+EVALUATE
+SUMMARIZE (
+    ADDCOLUMNS (
+        Sales,
+        &quot;SalesType&quot;,
+            IF ( Sales&#91;Quantity] &gt; 1, &quot;Large&quot;, &quot;Small&quot; )
+    ),
+    &#91;SalesType],
+    &quot;Amt&quot;, &#91;Sales Amount]
+)
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="SalesType">SalesType</th>
+<th title="Amt">Amt</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Small</td>
+<td class="col-float">17,569,935.65</td>
+</tr>
+<tr>
+<td class="col-string">Large</td>
+<td class="col-float">13,021,408.33</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about SUMMARIZE in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/best-practices-using-summarize-and-addcolumns/"  class="low-key"><strong>Best Practices Using SUMMARIZE and ADDCOLUMNS</strong></a>
+                                <p>Everyone using DAX is probably used to SQL query language. Because of the similarities between the Tabular data modeling and the relational data modeling, there is the expectation that you can perform the same operations as those allowed in SQL. However, in its current implementation DAX does not permit all the operations that you can […] <a href="https://www.sqlbi.com/articles/best-practices-using-summarize-and-addcolumns/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/all-the-secrets-of-summarize/"  class="low-key"><strong>All the secrets of SUMMARIZE</strong></a>
+                                <p>SUMMARIZE is a function that looks quite simple, but its functionality hides some secrets that might surprise even seasoned DAX coders. In this article, we analyze the behavior of SUMMARIZE, in order to completely describe its semantic. The final advice might surprise you: we will suggest to avoid the use of SUMMARIZE in your code, […] <a href="https://www.sqlbi.com/articles/all-the-secrets-of-summarize/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/from-sql-to-dax-grouping-data/"  class="low-key"><strong>From SQL to DAX: Grouping Data</strong></a>
+                                <p>The GROUP BY condition of a SQL statement is natively implemented by SUMMARIZE in DAX. This article shows how to use SUMMARIZE and an alternative syntax to group data. <a href="https://www.sqlbi.com/articles/from-sql-to-dax-grouping-data/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/from-sql-to-dax-projection/"  class="low-key"><strong>From SQL to DAX: Projection</strong></a>
+                                <p>This article describes projection functions and techniques in DAX, showing the differences between SELECTCOLUMNS, ADDCOLUMNS, and SUMMARIZE. <a href="https://www.sqlbi.com/articles/from-sql-to-dax-projection/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/summarizecolumns/" class="ajax" data-id="221">SUMMARIZECOLUMNS</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/guides/dax/?aff=learn-dax-promo" target="_top" class="sam-click" data-campaign="learn-dax-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/learn-dax-58090.png" title="Become a DAX guru" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/summarize-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/summarize-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

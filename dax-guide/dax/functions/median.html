@@ -1,0 +1,158 @@
+
+            <header>
+                <h1 title="MEDIAN"><a href="https://dax.guide/median/" rel="bookmark">MEDIAN</a> <span class="smaller">DAX Function (Statistical)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                         &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns the 50th percentile of values in a column.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    MEDIAN ( &lt;Column&gt; )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Column                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>A column containing the values.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single <a href="https://dax.guide/dt/variant/" class="ajax" data-id="260">variant</a> value.</div></p>                    <p>Median value</p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>Only numeric values in the column are counted. Blanks, logical values, and text are ignored.</p>
+<p>If there are no blanks, logical values, or text values, then the following MEDIAN call:</p>
+<pre class="brush: dax; gutter: false; title: ; notranslate" title="">
+MEDIAN ( table&#91;column] )
+</pre>
+<p>corresponds to the following <a href="https://dax.guide/medianx/" class="ajax" data-id="146">MEDIANX</a> call:</p>
+<pre class="brush: dax; gutter: false; title: ; notranslate" title="">
+MEDIANX (
+    table,
+    table&#91;column] 
+)
+</pre>
+<p>The result is blank in case there are no rows in the table with a non-blank value.</p>
+                </section>
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 1 related article</a><br>
+                                                    <a href="#alt" class="sliding">&raquo; 1 related function</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/pnpjf0J3teatdI/; notranslate" title="">
+--  MEDIAN is the compact version of MEDIANX
+--  MEDIANX returns the 50th percentile of an expression
+--  evaluated row-by-row on a table.
+DEFINE
+    TABLE SampleData = { 2, 4, 4, 4, 5, 5, 7, 9 }
+EVALUATE
+{
+     ( &quot;AVERAGE&quot;,  AVERAGE ( SampleData&#91;Value] ) ),
+     ( &quot;MEDIAN&quot;,   MEDIAN ( SampleData&#91;Value] ) ),
+     ( &quot;MEDIANX&quot;,  MEDIANX ( SampleData, SampleData&#91;Value] ) ),
+     ( &quot;Average Sales&quot;, AVERAGEX ( Sales, Sales&#91;Quantity] * Sales&#91;Net Price] ) ),
+     ( &quot;Median Sales&quot;, MEDIANX ( Sales, Sales&#91;Quantity] * Sales&#91;Net Price] ) )
+}
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Value1">Value1</th>
+<th title="Value2">Value2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">AVERAGE</td>
+<td class="col-float">5.00</td>
+</tr>
+<tr>
+<td class="col-string">MEDIAN</td>
+<td class="col-float">4.50</td>
+</tr>
+<tr>
+<td class="col-string">MEDIANX</td>
+<td class="col-float">4.50</td>
+</tr>
+<tr>
+<td class="col-string">Average Sales</td>
+<td class="col-float">305.21</td>
+</tr>
+<tr>
+<td class="col-string">Median Sales</td>
+<td class="col-float">114.21</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about MEDIAN in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/daxpatterns/statistical-patterns/"  class="low-key"><strong>Statistical Patterns</strong></a>
+                                <p>DAX includes a few statistical aggregation functions, such as average, variance, and standard deviation. Other typical statistical calculations require you to write longer DAX expressions. Excel, from this point of view, has a much richer language. The Statistical Patterns are a collection of common statistical calculations: median, mode, moving average, percentile, and quartile. <a href="https://www.sqlbi.com/daxpatterns/statistical-patterns/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/medianx/" class="ajax" data-id="146">MEDIANX</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/optimizing-dax-video-course/?aff=odax-promo" target="_top" class="sam-click" data-campaign="odax-video-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/odax-58090.png" title="Optimizing DAX" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo, Jes Hansen</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/median-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/median-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

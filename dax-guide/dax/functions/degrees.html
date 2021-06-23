@@ -1,0 +1,151 @@
+
+            <header>
+                <h1 title="DEGREES"><a href="https://dax.guide/degrees/" rel="bookmark">DEGREES</a> <span class="smaller">DAX Function (Math and Trig)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                                                 &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                                                 &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Converts radians into degrees.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    DEGREES ( &lt;Number&gt; )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Number                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The angle in radians that you want to convert.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single <a href="https://dax.guide/dt/decimal/" class="ajax" data-id="258">decimal</a> value.</div></p>                                    </section>
+            
+            
+            
+            
+                                                    <a href="#alt" class="sliding">&raquo; 1 related function</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/zy1NGAKeMFqSMU/; notranslate" title="">
+--  RADIANS and DEGREES convert one unit of measure
+--  in the other one, for angles.
+DEFINE 
+    VAR Vals = GENERATESERIES ( -PI(), PI(), PI()/4 )
+EVALUATE
+    ADDCOLUMNS ( 
+        Vals,
+        &quot;DEGREES&quot;,   DEGREES( &#91;Value] ),
+        &quot;RADIANS&quot;,   RADIANS ( DEGREES ( &#91;Value] ) )
+    )
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Value">Value</th>
+<th title="DEGREES">DEGREES</th>
+<th title="RADIANS">RADIANS</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-float">-3.14</td>
+<td class="col-int">-180</td>
+<td class="col-float">-3.14</td>
+</tr>
+<tr>
+<td class="col-float">-2.36</td>
+<td class="col-int">-135</td>
+<td class="col-float">-2.36</td>
+</tr>
+<tr>
+<td class="col-float">-1.57</td>
+<td class="col-int">-90</td>
+<td class="col-float">-1.57</td>
+</tr>
+<tr>
+<td class="col-float">-0.79</td>
+<td class="col-int">-45</td>
+<td class="col-float">-0.79</td>
+</tr>
+<tr>
+<td class="col-float">0.00</td>
+<td class="col-int">0</td>
+<td class="col-float">0.00</td>
+</tr>
+<tr>
+<td class="col-float">0.79</td>
+<td class="col-int">45</td>
+<td class="col-float">0.79</td>
+</tr>
+<tr>
+<td class="col-float">1.57</td>
+<td class="col-int">90</td>
+<td class="col-float">1.57</td>
+</tr>
+<tr>
+<td class="col-float">2.36</td>
+<td class="col-int">135</td>
+<td class="col-float">2.36</td>
+</tr>
+<tr>
+<td class="col-float">3.14</td>
+<td class="col-int">180</td>
+<td class="col-float">3.14</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/radians/" class="ajax" data-id="184">RADIANS</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/dax-tools/?aff=tools-promo" target="_top" class="sam-click" data-campaign="dax-tools-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/tools-58090.png" title="DAX Tools Video Course" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/degrees-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/degrees-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

@@ -1,0 +1,167 @@
+
+            <header>
+                <h1 title="IFERROR"><a href="https://dax.guide/iferror/" rel="bookmark">IFERROR</a> <span class="smaller">DAX Function (Logical)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                                                 &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns value_if_error if the first expression is an error and the value of the expression itself otherwise.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    IFERROR ( &lt;Value&gt;, &lt;ValueIfError&gt; )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Value                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>Any value or expression.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        ValueIfError                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>Any value or expression.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single value of any type.</div></p>                    <p>A scalar of the same type as Value</p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>The IFERROR function is a faster implementation of a semantically equivalent <a href="https://dax.guide/if/" class="ajax" data-id="111">IF</a> / <a href="https://dax.guide/iserror/" class="ajax" data-id="119">ISERROR</a> pattern.</p>
+<pre class="brush: dax; title: ; notranslate" title="">
+IFERROR ( A, B )
+
+-- Corresponds to
+
+IF ( ISERROR ( A ), B, A )
+</pre>
+                </section>
+            
+            
+                                                    <a href="#alt" class="sliding">&raquo; 3 related functions</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/bBvBcT5Re9s9k0/; notranslate" title="">
+--  IFERROR detects if the first argument produces an error.
+--  In that case, it returns the second argument, without 
+--  erroring out.
+DEFINE
+MEASURE Sales&#91;Year Value unprotected] = 
+    VAR CurrentYear = SELECTEDVALUE ( 'Date'&#91;Calendar Year] )
+    RETURN VALUE ( CurrentYear )
+MEASURE Sales&#91;Year Value] = 
+    VAR CurrentYear = SELECTEDVALUE ( 'Date'&#91;Calendar Year] )
+    RETURN 
+        IFERROR (
+            INT ( VALUE ( CurrentYear ) ),
+            INT ( VALUE ( RIGHT ( CurrentYear, 4 ) ) )
+        )
+EVALUATE
+    SUMMARIZECOLUMNS ( 
+        'Date'&#91;Calendar Year], 
+        // If you uncomment the following line, the query generates an error
+        // &quot;Year Value unprotected&quot;, &#91;Year Value unprotected],
+        &quot;Year Value&quot;, &#91;Year Value]
+       )
+ORDER BY &#91;Calendar Year]
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Calendar Year">Calendar Year</th>
+<th title="Year Value">Year Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-date">2005-01-01</td>
+<td class="col-int">2,005</td>
+</tr>
+<tr>
+<td class="col-date">2006-01-01</td>
+<td class="col-int">2,006</td>
+</tr>
+<tr>
+<td class="col-date">2007-01-01</td>
+<td class="col-int">2,007</td>
+</tr>
+<tr>
+<td class="col-date">2008-01-01</td>
+<td class="col-int">2,008</td>
+</tr>
+<tr>
+<td class="col-date">2009-01-01</td>
+<td class="col-int">2,009</td>
+</tr>
+<tr>
+<td class="col-date">2010-01-01</td>
+<td class="col-int">2,010</td>
+</tr>
+<tr>
+<td class="col-date">2011-01-01</td>
+<td class="col-int">2,011</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/if/" class="ajax" data-id="111">IF</a></li>
+                                                    <li><a href="https://dax.guide/iserror/" class="ajax" data-id="119">ISERROR</a></li>
+                                                    <li><a href="https://dax.guide/divide/" class="ajax" data-id="78">DIVIDE</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/dax-patterns/?aff=daxp-promo" target="_top" class="sam-click" data-campaign="dax-patterns-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/daxp-58090.png" title="DAX Patterns" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo, Kenneth Barber</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/iferror-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/iferror-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

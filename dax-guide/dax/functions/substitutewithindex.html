@@ -1,0 +1,235 @@
+
+            <header>
+                <h1 title="SUBSTITUTEWITHINDEX"><a href="https://dax.guide/substitutewithindex/" rel="bookmark">SUBSTITUTEWITHINDEX</a> <span class="smaller">DAX Function (Table manipulation)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                                                 &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                                                                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns a table which represents the semijoin of two tables supplied and for which the common set of columns are replaced by a 0-based index column. The index is based on the rows of the second table sorted by specified order expressions.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    SUBSTITUTEWITHINDEX ( &lt;Table&gt;, &lt;Name&gt;, &lt;SemiJoinIndexTable&gt;, &lt;Expression&gt; [, [&lt;Order&gt;] [, &lt;Expression&gt; [, [&lt;Order&gt;] [, … ] ] ] ] )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Table                                                                                                                            <br><a href="https://www.sqlbi.com/articles/row-context-and-filter-context-in-dax/" class="feature2 icon icon-rinfo tooltip"  data-tooltip-content="#iterator">Iterator</section>
+                                                                                                                                                            </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>Table to be modified.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Name                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>A name of the column to be added to the first table.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        SemiJoinIndexTable                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>Table that will be ordered and used to calculate index and to join with the first argument.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Expression                                                                                    <br><a href="https://www.sqlbi.com/articles/row-context-and-filter-context-in-dax/" class="feature icon icon-rinfo tooltip"  data-tooltip-content="#rowcontext">Row Context</a>
+                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Repeatable<br></td>
+                                    <td class="definition">
+                                        <p>Order by expression for the second parameter (SemiJoinIndexTable).</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Order                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Optional<br>Repeatable<br></td>
+                                    <td class="definition">
+                                        <p>The order to be applied. 0/FALSE/DESC &#8211; descending; 1/TRUE/ASC &#8211; ascending.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="table-ret">Table</span> An entire table or a table with one or more columns.</div></p>                    <p>A table which includes only those values present in the indexColumnsTable table and which has an index column instead of all columns present (by name) in the indexColumnsTable table. </p>
+                </section>
+            
+            
+            
+            
+                                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/CJQz7gPKP54QKd/; notranslate" title="">
+--  SUBSTITUTEWITHINDEX is a tool function used mainly by
+--  Power BI to map values in a query to column in a matrix
+--  by substituting the index columns with a number indicating
+--  the column number where to put the result.
+--  The matching between the two tables is based on column names.
+DEFINE
+    VAR R =
+        SUMMARIZECOLUMNS (
+            'Product'&#91;Brand],
+            'Date'&#91;Calendar Year],
+            TREATAS ( { &quot;Contoso&quot;, &quot;Fabrikam&quot; }, 'Product'&#91;Brand] ),
+            &quot;Amt&quot;, &#91;Sales Amount]
+        )
+    VAR C =
+        SUMMARIZE ( Sales, 'Date'&#91;Calendar Year] )
+    VAR Result =
+        SUBSTITUTEWITHINDEX ( R, &quot;Column #&quot;, C, 'Date'&#91;Calendar Year], ASC )
+
+EVALUATE R
+
+EVALUATE C
+
+EVALUATE Result
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Brand">Brand</th>
+<th title="Calendar Year">Calendar Year</th>
+<th title="Amt">Amt</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Contoso</td>
+<td class="col-date">2007-01-01</td>
+<td class="col-float">2,729,818.54</td>
+</tr>
+<tr>
+<td class="col-string">Fabrikam</td>
+<td class="col-date">2007-01-01</td>
+<td class="col-float">1,652,751.34</td>
+</tr>
+<tr>
+<td class="col-string">Contoso</td>
+<td class="col-date">2008-01-01</td>
+<td class="col-float">2,369,167.68</td>
+</tr>
+<tr>
+<td class="col-string">Fabrikam</td>
+<td class="col-date">2008-01-01</td>
+<td class="col-float">1,993,123.48</td>
+</tr>
+<tr>
+<td class="col-string">Contoso</td>
+<td class="col-date">2009-01-01</td>
+<td class="col-float">2,253,412.80</td>
+</tr>
+<tr>
+<td class="col-string">Fabrikam</td>
+<td class="col-date">2009-01-01</td>
+<td class="col-float">1,908,140.91</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th title="Calendar Year">Calendar Year</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-date">2007-01-01</td>
+</tr>
+<tr>
+<td class="col-date">2008-01-01</td>
+</tr>
+<tr>
+<td class="col-date">2009-01-01</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th title="Brand">Brand</th>
+<th title="Amt">Amt</th>
+<th title="Column #">Column #</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Contoso</td>
+<td class="col-float">2,729,818.54</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">Fabrikam</td>
+<td class="col-float">1,652,751.34</td>
+<td class="col-int">0</td>
+</tr>
+<tr>
+<td class="col-string">Contoso</td>
+<td class="col-float">2,369,167.68</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Fabrikam</td>
+<td class="col-float">1,993,123.48</td>
+<td class="col-int">1</td>
+</tr>
+<tr>
+<td class="col-string">Contoso</td>
+<td class="col-float">2,253,412.80</td>
+<td class="col-int">2</td>
+</tr>
+<tr>
+<td class="col-string">Fabrikam</td>
+<td class="col-float">1,908,140.91</td>
+<td class="col-int">2</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+            
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/dax-tools/?aff=tools-promo" target="_top" class="sam-click" data-campaign="dax-tools-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/tools-58090.png" title="DAX Tools Video Course" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/substitutewithindex-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/substitutewithindex-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

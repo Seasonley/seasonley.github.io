@@ -1,0 +1,850 @@
+
+            <header>
+                <h1 title="CALCULATE"><a href="https://dax.guide/calculate/" rel="bookmark">CALCULATE</a> <span class="smaller">DAX Function (Filter)                    &nbsp;<a href="https://www.sqlbi.com/articles/understanding-context-transition/" class="feature icon icon-rinfo tooltip" data-tooltip-content="#contexttransition">Context Transition</a></span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                         &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Evaluates an expression in a context modified by filters.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    CALCULATE ( &lt;Expression&gt; [, &lt;Filter&gt; [, &lt;Filter&gt; [, … ] ] ] )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Expression                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The expression to be evaluated.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Filter                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Optional<br>Repeatable<br></td>
+                                    <td class="definition">
+                                        <p>A boolean (True/False) expression or a table expression that defines a filter.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single value of any type.</div></p>                    <p>The value is the result of the expression evaluated in a modified filter context.</p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>Every filter argument can be either a filter removal (such as <a href="https://dax.guide/all/" class="ajax" data-id="20">ALL</a>, <a href="https://dax.guide/allexcept/" class="ajax" data-id="21">ALLEXCEPT</a>, <a href="https://dax.guide/allnoblankrow/" class="ajax" data-id="22">ALLNOBLANKROW</a>), a filter restore (<a href="https://dax.guide/allselected/" class="ajax" data-id="23">ALLSELECTED</a>), or a table expression returning a list of values for one or more columns or for an entire expanded table.</p>
+<p>When a filter argument has the form of a predicate with a single column reference, the expression is embedded into a <a href="https://dax.guide/filter/" class="ajax" data-id="93">FILTER</a> expression that filters all the values of the referenced column. For example, the predicate shown in the first expression is internally converted in the second expression.</p>
+<pre class="brush: dax; title: ; notranslate" title="">
+CALCULATE ( 
+    &lt;expression&gt;,
+    table&#91;column] = 10
+)
+
+CALCULATE ( 
+    &lt;expression&gt;,
+    FILTER ( 
+        ALL ( table&#91;column] ),
+        table&#91;column] = 10
+    )
+)
+</pre>
+<p>A filter argument overrides the existing corresponding filters over the same column(s), unless it is embedded within <a href="https://dax.guide/keepfilters/" class="ajax" data-id="130">KEEPFILTERS</a>.</p>
+<p>CALCULATE evaluation follow these steps:</p>
+<ol>
+<li>CALCULATE evaluates all the explicit filter arguments in the original evaluation context. This includes both the original row contexts (if any) and the original filter context. All explicit filter arguments are evaluated independently in the original evaluation context. Once this evaluation is finished, CALCULATE starts building the new filter context.</li>
+<li>CALCULATE makes a copy of the original filter context to prepare the new filter context. It discards the original row contexts, because the new evaluation context will not contain any row context.</li>
+<li>CALCULATE performs the context transition. It uses the current value of columns in the original row contexts to provide a filter with a unique value for all the columns currently being iterated in the original row contexts. This filter may or may not contain one individual row. There is no guarantee that the new filter context contains a single row at this point. If there are no row contexts active, this step is skipped. Once all implicit filters created by the context transition are applied to the new filter context, CALCULATE moves on to the next step.</li>
+<li>CALCULATE evaluates the CALCULATE modifiers used in filter arguments: <a href="https://dax.guide/userelationship/" class="ajax" data-id="241">USERELATIONSHIP</a>, <a href="https://dax.guide/crossfilter/" class="ajax" data-id="58">CROSSFILTER</a>, <a href="https://dax.guide/all/" class="ajax" data-id="20">ALL</a>, <a href="https://dax.guide/allexcept/" class="ajax" data-id="21">ALLEXCEPT</a>, <a href="https://dax.guide/allselected/" class="ajax" data-id="23">ALLSELECTED</a>, and <a href="https://dax.guide/allnoblankrow/" class="ajax" data-id="22">ALLNOBLANKROW</a>. This step happens after step 3. This is very important, because it means that one can remove the effects of the context transition by using <a href="https://dax.guide/all/" class="ajax" data-id="20">ALL</a> as a filter argument. The CALCULATE modifiers are applied after the context transition, so they can alter the effects of the context transition.</li>
+<li>CALCULATE applies the explicit filter arguments evaluated at 1. to the new filter context generated after step 4. These filter arguments are applied to the new filter context once the context transition has happened so they can overwrite it, after filter removal — their filter is not removed by any <a href="https://dax.guide/all/" class="ajax" data-id="20">ALL</a>* modifier — and after the relationship architecture has been updated. However, the evaluation of filter arguments happens in the original filter context, and it is not affected by any other modifier or filter within the same CALCULATE function. If a filter argument is modified by <a href="https://dax.guide/keepfilters/" class="ajax" data-id="130">KEEPFILTERS</a>, the filter is added to the filter context without overwriting existing filters over the same column(s).</li>
+</ol>
+<p>The filter context generated after point (5) is the new filter context used by CALCULATE in the evaluation of its expression.</p>
+                </section>
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 6 related articles</a><br>
+                                                    <a href="#alt" class="sliding">&raquo; 1 related function</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/Q9eEe3zFlFbC8F/; notranslate" title="">
+--  The compact syntax (boolean) is expanded in the full syntax 
+--  prior to the evaluation
+DEFINE
+    MEASURE Sales&#91;Red Sales] =
+        CALCULATE ( &#91;Sales Amount], 'Product'&#91;Color] = &quot;Red&quot; )
+    MEASURE Sales&#91;Red Sales Full] =
+        CALCULATE (
+            &#91;Sales Amount],
+            FILTER ( ALL ( 'Product'&#91;Color] ), 'Product'&#91;Color] = &quot;Red&quot; )
+        )
+EVALUATE
+SUMMARIZECOLUMNS (
+    'Product'&#91;Color],
+    &quot;Sales Amount&quot;, &#91;Sales Amount],
+    &quot;Red Sales&quot;, &#91;Red Sales],
+    &quot;Red Sales Full&quot;, &#91;Red Sales Full]
+)
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Product[Color]">Product[Color]</th>
+<th title="Sales Amount">Sales Amount</th>
+<th title="Red Sales">Red Sales</th>
+<th title="Red Sales Full">Red Sales Full</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Silver</td>
+<td class="col-float">6,798,560.86</td>
+<td class="col-float">1,110,102.10</td>
+<td class="col-float">1,110,102.10</td>
+</tr>
+<tr>
+<td class="col-string">Blue</td>
+<td class="col-float">2,435,444.62</td>
+<td class="col-float">1,110,102.10</td>
+<td class="col-float">1,110,102.10</td>
+</tr>
+<tr>
+<td class="col-string">White</td>
+<td class="col-float">5,829,599.91</td>
+<td class="col-float">1,110,102.10</td>
+<td class="col-float">1,110,102.10</td>
+</tr>
+<tr>
+<td class="col-string">Red</td>
+<td class="col-float">1,110,102.10</td>
+<td class="col-float">1,110,102.10</td>
+<td class="col-float">1,110,102.10</td>
+</tr>
+<tr>
+<td class="col-string">Black</td>
+<td class="col-float">5,860,066.14</td>
+<td class="col-float">1,110,102.10</td>
+<td class="col-float">1,110,102.10</td>
+</tr>
+<tr>
+<td class="col-string">Green</td>
+<td class="col-float">1,403,184.38</td>
+<td class="col-float">1,110,102.10</td>
+<td class="col-float">1,110,102.10</td>
+</tr>
+<tr>
+<td class="col-string">Orange</td>
+<td class="col-float">857,320.28</td>
+<td class="col-float">1,110,102.10</td>
+<td class="col-float">1,110,102.10</td>
+</tr>
+<tr>
+<td class="col-string">Pink</td>
+<td class="col-float">828,638.54</td>
+<td class="col-float">1,110,102.10</td>
+<td class="col-float">1,110,102.10</td>
+</tr>
+<tr>
+<td class="col-string">Yellow</td>
+<td class="col-float">89,715.56</td>
+<td class="col-float">1,110,102.10</td>
+<td class="col-float">1,110,102.10</td>
+</tr>
+<tr>
+<td class="col-string">Purple</td>
+<td class="col-float">5,973.84</td>
+<td class="col-float">1,110,102.10</td>
+<td class="col-float">1,110,102.10</td>
+</tr>
+<tr>
+<td class="col-string">Brown</td>
+<td class="col-float">1,029,508.95</td>
+<td class="col-float">1,110,102.10</td>
+<td class="col-float">1,110,102.10</td>
+</tr>
+<tr>
+<td class="col-string">Grey</td>
+<td class="col-float">3,509,138.09</td>
+<td class="col-float">1,110,102.10</td>
+<td class="col-float">1,110,102.10</td>
+</tr>
+<tr>
+<td class="col-string">Gold</td>
+<td class="col-float">361,496.01</td>
+<td class="col-float">1,110,102.10</td>
+<td class="col-float">1,110,102.10</td>
+</tr>
+<tr>
+<td class="col-string">Azure</td>
+<td class="col-float">97,389.89</td>
+<td class="col-float">1,110,102.10</td>
+<td class="col-float">1,110,102.10</td>
+</tr>
+<tr>
+<td class="col-string">Silver Grey</td>
+<td class="col-float">371,908.92</td>
+<td class="col-float">1,110,102.10</td>
+<td class="col-float">1,110,102.10</td>
+</tr>
+<tr>
+<td class="col-string">Transparent</td>
+<td class="col-float">3,295.89</td>
+<td class="col-float">1,110,102.10</td>
+<td class="col-float">1,110,102.10</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/IS4yso7sTGKPD6/; notranslate" title="">
+--  You can use any condition as an argument, as long as it can
+--  be converted into a table by the DAX engine
+DEFINE
+    MEASURE Sales&#91;Red Blue Sales] =
+        CALCULATE ( &#91;Sales Amount], 'Product'&#91;Color] IN { &quot;Red&quot;, &quot;Blue&quot; } )
+    MEASURE Sales&#91;Red Blue Sales Full] =
+        CALCULATE (
+            &#91;Sales Amount],
+            FILTER ( ALL ( 'Product'&#91;Color] ), 'Product'&#91;Color] IN { &quot;Red&quot;, &quot;Blue&quot; } )
+        )
+EVALUATE
+SUMMARIZECOLUMNS (
+    'Product'&#91;Color],
+    &quot;Sales Amount&quot;, &#91;Sales Amount],
+    &quot;Red Blue Sales&quot;, &#91;Red Blue Sales],
+    &quot;Red Blue Sales Full&quot;, &#91;Red Blue Sales Full]
+)
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Product[Color]">Product[Color]</th>
+<th title="Sales Amount">Sales Amount</th>
+<th title="Red Blue Sales">Red Blue Sales</th>
+<th title="Red Blue Sales Full">Red Blue Sales Full</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Silver</td>
+<td class="col-float">6,798,560.86</td>
+<td class="col-float">3,545,546.72</td>
+<td class="col-float">3,545,546.72</td>
+</tr>
+<tr>
+<td class="col-string">Blue</td>
+<td class="col-float">2,435,444.62</td>
+<td class="col-float">3,545,546.72</td>
+<td class="col-float">3,545,546.72</td>
+</tr>
+<tr>
+<td class="col-string">White</td>
+<td class="col-float">5,829,599.91</td>
+<td class="col-float">3,545,546.72</td>
+<td class="col-float">3,545,546.72</td>
+</tr>
+<tr>
+<td class="col-string">Red</td>
+<td class="col-float">1,110,102.10</td>
+<td class="col-float">3,545,546.72</td>
+<td class="col-float">3,545,546.72</td>
+</tr>
+<tr>
+<td class="col-string">Black</td>
+<td class="col-float">5,860,066.14</td>
+<td class="col-float">3,545,546.72</td>
+<td class="col-float">3,545,546.72</td>
+</tr>
+<tr>
+<td class="col-string">Green</td>
+<td class="col-float">1,403,184.38</td>
+<td class="col-float">3,545,546.72</td>
+<td class="col-float">3,545,546.72</td>
+</tr>
+<tr>
+<td class="col-string">Orange</td>
+<td class="col-float">857,320.28</td>
+<td class="col-float">3,545,546.72</td>
+<td class="col-float">3,545,546.72</td>
+</tr>
+<tr>
+<td class="col-string">Pink</td>
+<td class="col-float">828,638.54</td>
+<td class="col-float">3,545,546.72</td>
+<td class="col-float">3,545,546.72</td>
+</tr>
+<tr>
+<td class="col-string">Yellow</td>
+<td class="col-float">89,715.56</td>
+<td class="col-float">3,545,546.72</td>
+<td class="col-float">3,545,546.72</td>
+</tr>
+<tr>
+<td class="col-string">Purple</td>
+<td class="col-float">5,973.84</td>
+<td class="col-float">3,545,546.72</td>
+<td class="col-float">3,545,546.72</td>
+</tr>
+<tr>
+<td class="col-string">Brown</td>
+<td class="col-float">1,029,508.95</td>
+<td class="col-float">3,545,546.72</td>
+<td class="col-float">3,545,546.72</td>
+</tr>
+<tr>
+<td class="col-string">Grey</td>
+<td class="col-float">3,509,138.09</td>
+<td class="col-float">3,545,546.72</td>
+<td class="col-float">3,545,546.72</td>
+</tr>
+<tr>
+<td class="col-string">Gold</td>
+<td class="col-float">361,496.01</td>
+<td class="col-float">3,545,546.72</td>
+<td class="col-float">3,545,546.72</td>
+</tr>
+<tr>
+<td class="col-string">Azure</td>
+<td class="col-float">97,389.89</td>
+<td class="col-float">3,545,546.72</td>
+<td class="col-float">3,545,546.72</td>
+</tr>
+<tr>
+<td class="col-string">Silver Grey</td>
+<td class="col-float">371,908.92</td>
+<td class="col-float">3,545,546.72</td>
+<td class="col-float">3,545,546.72</td>
+</tr>
+<tr>
+<td class="col-string">Transparent</td>
+<td class="col-float">3,295.89</td>
+<td class="col-float">3,545,546.72</td>
+<td class="col-float">3,545,546.72</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/Lhn0UlxEyYh7py/; notranslate" title="">
+--  The KEEPFILTERS modifier does not remove an existing filter
+DEFINE
+    MEASURE Sales&#91;Red Blue Sales Keepfilters] =
+        CALCULATE ( 
+            &#91;Sales Amount], 
+            KEEPFILTERS ( 'Product'&#91;Color] IN { &quot;Red&quot;, &quot;Blue&quot; } )
+        )
+    MEASURE Sales&#91;Red Blue Sales] =
+        CALCULATE ( 
+            &#91;Sales Amount], 
+            'Product'&#91;Color] IN { &quot;Red&quot;, &quot;Blue&quot; }
+        )
+EVALUATE
+SUMMARIZECOLUMNS (
+    'Product'&#91;Color],
+    &quot;Sales Amount&quot;, &#91;Sales Amount],
+    &quot;Red Blue Sales&quot;, &#91;Red Blue Sales],
+    &quot;Red Blue Sales Keepfilters&quot;, &#91;Red Blue Sales Keepfilters]
+)
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Product[Color]">Product[Color]</th>
+<th title="Sales Amount">Sales Amount</th>
+<th title="Red Blue Sales">Red Blue Sales</th>
+<th title="Red Blue Sales Keepfilters">Red Blue Sales Keepfilters</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Silver</td>
+<td class="col-float">6,798,560.86</td>
+<td class="col-float">3,545,546.72</td>
+<td class="col-float blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Blue</td>
+<td class="col-float">2,435,444.62</td>
+<td class="col-float">3,545,546.72</td>
+<td class="col-float">2,435,444.62</td>
+</tr>
+<tr>
+<td class="col-string">White</td>
+<td class="col-float">5,829,599.91</td>
+<td class="col-float">3,545,546.72</td>
+<td class="col-float blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Red</td>
+<td class="col-float">1,110,102.10</td>
+<td class="col-float">3,545,546.72</td>
+<td class="col-float">1,110,102.10</td>
+</tr>
+<tr>
+<td class="col-string">Black</td>
+<td class="col-float">5,860,066.14</td>
+<td class="col-float">3,545,546.72</td>
+<td class="col-float blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Green</td>
+<td class="col-float">1,403,184.38</td>
+<td class="col-float">3,545,546.72</td>
+<td class="col-float blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Orange</td>
+<td class="col-float">857,320.28</td>
+<td class="col-float">3,545,546.72</td>
+<td class="col-float blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Pink</td>
+<td class="col-float">828,638.54</td>
+<td class="col-float">3,545,546.72</td>
+<td class="col-float blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Yellow</td>
+<td class="col-float">89,715.56</td>
+<td class="col-float">3,545,546.72</td>
+<td class="col-float blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Purple</td>
+<td class="col-float">5,973.84</td>
+<td class="col-float">3,545,546.72</td>
+<td class="col-float blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Brown</td>
+<td class="col-float">1,029,508.95</td>
+<td class="col-float">3,545,546.72</td>
+<td class="col-float blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Grey</td>
+<td class="col-float">3,509,138.09</td>
+<td class="col-float">3,545,546.72</td>
+<td class="col-float blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Gold</td>
+<td class="col-float">361,496.01</td>
+<td class="col-float">3,545,546.72</td>
+<td class="col-float blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Azure</td>
+<td class="col-float">97,389.89</td>
+<td class="col-float">3,545,546.72</td>
+<td class="col-float blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Silver Grey</td>
+<td class="col-float">371,908.92</td>
+<td class="col-float">3,545,546.72</td>
+<td class="col-float blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Transparent</td>
+<td class="col-float">3,295.89</td>
+<td class="col-float">3,545,546.72</td>
+<td class="col-float blank">(Blank)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/KhCzBYbkx3zqUy/; notranslate" title="">
+--  When CALCULATE is executed in a row context, it transforms 
+--  the row contexts in equivalent filter contexts
+DEFINE
+    MEASURE Sales&#91;Yearly Avg] =
+        AVERAGEX (
+            VALUES ( 'Date'&#91;Calendar Year] ),
+            CALCULATE ( 
+                SUMX ( Sales, Sales&#91;Quantity] * Sales&#91;Net Price] )
+            )
+        )
+EVALUATE
+SUMMARIZECOLUMNS (
+    'Product'&#91;Color],
+    &quot;Sales Amount&quot;, &#91;Sales Amount],
+    &quot;Yearly Avg&quot;, &#91;Yearly Avg]
+)
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Product[Color]">Product[Color]</th>
+<th title="Sales Amount">Sales Amount</th>
+<th title="Yearly Avg">Yearly Avg</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Silver</td>
+<td class="col-float">6,798,560.86</td>
+<td class="col-float">2,266,186.95</td>
+</tr>
+<tr>
+<td class="col-string">Blue</td>
+<td class="col-float">2,435,444.62</td>
+<td class="col-float">811,814.87</td>
+</tr>
+<tr>
+<td class="col-string">White</td>
+<td class="col-float">5,829,599.91</td>
+<td class="col-float">1,943,199.97</td>
+</tr>
+<tr>
+<td class="col-string">Red</td>
+<td class="col-float">1,110,102.10</td>
+<td class="col-float">370,034.03</td>
+</tr>
+<tr>
+<td class="col-string">Black</td>
+<td class="col-float">5,860,066.14</td>
+<td class="col-float">1,953,355.38</td>
+</tr>
+<tr>
+<td class="col-string">Green</td>
+<td class="col-float">1,403,184.38</td>
+<td class="col-float">467,728.13</td>
+</tr>
+<tr>
+<td class="col-string">Orange</td>
+<td class="col-float">857,320.28</td>
+<td class="col-float">285,773.43</td>
+</tr>
+<tr>
+<td class="col-string">Pink</td>
+<td class="col-float">828,638.54</td>
+<td class="col-float">276,212.85</td>
+</tr>
+<tr>
+<td class="col-string">Yellow</td>
+<td class="col-float">89,715.56</td>
+<td class="col-float">29,905.19</td>
+</tr>
+<tr>
+<td class="col-string">Purple</td>
+<td class="col-float">5,973.84</td>
+<td class="col-float">1,991.28</td>
+</tr>
+<tr>
+<td class="col-string">Brown</td>
+<td class="col-float">1,029,508.95</td>
+<td class="col-float">343,169.65</td>
+</tr>
+<tr>
+<td class="col-string">Grey</td>
+<td class="col-float">3,509,138.09</td>
+<td class="col-float">1,169,712.70</td>
+</tr>
+<tr>
+<td class="col-string">Gold</td>
+<td class="col-float">361,496.01</td>
+<td class="col-float">120,498.67</td>
+</tr>
+<tr>
+<td class="col-string">Azure</td>
+<td class="col-float">97,389.89</td>
+<td class="col-float">32,463.30</td>
+</tr>
+<tr>
+<td class="col-string">Silver Grey</td>
+<td class="col-float">371,908.92</td>
+<td class="col-float">123,969.64</td>
+</tr>
+<tr>
+<td class="col-string">Transparent</td>
+<td class="col-float">3,295.89</td>
+<td class="col-float">1,098.63</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/uh3xH5QrS8MWdb/; notranslate" title="">
+--  CALCULATE is implicitly added to any measure reference
+DEFINE
+    MEASURE Sales&#91;Sales Amount] = 
+        SUMX ( Sales, Sales&#91;Quantity] * Sales&#91;Net Price] )
+    MEASURE Sales&#91;Yearly Avg] =
+        AVERAGEX (
+            VALUES ( 'Date'&#91;Calendar Year] ),
+            CALCULATE ( 
+                SUMX ( Sales, Sales&#91;Quantity] * Sales&#91;Net Price] )
+            )
+        )
+    MEASURE Sales&#91;Yearly Avg 2] =
+        AVERAGEX (
+            VALUES ( 'Date'&#91;Calendar Year] ),
+            &#91;Sales Amount]
+        )
+EVALUATE
+SUMMARIZECOLUMNS (
+    'Product'&#91;Color],
+    &quot;Sales Amount&quot;, &#91;Sales Amount],
+    &quot;Yearly Avg&quot;, &#91;Yearly Avg],
+    &quot;Yearly Avg 2&quot;, &#91;Yearly Avg 2]
+)
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Product[Color]">Product[Color]</th>
+<th title="Sales Amount">Sales Amount</th>
+<th title="Yearly Avg">Yearly Avg</th>
+<th title="Yearly Avg 2">Yearly Avg 2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Silver</td>
+<td class="col-float">6,798,560.86</td>
+<td class="col-float">2,266,186.95</td>
+<td class="col-float">2,266,186.95</td>
+</tr>
+<tr>
+<td class="col-string">Blue</td>
+<td class="col-float">2,435,444.62</td>
+<td class="col-float">811,814.87</td>
+<td class="col-float">811,814.87</td>
+</tr>
+<tr>
+<td class="col-string">White</td>
+<td class="col-float">5,829,599.91</td>
+<td class="col-float">1,943,199.97</td>
+<td class="col-float">1,943,199.97</td>
+</tr>
+<tr>
+<td class="col-string">Red</td>
+<td class="col-float">1,110,102.10</td>
+<td class="col-float">370,034.03</td>
+<td class="col-float">370,034.03</td>
+</tr>
+<tr>
+<td class="col-string">Black</td>
+<td class="col-float">5,860,066.14</td>
+<td class="col-float">1,953,355.38</td>
+<td class="col-float">1,953,355.38</td>
+</tr>
+<tr>
+<td class="col-string">Green</td>
+<td class="col-float">1,403,184.38</td>
+<td class="col-float">467,728.13</td>
+<td class="col-float">467,728.13</td>
+</tr>
+<tr>
+<td class="col-string">Orange</td>
+<td class="col-float">857,320.28</td>
+<td class="col-float">285,773.43</td>
+<td class="col-float">285,773.43</td>
+</tr>
+<tr>
+<td class="col-string">Pink</td>
+<td class="col-float">828,638.54</td>
+<td class="col-float">276,212.85</td>
+<td class="col-float">276,212.85</td>
+</tr>
+<tr>
+<td class="col-string">Yellow</td>
+<td class="col-float">89,715.56</td>
+<td class="col-float">29,905.19</td>
+<td class="col-float">29,905.19</td>
+</tr>
+<tr>
+<td class="col-string">Purple</td>
+<td class="col-float">5,973.84</td>
+<td class="col-float">1,991.28</td>
+<td class="col-float">1,991.28</td>
+</tr>
+<tr>
+<td class="col-string">Brown</td>
+<td class="col-float">1,029,508.95</td>
+<td class="col-float">343,169.65</td>
+<td class="col-float">343,169.65</td>
+</tr>
+<tr>
+<td class="col-string">Grey</td>
+<td class="col-float">3,509,138.09</td>
+<td class="col-float">1,169,712.70</td>
+<td class="col-float">1,169,712.70</td>
+</tr>
+<tr>
+<td class="col-string">Gold</td>
+<td class="col-float">361,496.01</td>
+<td class="col-float">120,498.67</td>
+<td class="col-float">120,498.67</td>
+</tr>
+<tr>
+<td class="col-string">Azure</td>
+<td class="col-float">97,389.89</td>
+<td class="col-float">32,463.30</td>
+<td class="col-float">32,463.30</td>
+</tr>
+<tr>
+<td class="col-string">Silver Grey</td>
+<td class="col-float">371,908.92</td>
+<td class="col-float">123,969.64</td>
+<td class="col-float">123,969.64</td>
+</tr>
+<tr>
+<td class="col-string">Transparent</td>
+<td class="col-float">3,295.89</td>
+<td class="col-float">1,098.63</td>
+<td class="col-float">1,098.63</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/fQdkseYIR6ewIb/; notranslate" title="">
+--  CALCULATE evaluation steps:
+--      1. Evaluation of filter arguments
+--      2. Context transition
+--      3. Evaluation of CALCULATE modifiers
+--      4. Application of filter arguments and KEEPFILTERS
+DEFINE
+    MEASURE Sales&#91;Test] =
+        AVERAGEX ( 
+            VALUES ( 'Date'&#91;Calendar Year] ),
+            CALCULATE (
+                &#91;Sales Amount],
+                'Product'&#91;Category] = &quot;Audio&quot;,
+                KEEPFILTERS ( 'Product'&#91;Color] IN { &quot;Red&quot;, &quot;Blue&quot; } ),
+                USERELATIONSHIP ( Sales&#91;Delivery Date], 'Date'&#91;Date] )
+            )
+        )
+EVALUATE
+SUMMARIZECOLUMNS (
+    'Product'&#91;Color],
+    &quot;Sales Amount&quot;, &#91;Test]
+)
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Color">Color</th>
+<th title="Sales Amount">Sales Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Blue</td>
+<td class="col-float">22,266.55</td>
+</tr>
+<tr>
+<td class="col-string">Red</td>
+<td class="col-float">16,561.91</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about CALCULATE in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/context-transition-and-filters-in-calculate/"  class="low-key"><strong>Context Transition and Filters in CALCULATE</strong></a>
+                                <p>This article explains how the context transition interacts with the filter arguments of a CALCULATE function in DAX. This is important in order to avoid unexpected results with complex calculations made in filter arguments. <a href="https://www.sqlbi.com/articles/context-transition-and-filters-in-calculate/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/filter-arguments-in-calculate/"  class="low-key"><strong>Filter Arguments in CALCULATE</strong></a>
+                                <p>A filter argument in CALCULATE is always an iterator. Finding the right granularity for it is important to control the result and the performance. This article describes the options available to create complex filters in DAX. <a href="https://www.sqlbi.com/articles/filter-arguments-in-calculate/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/order-of-evaluation-in-calculate-parameters/"  class="low-key"><strong>Order of Evaluation in CALCULATE Parameters</strong></a>
+                                <p>DAX is the new language used by PowerPivot and Analysis Services in Tabular mode and it resembles the syntax of Excel formula and it can be considered a functional language. You do not have iterative statements, but you can run iterative functions like, for example, SUMX and FILTER. The most important functions in DAX are […] <a href="https://www.sqlbi.com/articles/order-of-evaluation-in-calculate-parameters/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/using-or-conditions-between-slicers-in-dax/"  class="low-key"><strong>Using OR conditions between slicers in DAX</strong></a>
+                                <p>This article describes how to implement in DAX a logical OR condition between the selection of two slicers of a Power BI report or of a PivotTable in Excel. By default, when relying on more than one slicer they are considered in an AND condition. <a href="https://www.sqlbi.com/articles/using-or-conditions-between-slicers-in-dax/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/context-transition-and-expanded-tables/"  class="low-key"><strong>Context Transition and Expanded Tables</strong></a>
+                                <p>This article describes how table expansion and filter context propagation are important DAX concepts to understand and fix small glitches in DAX expressions. <a href="https://www.sqlbi.com/articles/context-transition-and-expanded-tables/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/expanded-tables-in-dax/"  class="low-key"><strong>Expanded tables in DAX</strong></a>
+                                <p>Expanded tables are the core of DAX; understanding how they work is of paramount importance. This article provides a theoretical foundation of what expanded tables are, along with fundamental concepts useful when reading DAX code. <a href="https://www.sqlbi.com/articles/expanded-tables-in-dax/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/calculatetable/" class="ajax" data-id="34">CALCULATETABLE</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/dax-tools/?aff=tools-promo" target="_top" class="sam-click" data-campaign="dax-tools-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/tools-58090.png" title="DAX Tools Video Course" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/calculate-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/calculate-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

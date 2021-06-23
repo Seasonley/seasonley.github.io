@@ -1,0 +1,330 @@
+
+            <header>
+                <h1 title="KEEPFILTERS"><a href="https://dax.guide/keepfilters/" rel="bookmark">KEEPFILTERS</a> <span class="smaller">DAX Function (Filter)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                         &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Changes the <a href="https://dax.guide/calculate/" class="ajax" data-id="33">CALCULATE</a> and <a href="https://dax.guide/calculatetable/" class="ajax" data-id="34">CALCULATETABLE</a> function filtering semantics.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    KEEPFILTERS ( &lt;Expression&gt; )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Expression                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p><a href="https://dax.guide/calculate/" class="ajax" data-id="33">CALCULATE</a> or <a href="https://dax.guide/calculatetable/" class="ajax" data-id="34">CALCULATETABLE</a> function expression or filter.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p></p>                    <p>Even though KEEPFILTERS could be considered a table function, as a filter modifier it changes the behavior of a predicate or of the table expression provided as an argument. Therefore, it cannot be considered a function returning a value.</p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>KEEPFILTERS is a filter modifier that does not remove an existing column or table filter in the filter context that conflicts with the filter applied by the argument of KEEPFILTERS used as:</p>
+<ul>
+<li>a filter argument in <a href="https://dax.guide/calculate/" class="ajax" data-id="33">CALCULATE</a> / <a href="https://dax.guide/calculatetable/" class="ajax" data-id="34">CALCULATETABLE</a></li>
+<li>an argument of an iterator used in a following context transition</li>
+</ul>
+                </section>
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 3 related articles</a><br>
+                                                    <a href="#alt" class="sliding">&raquo; 2 related functions</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <p>In the following example, KEEPFILTERS is used as a filter modifier in <a href="https://dax.guide/calculate/" class="ajax" data-id="33">CALCULATE</a>. The Always Red Sales measure returns always the sum of the Red products, overriding any existing filter over the Color column. The measure Only Red Sales return the sales of red products within the set of selected colors. If Red is not included in the current filter context, the result is blank.</p>
+<pre class="brush: dax; highlight: [10]; title: ; notranslate" title="">
+Always Red Sales :=
+CALCULATE (
+    &#91;Sales Amount],
+    'Product'&#91;Color] = &quot;Red&quot;
+)
+
+Only Red Sales :=
+CALCULATE (
+    &#91;Sales Amount],
+    KEEPFILTERS ( 'Product'&#91;Color] = &quot;Red&quot; )
+)
+</pre>
+<p>When KEEPFILTERS is used for an iterator, it keeps the existing filter context when there is a context transition. The measure Average Sales Only Trendy Colors computes the average Sales of the colors included within the Trendy Colors, without considering those that are not in the current filter context. If the measure is evaluated in a filter context that has a filter over Red, Yellow, and White, the result will average only Red and White, ignoring Yellow and Blue colors.</p>
+<pre class="brush: dax; highlight: [9]; title: ; notranslate" title="">
+Average Sales Only Trendy Colors :=
+VAR TrendyColors =
+    TREATAS (
+        { &quot;Red&quot;, &quot;Blue&quot;, &quot;White&quot; },
+        'Product'&#91;Color]
+    )
+RETURN
+    AVERAGEX (
+        KEEPFILTERS ( TrendyColors ),
+        &#91;Sales Amount]
+    )
+</pre>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/kHXodjVVDI77LB/; notranslate" title="">
+-- Compare a White color filter with and without KEEPFILTERS
+DEFINE 
+    MEASURE Sales&#91;White Sales] = 
+        CALCULATE ( 
+            &#91;Sales Amount], 
+            Product&#91;Color] = &quot;White&quot; 
+        )
+    MEASURE Sales&#91;White Sales Keep] = 
+        CALCULATE ( 
+            &#91;Sales Amount], 
+            KEEPFILTERS ( Product&#91;Color] = &quot;White&quot; )
+        )
+EVALUATE
+    ADDCOLUMNS (
+        VALUES ( 'Product'&#91;Color] ),
+        &quot;Sales Amount&quot;, &#91;Sales Amount],
+        &quot;White Sales&quot;, &#91;White Sales],
+        &quot;White Sales Keep&quot;, &#91;White Sales Keep]
+    )
+ORDER BY &#91;Sales Amount] DESC
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Product[Color]">Product[Color]</th>
+<th title="Sales Amount">Sales Amount</th>
+<th title="White Sales">White Sales</th>
+<th title="White Sales Keep">White Sales Keep</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Silver</td>
+<td class="col-float">6,798,560.86</td>
+<td class="col-float">5,829,599.91</td>
+<td class="col-float blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Black</td>
+<td class="col-float">5,860,066.14</td>
+<td class="col-float">5,829,599.91</td>
+<td class="col-float blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">White</td>
+<td class="col-float">5,829,599.91</td>
+<td class="col-float">5,829,599.91</td>
+<td class="col-float">5,829,599.91</td>
+</tr>
+<tr>
+<td class="col-string">Grey</td>
+<td class="col-float">3,509,138.09</td>
+<td class="col-float">5,829,599.91</td>
+<td class="col-float blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Blue</td>
+<td class="col-float">2,435,444.62</td>
+<td class="col-float">5,829,599.91</td>
+<td class="col-float blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Green</td>
+<td class="col-float">1,403,184.38</td>
+<td class="col-float">5,829,599.91</td>
+<td class="col-float blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Red</td>
+<td class="col-float">1,110,102.10</td>
+<td class="col-float">5,829,599.91</td>
+<td class="col-float blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Brown</td>
+<td class="col-float">1,029,508.95</td>
+<td class="col-float">5,829,599.91</td>
+<td class="col-float blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Orange</td>
+<td class="col-float">857,320.28</td>
+<td class="col-float">5,829,599.91</td>
+<td class="col-float blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Pink</td>
+<td class="col-float">828,638.54</td>
+<td class="col-float">5,829,599.91</td>
+<td class="col-float blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Silver Grey</td>
+<td class="col-float">371,908.92</td>
+<td class="col-float">5,829,599.91</td>
+<td class="col-float blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Gold</td>
+<td class="col-float">361,496.01</td>
+<td class="col-float">5,829,599.91</td>
+<td class="col-float blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Azure</td>
+<td class="col-float">97,389.89</td>
+<td class="col-float">5,829,599.91</td>
+<td class="col-float blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Yellow</td>
+<td class="col-float">89,715.56</td>
+<td class="col-float">5,829,599.91</td>
+<td class="col-float blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Purple</td>
+<td class="col-float">5,973.84</td>
+<td class="col-float">5,829,599.91</td>
+<td class="col-float blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Transparent</td>
+<td class="col-float">3,295.89</td>
+<td class="col-float">5,829,599.91</td>
+<td class="col-float blank">(Blank)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/RvposJvoHWnco0/; notranslate" title="">
+--  KEEPFILTERS can be used as a modifier in the table 
+--  arguments of iterators. In that case, it changes the 
+--  way CALCULATE merges filters during context transition
+--  over the iterated columns.
+DEFINE
+    MEASURE Sales&#91;SalesX] =
+        SUMX ( VALUES ( Product&#91;Color] ), &#91;Sales Amount] )
+    MEASURE Sales&#91;SalesX Keep] =
+        SUMX ( KEEPFILTERS ( VALUES ( Product&#91;Color] ) ), &#91;Sales Amount] )
+    VAR YearsAndColor =
+        TREATAS (
+            { ( &quot;CY 2008&quot;, &quot;Red&quot; ), ( &quot;CY 2007&quot;, &quot;White&quot; ) },
+            'Date'&#91;Calendar Year],
+            'Product'&#91;Color]
+        )
+EVALUATE
+SUMMARIZECOLUMNS (
+    'Product'&#91;Color],
+    YearsAndColor,
+    &quot;Sales Amount&quot;, &#91;Sales Amount],
+    &quot;SalesX&quot;, &#91;SalesX],
+    &quot;SalesX Keep&quot;, &#91;SalesX Keep]
+)
+ORDER BY &#91;Sales Amount] DESC
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Product[Color]">Product[Color]</th>
+<th title="Sales Amount">Sales Amount</th>
+<th title="SalesX">SalesX</th>
+<th title="SalesX Keep">SalesX Keep</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">White</td>
+<td class="col-float">2,002,452.65</td>
+<td class="col-float">2,368,479.81</td>
+<td class="col-float">2,002,452.65</td>
+</tr>
+<tr>
+<td class="col-string">Red</td>
+<td class="col-float">395,277.22</td>
+<td class="col-float">2,288,307.38</td>
+<td class="col-float">395,277.22</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about KEEPFILTERS in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/using-keepfilters-in-dax/"  class="low-key"><strong>Using KEEPFILTERS in DAX</strong></a>
+                                <p>This article explains how to use KEEPFILTERS to intersect instead of overriding an existing filter context in DAX, simplifying the code and improving performance. <a href="https://www.sqlbi.com/articles/using-keepfilters-in-dax/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/filter-arguments-in-calculate/"  class="low-key"><strong>Filter Arguments in CALCULATE</strong></a>
+                                <p>A filter argument in CALCULATE is always an iterator. Finding the right granularity for it is important to control the result and the performance. This article describes the options available to create complex filters in DAX. <a href="https://www.sqlbi.com/articles/filter-arguments-in-calculate/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/keepfilters-a-new-dax-feature-to-correctly-compute-over-arbitrary-shaped-sets/"  class="low-key"><strong>KEEPFILTERS: a new DAX feature to correctly compute over arbitrary shaped sets</strong></a>
+                                <p>Having read this question on the mdsn blogs, I investigated on the KEEPFILTERS function and, after having learned it, it is now time to write about it. Moreover, before start to write about it, I need to thank the dev team&hellip; <a href="https://www.sqlbi.com/articles/keepfilters-a-new-dax-feature-to-correctly-compute-over-arbitrary-shaped-sets/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/calculate/" class="ajax" data-id="33">CALCULATE</a></li>
+                                                    <li><a href="https://dax.guide/calculatetable/" class="ajax" data-id="34">CALCULATETABLE</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/dax-tools/?aff=tools-promo" target="_top" class="sam-click" data-campaign="dax-tools-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/tools-58090.png" title="DAX Tools Video Course" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/keepfilters-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/keepfilters-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

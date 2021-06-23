@@ -1,0 +1,175 @@
+
+            <header>
+                <h1 title="USERELATIONSHIP"><a href="https://dax.guide/userelationship/" rel="bookmark">USERELATIONSHIP</a> <span class="smaller">DAX Function (Relationships management)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                         &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Specifies an existing relationship to be used in the evaluation of a DAX expression. The relationship is defined by naming, as arguments, the two columns that serve as endpoints.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    USERELATIONSHIP ( &lt;ColumnName1&gt;, &lt;ColumnName2&gt; )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        ColumnName1                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>Foreign (or primary) key of the relationship.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        ColumnName2                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>Primary (or foreign) key of the relationship.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p></p>                    <p>The function returns no value; the function only enables the indicated relationship for the duration of the calculation. </p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>USERELATIONSHIP can only be used in functions that take a filter predicate as an argument, for example: <a href="https://dax.guide/calculate/" class="ajax" data-id="33">CALCULATE</a>, <a href="https://dax.guide/calculatetable/" class="ajax" data-id="34">CALCULATETABLE</a>, <a href="https://dax.guide/closingbalancemonth/" class="ajax" data-id="38">CLOSINGBALANCEMONTH</a>, <a href="https://dax.guide/closingbalancequarter/" class="ajax" data-id="39">CLOSINGBALANCEQUARTER</a>, <a href="https://dax.guide/closingbalanceyear/" class="ajax" data-id="40">CLOSINGBALANCEYEAR</a>, <a href="https://dax.guide/openingbalancemonth/" class="ajax" data-id="164">OPENINGBALANCEMONTH</a>, <a href="https://dax.guide/openingbalancequarter/" class="ajax" data-id="165">OPENINGBALANCEQUARTER</a>, <a href="https://dax.guide/openingbalanceyear/" class="ajax" data-id="166">OPENINGBALANCEYEAR</a>, <a href="https://dax.guide/totalmtd/" class="ajax" data-id="230">TOTALMTD</a>, <a href="https://dax.guide/totalqtd/" class="ajax" data-id="231">TOTALQTD</a> and <a href="https://dax.guide/totalytd/" class="ajax" data-id="232">TOTALYTD</a> functions.</p>
+<p>USERELATIONSHIP uses existing relationships in the model, identifying relationships by their ending point columns.</p>
+<p>In USERELATIONSHIP, the status of a relationship is not important; that is, whether the relationship is active or not does not affect the usage of the function. Even if the relationship is inactive, it will be used and overrides any other active relationships that might be present in the model but not mentioned in the function arguments. </p>
+<p>An error is returned if any of the columns named as an argument is not part of a relationship or the arguments belong to different relationships.</p>
+<p>If <a href="https://dax.guide/calculate/" class="ajax" data-id="33">CALCULATE</a> expressions are nested, and more than one <a href="https://dax.guide/calculate/" class="ajax" data-id="33">CALCULATE</a> expression contains a USERELATIONSHIP function, then the innermost USERELATIONSHIP is the one that prevails in case of a conflict or ambiguity.</p>
+                </section>
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 3 related articles</a><br>
+                                                    <a href="#alt" class="sliding">&raquo; 1 related function</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/FPoC0f3NAH4x6k/; notranslate" title="">
+--  USERELATIONSHIP activates a disabled relationship, deactivating
+--  possible conflicting relationships.
+--
+--  Useful when the model contains inactive relationships to handle
+--  role-playing dimensions.
+DEFINE
+    MEASURE Sales&#91;Delivery Amount] =
+        CALCULATE (
+            &#91;Sales Amount],
+            USERELATIONSHIP ( Sales&#91;Delivery Date], 'Date'&#91;Date] )
+        )
+EVALUATE
+SUMMARIZECOLUMNS (
+    'Date'&#91;Calendar Year],
+    &quot;Sales Amount&quot;, &#91;Sales Amount],
+    &quot;Delivery Amount&quot;, &#91;Delivery Amount]
+)
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Calendar Year">Calendar Year</th>
+<th title="Sales Amount">Sales Amount</th>
+<th title="Delivery Amount">Delivery Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-date">2007-01-01</td>
+<td class="col-float">11,309,946.12</td>
+<td class="col-float">11,034,860.43</td>
+</tr>
+<tr>
+<td class="col-date">2008-01-01</td>
+<td class="col-float">9,927,582.99</td>
+<td class="col-float">9,901,407.94</td>
+</tr>
+<tr>
+<td class="col-date">2009-01-01</td>
+<td class="col-float">9,353,814.87</td>
+<td class="col-float">9,442,286.09</td>
+</tr>
+<tr>
+<td class="col-date">2010-01-01</td>
+<td class="col-float blank">(Blank)</td>
+<td class="col-float">212,789.51</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about USERELATIONSHIP in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/using-userelationship-in-dax/"  class="low-key"><strong>Using USERELATIONSHIP in DAX</strong></a>
+                                <p>This article shows how to use the USERELATIONSHIP function in DAX to change the active relationship in a CALCULATE function. <a href="https://www.sqlbi.com/articles/using-userelationship-in-dax/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/userelationship-in-calculated-columns/"  class="low-key"><strong>USERELATIONSHIP in Calculated Columns</strong></a>
+                                <p>In a Power Pivot or Tabular model with inactive relationships, one can rely on the USERELATIONSHIP function to apply an inactive relationship to a particular DAX expression. Its usage is simple in a measure, but one might consider alternative syntax&hellip; <a href="https://www.sqlbi.com/articles/userelationship-in-calculated-columns/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/relationships-in-power-bi-and-tabular-models/"  class="low-key"><strong>Relationships in Power BI and Tabular models</strong></a>
+                                <p>This article describes the types of relationships available in Power BI and Analysis Services, clarifying the differences in cardinality and filter propagation of physical relationships. <a href="https://www.sqlbi.com/articles/relationships-in-power-bi-and-tabular-models/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/crossfilter/" class="ajax" data-id="58">CROSSFILTER</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/data-modeling-for-power-bi-video-course/?aff=mod-promo" target="_top" class="sam-click" data-campaign="mod-video-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/mod-58090.png" title="Data Modeling for Power BI" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/userelationship-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/userelationship-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

@@ -1,0 +1,483 @@
+
+            <header>
+                <h1 title="ROLLUPADDISSUBTOTAL"><a href="https://dax.guide/rollupaddissubtotal/" rel="bookmark">ROLLUPADDISSUBTOTAL</a> <span class="smaller">DAX Function (Table manipulation)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                         &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Identifies a subset of columns specified in the call to <a href="https://dax.guide/summarizecolumns/" class="ajax" data-id="221">SUMMARIZECOLUMNS</a> function that should be used to calculate groups of subtotals.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    ROLLUPADDISSUBTOTAL (  [&lt;GrandtotalFilter&gt;], &lt;GroupBy_ColumnName&gt;, &lt;Name&gt; [, [&lt;GroupLevelFilter&gt;] [, &lt;GroupBy_ColumnName&gt;, &lt;Name&gt; [, [&lt;GroupLevelFilter&gt;] [, … ] ] ] ] )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        GrandtotalFilter                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Optional<br></td>
+                                    <td class="definition">
+                                        <p>Filter to be applied to the grandtotal level.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        GroupBy_ColumnName                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Repeatable<br></td>
+                                    <td class="definition">
+                                        <p>A column to be returned.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Name                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Repeatable<br></td>
+                                    <td class="definition">
+                                        <p>A column name to be added.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        GroupLevelFilter                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Optional<br>Repeatable<br></td>
+                                    <td class="definition">
+                                        <p>Filter to be applied to the current level.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p></p>                    <p>The function does not return a value. It only specifies the set of columns to be subtotaled. </p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>The ROLLUPADDISSUBTOTAL function is used exclusively within <a href="https://dax.guide/summarizecolumns/" class="ajax" data-id="221">SUMMARIZECOLUMNS</a>.</p>
+<p>The addition of the ROLLUPADDISSUBTOTAL() syntax modifies the behavior of the SUMMARIZECOUMNS function by adding roll-up/subtotal rows to the result based on the groupBy_columnName columns. </p>
+                </section>
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 1 related article</a><br>
+                                                    <a href="#alt" class="sliding">&raquo; 2 related functions</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/xVvDsGq5pmM4oP/; notranslate" title="">
+--  ROLLUPADDISSUBTOTAL computes subtotals for the specified
+--  columns and adds a new column to the result indicating 
+--  whether the current row is a subtotal or not.
+EVALUATE
+SUMMARIZECOLUMNS (
+    ROLLUPADDISSUBTOTAL ( 'Date'&#91;Calendar Year], &quot;Year total&quot; ),
+    TREATAS ( { &quot;CY 2008&quot;, &quot;CY 2009&quot; }, 'Date'&#91;Calendar Year] ),
+    TREATAS ( { &quot;Bachelors&quot;, &quot;Partial College&quot; }, Customer&#91;Education] ),
+    &quot;Amount&quot;, &#91;Sales Amount]
+)
+ORDER BY &#91;Year total], &#91;Calendar Year]
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Calendar Year">Calendar Year</th>
+<th title="Year total">Year total</th>
+<th title="Amount">Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-date">2008-01-01</td>
+<td class="col-string">false</td>
+<td class="col-float">747,365.53</td>
+</tr>
+<tr>
+<td class="col-date">2009-01-01</td>
+<td class="col-string">false</td>
+<td class="col-float">362,354.56</td>
+</tr>
+<tr>
+<td class="col-date blank">(Blank)</td>
+<td class="col-string">true</td>
+<td class="col-float">1,109,720.09</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/n958j5wE2fdScS/; notranslate" title="">
+--  You can specify multiple ROLLUPADDISSUBTOTAL in the same query
+--  to produce matrices of subtotals.
+EVALUATE
+SUMMARIZECOLUMNS (
+    ROLLUPADDISSUBTOTAL ( 'Date'&#91;Calendar Year], &quot;Year total&quot; ),
+    ROLLUPADDISSUBTOTAL ( Customer&#91;Education],   &quot;Education total&quot; ),
+    TREATAS ( { &quot;CY 2008&quot;, &quot;CY 2009&quot; }, 'Date'&#91;Calendar Year] ),
+    TREATAS ( { &quot;Bachelors&quot;, &quot;Partial College&quot; }, Customer&#91;Education] ),
+    &quot;Amount&quot;, &#91;Sales Amount]
+)
+ORDER BY &#91;Year total], &#91;Calendar Year], &#91;Education total], &#91;Education]
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Calendar Year">Calendar Year</th>
+<th title="Education">Education</th>
+<th title="Year total">Year total</th>
+<th title="Education total">Education total</th>
+<th title="Amount">Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-date">2008-01-01</td>
+<td class="col-string">Bachelors</td>
+<td class="col-string">false</td>
+<td class="col-string">false</td>
+<td class="col-float">429,554.13</td>
+</tr>
+<tr>
+<td class="col-date">2008-01-01</td>
+<td class="col-string">Partial College</td>
+<td class="col-string">false</td>
+<td class="col-string">false</td>
+<td class="col-float">317,811.40</td>
+</tr>
+<tr>
+<td class="col-date">2008-01-01</td>
+<td class="col-string blank">(Blank)</td>
+<td class="col-string">false</td>
+<td class="col-string">true</td>
+<td class="col-float">747,365.53</td>
+</tr>
+<tr>
+<td class="col-date">2009-01-01</td>
+<td class="col-string">Bachelors</td>
+<td class="col-string">false</td>
+<td class="col-string">false</td>
+<td class="col-float">189,037.54</td>
+</tr>
+<tr>
+<td class="col-date">2009-01-01</td>
+<td class="col-string">Partial College</td>
+<td class="col-string">false</td>
+<td class="col-string">false</td>
+<td class="col-float">173,317.03</td>
+</tr>
+<tr>
+<td class="col-date">2009-01-01</td>
+<td class="col-string blank">(Blank)</td>
+<td class="col-string">false</td>
+<td class="col-string">true</td>
+<td class="col-float">362,354.56</td>
+</tr>
+<tr>
+<td class="col-date blank">(Blank)</td>
+<td class="col-string">Bachelors</td>
+<td class="col-string">true</td>
+<td class="col-string">false</td>
+<td class="col-float">618,591.67</td>
+</tr>
+<tr>
+<td class="col-date blank">(Blank)</td>
+<td class="col-string">Partial College</td>
+<td class="col-string">true</td>
+<td class="col-string">false</td>
+<td class="col-float">491,128.43</td>
+</tr>
+<tr>
+<td class="col-date blank">(Blank)</td>
+<td class="col-string blank">(Blank)</td>
+<td class="col-string">true</td>
+<td class="col-string">true</td>
+<td class="col-float">1,109,720.09</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/Ae2kHuwImr7S39/; notranslate" title="">
+--  Alternatively, you can use multiple ROLLUP columns in the same
+--  ROLLUPADDISSUBTOTAL to reduce the number of subtotals generated
+--  including only the group totals at higher levels following the 
+--  hierarchy of columns specified.
+
+-- The first result has subtotals by Year and then Education (no Education total)
+EVALUATE
+SUMMARIZECOLUMNS (
+    ROLLUPADDISSUBTOTAL ( 
+        'Date'&#91;Calendar Year], &quot;Year total&quot;,
+        Customer&#91;Education],   &quot;Education total&quot; 
+    ),
+    TREATAS ( { &quot;CY 2008&quot;, &quot;CY 2009&quot; }, 'Date'&#91;Calendar Year] ),
+    TREATAS ( { &quot;Bachelors&quot;, &quot;Partial College&quot; }, Customer&#91;Education] ),
+    &quot;Amount&quot;, &#91;Sales Amount]
+)
+ORDER BY &#91;Year total], &#91;Calendar Year], &#91;Education total], &#91;Education]
+
+-- The second result has subtotals by Education and then Year (no Year total)
+EVALUATE
+SUMMARIZECOLUMNS (
+    ROLLUPADDISSUBTOTAL ( 
+        Customer&#91;Education],   &quot;Education total&quot;,
+        'Date'&#91;Calendar Year], &quot;Year total&quot;
+    ),
+    TREATAS ( { &quot;CY 2008&quot;, &quot;CY 2009&quot; }, 'Date'&#91;Calendar Year] ),
+    TREATAS ( { &quot;Bachelors&quot;, &quot;Partial College&quot; }, Customer&#91;Education] ),
+    &quot;Amount&quot;, &#91;Sales Amount]
+)
+ORDER BY &#91;Year total], &#91;Education], &#91;Calendar Year]
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Calendar Year">Calendar Year</th>
+<th title="Education">Education</th>
+<th title="Year total">Year total</th>
+<th title="Education total">Education total</th>
+<th title="Amount">Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-date">2008-01-01</td>
+<td class="col-string">Bachelors</td>
+<td class="col-string">false</td>
+<td class="col-string">false</td>
+<td class="col-float">429,554.13</td>
+</tr>
+<tr>
+<td class="col-date">2008-01-01</td>
+<td class="col-string">Partial College</td>
+<td class="col-string">false</td>
+<td class="col-string">false</td>
+<td class="col-float">317,811.40</td>
+</tr>
+<tr>
+<td class="col-date">2008-01-01</td>
+<td class="col-string blank">(Blank)</td>
+<td class="col-string">false</td>
+<td class="col-string">true</td>
+<td class="col-float">747,365.53</td>
+</tr>
+<tr>
+<td class="col-date">2009-01-01</td>
+<td class="col-string">Bachelors</td>
+<td class="col-string">false</td>
+<td class="col-string">false</td>
+<td class="col-float">189,037.54</td>
+</tr>
+<tr>
+<td class="col-date">2009-01-01</td>
+<td class="col-string">Partial College</td>
+<td class="col-string">false</td>
+<td class="col-string">false</td>
+<td class="col-float">173,317.03</td>
+</tr>
+<tr>
+<td class="col-date">2009-01-01</td>
+<td class="col-string blank">(Blank)</td>
+<td class="col-string">false</td>
+<td class="col-string">true</td>
+<td class="col-float">362,354.56</td>
+</tr>
+<tr>
+<td class="col-date blank">(Blank)</td>
+<td class="col-string blank">(Blank)</td>
+<td class="col-string">true</td>
+<td class="col-string">true</td>
+<td class="col-float">1,109,720.09</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th title="Education">Education</th>
+<th title="Calendar Year">Calendar Year</th>
+<th title="Education total">Education total</th>
+<th title="Year total">Year total</th>
+<th title="Amount">Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Bachelors</td>
+<td class="col-date">2008-01-01</td>
+<td class="col-string">false</td>
+<td class="col-string">false</td>
+<td class="col-float">429,554.13</td>
+</tr>
+<tr>
+<td class="col-string">Bachelors</td>
+<td class="col-date">2009-01-01</td>
+<td class="col-string">false</td>
+<td class="col-string">false</td>
+<td class="col-float">189,037.54</td>
+</tr>
+<tr>
+<td class="col-string">Partial College</td>
+<td class="col-date">2008-01-01</td>
+<td class="col-string">false</td>
+<td class="col-string">false</td>
+<td class="col-float">317,811.40</td>
+</tr>
+<tr>
+<td class="col-string">Partial College</td>
+<td class="col-date">2009-01-01</td>
+<td class="col-string">false</td>
+<td class="col-string">false</td>
+<td class="col-float">173,317.03</td>
+</tr>
+<tr>
+<td class="col-string blank">(Blank)</td>
+<td class="col-date blank">(Blank)</td>
+<td class="col-string">true</td>
+<td class="col-string">true</td>
+<td class="col-float">1,109,720.09</td>
+</tr>
+<tr>
+<td class="col-string">Bachelors</td>
+<td class="col-date blank">(Blank)</td>
+<td class="col-string">false</td>
+<td class="col-string">true</td>
+<td class="col-float">618,591.67</td>
+</tr>
+<tr>
+<td class="col-string">Partial College</td>
+<td class="col-date blank">(Blank)</td>
+<td class="col-string">false</td>
+<td class="col-string">true</td>
+<td class="col-float">491,128.43</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/t5DvsFHVhpqMj3/; notranslate" title="">
+--  Using ROLLUPGROUP you can further reduce the number of subtotals
+--  by grouping together several columns.
+EVALUATE
+SUMMARIZECOLUMNS (
+    ROLLUPADDISSUBTOTAL (
+        ROLLUPGROUP ( 'Date'&#91;Calendar Year], Customer&#91;Education] ),
+        &quot;Year total&quot;
+    ),
+    TREATAS ( { &quot;CY 2008&quot;, &quot;CY 2009&quot; }, 'Date'&#91;Calendar Year] ),
+    TREATAS ( { &quot;Bachelors&quot;, &quot;Partial College&quot; }, Customer&#91;Education] ),
+    &quot;Amount&quot;, &#91;Sales Amount]
+)
+ORDER BY
+    &#91;Year total],
+    &#91;Calendar Year],
+    &#91;Education]
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Calendar Year">Calendar Year</th>
+<th title="Education">Education</th>
+<th title="Year total">Year total</th>
+<th title="Amount">Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-date">2008-01-01</td>
+<td class="col-string">Bachelors</td>
+<td class="col-string">false</td>
+<td class="col-float">429,554.13</td>
+</tr>
+<tr>
+<td class="col-date">2008-01-01</td>
+<td class="col-string">Partial College</td>
+<td class="col-string">false</td>
+<td class="col-float">317,811.40</td>
+</tr>
+<tr>
+<td class="col-date">2009-01-01</td>
+<td class="col-string">Bachelors</td>
+<td class="col-string">false</td>
+<td class="col-float">189,037.54</td>
+</tr>
+<tr>
+<td class="col-date">2009-01-01</td>
+<td class="col-string">Partial College</td>
+<td class="col-string">false</td>
+<td class="col-float">173,317.03</td>
+</tr>
+<tr>
+<td class="col-date blank">(Blank)</td>
+<td class="col-string blank">(Blank)</td>
+<td class="col-string">true</td>
+<td class="col-float">1,109,720.09</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about ROLLUPADDISSUBTOTAL in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/introducing-summarizecolumns/"  class="low-key"><strong>Introducing SUMMARIZECOLUMNS</strong></a>
+                                <p>This article explains how to use SUMMARIZECOLUMNS, which is a replacement of SUMMARIZE and does not require the use of ADDCOLUMNS to obtain good performance. <a href="https://www.sqlbi.com/articles/introducing-summarizecolumns/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/rollupissubtotal/" class="ajax" data-id="196">ROLLUPISSUBTOTAL</a></li>
+                                                    <li><a href="https://dax.guide/summarizecolumns/" class="ajax" data-id="221">SUMMARIZECOLUMNS</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://dax.guide/" target="_top" class="sam-click" data-campaign="dax-guide" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/daxguide-58090.png" title="DAX Guide" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/rollupaddissubtotal-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/rollupaddissubtotal-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

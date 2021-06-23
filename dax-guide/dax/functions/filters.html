@@ -1,0 +1,279 @@
+
+            <header>
+                <h1 title="FILTERS"><a href="https://dax.guide/filters/" rel="bookmark">FILTERS</a> <span class="smaller">DAX Function (Table manipulation)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                                            </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns a table of the filter values applied directly to the specified column.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    FILTERS ( &lt;ColumnName&gt; )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        ColumnName                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The column for which filter values are to be returned.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="table-ret">Table</span> A table with a single column.</div></p>                    <p>A column of unique values.</p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>When FILTERS is evaluated in an expression grouped in <a href="https://dax.guide/summarizecolumns/" class="ajax" data-id="221">SUMMARIZECOLUMNS</a> the original filter could be lost and replaced by the result of the <a href="https://www.sqlbi.com/articles/understanding-dax-auto-exist/">auto-exists</a> behavior that combines all the filters on the same table into a single filter. The combined table resulting from this filter only contains columns explicitly listed in <a href="https://dax.guide/summarizecolumns/" class="ajax" data-id="221">SUMMARIZECOLUMNS</a> as grouping columns or filter columns.</p>
+                </section>
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 1 related article</a><br>
+                                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/KqwwaTXQpl9T6K/; notranslate" title="">
+--  FILTER returns the filters directly applied to a column
+EVALUATE
+CALCULATETABLE (
+    FILTERS ( 'Product'&#91;Category] ),
+    'Product'&#91;Category] = &quot;Audio&quot;
+)
+
+EVALUATE
+CALCULATETABLE (
+    FILTERS ( 'Product'&#91;Category] ),
+    'Product'&#91;Category] IN { &quot;Audio&quot;, &quot;Computers&quot; }
+)
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Category">Category</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Audio</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th title="Category">Category</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Audio</td>
+</tr>
+<tr>
+<td class="col-string">Computers</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/YN9Jfq64gqyx1x/; notranslate" title="">
+--  Non-existing values are not considered as filters
+--  The &quot;Bananas&quot; category does not exist in Product table
+EVALUATE
+CALCULATETABLE (
+    FILTERS ( 'Product'&#91;Category] ),
+    'Product'&#91;Category] IN { &quot;Audio&quot;, &quot;Bananas&quot; }
+)
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Category">Category</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Audio</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/UTIP13SRENskHY/; notranslate" title="">
+--  Filter on one column does not affect other columns,
+--  which are cross-filtered but not filtered.
+--  Only &quot;Cameras and camcorders&quot; has products with Azure color.
+EVALUATE
+CALCULATETABLE (
+    FILTERS ( 'Product'&#91;Category] ),
+    'Product'&#91;Color] = &quot;Azure&quot;
+)
+
+EVALUATE
+CALCULATETABLE (
+    VALUES ( 'Product'&#91;Category] ),
+    'Product'&#91;Color] = &quot;Azure&quot;
+)
+
+--  Table filter include columns used in FILTERS
+EVALUATE
+CALCULATETABLE (
+    FILTERS ( 'Product'&#91;Category] ),
+    FILTER ( 'Product', 'Product'&#91;Color] = &quot;Azure&quot; )
+)
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Category">Category</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Audio</td>
+</tr>
+<tr>
+<td class="col-string">TV and Video</td>
+</tr>
+<tr>
+<td class="col-string">Computers</td>
+</tr>
+<tr>
+<td class="col-string">Cameras and camcorders</td>
+</tr>
+<tr>
+<td class="col-string">Cell phones</td>
+</tr>
+<tr>
+<td class="col-string">Music, Movies and Audio Books</td>
+</tr>
+<tr>
+<td class="col-string">Games and Toys</td>
+</tr>
+<tr>
+<td class="col-string">Home Appliances</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th title="Category">Category</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Cameras and camcorders</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th title="Category">Category</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Cameras and camcorders</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/RkWEnk9lLG4HeQ/; notranslate" title="">
+--  FILTERS returns its values even though there are no
+--  rows satisfying the set of conditions.
+--  The table returned by FILTERS has the correct lineage.
+EVALUATE
+CALCULATETABLE (
+    ADDCOLUMNS (
+        FILTERS ( 'Product'&#91;Color] ),
+        &quot;#Prods&quot;, CALCULATE ( COUNTROWS ( 'Product' ) )
+    ),
+    'Product'&#91;Color] IN { &quot;White&quot;, &quot;Azure&quot; },
+    'Product'&#91;Brand] = &quot;Litware&quot;
+)
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Color">Color</th>
+<th title="#Prods">#Prods</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">White</td>
+<td class="col-int">45</td>
+</tr>
+<tr>
+<td class="col-string">Azure</td>
+<td class="col-int blank">(Blank)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about FILTERS in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/displaying-filter-context-in-power-bi-tooltips/"  class="low-key"><strong>Displaying filter context in Power BI Tooltips</strong></a>
+                                <p>This article describes how to display the filter context applied to a calculation using a special DAX measure in Power BI Tooltips. <a href="https://www.sqlbi.com/articles/displaying-filter-context-in-power-bi-tooltips/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.youtube.com/c/sqlbi/" target="_top" class="sam-click" data-campaign="youtube-channel" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/youtube-58090.jpg" title="Subscribe to our Youtube channel" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/filters-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/filters-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

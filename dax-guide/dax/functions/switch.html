@@ -1,0 +1,412 @@
+
+            <header>
+                <h1 title="SWITCH"><a href="https://dax.guide/switch/" rel="bookmark">SWITCH</a> <span class="smaller">DAX Function (Logical)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                         &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns different results depending on the value of an expression.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    SWITCH ( &lt;Expression&gt;, &lt;Value&gt;, &lt;Result&gt; [, &lt;Value&gt;, &lt;Result&gt; [, … ] ] [, &lt;Else&gt;] )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        Expression                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The expression to be evaluated.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Value                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Repeatable<br></td>
+                                    <td class="definition">
+                                        <p>If expression has this value the corresponding result will be returned.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Result                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Repeatable<br></td>
+                                    <td class="definition">
+                                        <p>The result to be returned if Expression has corresponding value.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        Else                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Optional<br></td>
+                                    <td class="definition">
+                                        <p>If there are no matching values the Else value is returned.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single value of any type.</div></p>                    <p>A scalar value coming from one of the Result expressions, if there was a match with Value, or from the Else expression, if there was no match with any Value. </p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>All result expressions and the else expression must be of the same data type. </p>
+                </section>
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 2 related articles</a><br>
+                                                    <a href="#alt" class="sliding">&raquo; 3 related functions</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <p>A common use of SWITCH is to match the result of an expression with constant value:</p>
+<pre class="brush: dax; title: ; notranslate" title="">
+SWITCH (
+    &#91;A],
+    0, &quot;Zero&quot;,
+    1, &quot;One&quot;,
+    2, &quot;Two&quot;,
+    &quot;Other numbers&quot;
+)
+</pre>
+<p>However, the <value> argument can be an expression and the initial <expression> can be a constant.<br />
+By using TRUE as a first argument, SWITCH can replace a list of cascading <a href="https://dax.guide/if/" class="ajax" data-id="111">IF</a> statements.<br />
+The following code:</p>
+<pre class="brush: dax; title: ; notranslate" title="">
+IF (
+    &#91;A] &gt; &#91;B], 
+    &quot;First case&quot;,
+    IF ( 
+        &#91;A] = &#91;B],
+        &quot;Second case&quot;,
+        IF (
+            &#91;A] = 0,
+            &quot;Third case&quot;,
+            &quot;Fourth case&quot;
+        )
+    )
+)
+</pre>
+<p>can be written as:</p>
+<pre class="brush: dax; title: ; notranslate" title="">
+SWITCH (
+    TRUE,
+    &#91;A] &gt; &#91;B], &quot;First case&quot;,
+    &#91;A] = &#91;B], &quot;Second case&quot;,
+    &#91;A] = 0, &quot;Third case&quot;,
+    &quot;Fourth case&quot;
+)
+</pre>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/5zhFFMj81zaFRe/; notranslate" title="">
+--  SWITCH evaluates its first argument (value) and then uses the next
+--  remaining parameters in pair: the first element is used to match the value
+--  the second as the result if there is a match.
+--  The last argument, alone, provides the no-match value and it defaults 
+--  to blank.
+DEFINE MEASURE Sales&#91;Discounted Sales] = 
+    SUMX ( 
+        VALUES ( 'Product'&#91;Category] ),
+        VAR DiscountPct = 
+            SWITCH ( 
+                'Product'&#91;Category],
+                &quot;Audio&quot;, 0.15,
+                &quot;Computers&quot;, 0.2,
+                &quot;Cell phones&quot;, 0.13,
+                0
+            ) 
+        RETURN
+            &#91;Sales Amount] * (1 - DiscountPct )
+    )
+EVALUATE
+SUMMARIZECOLUMNS ( 
+    'Product'&#91;Category],
+    &quot;Sales Amount&quot;, &#91;Sales Amount],
+    &quot;Discounted sales&quot;, &#91;Discounted Sales]
+)
+ORDER BY &#91;Category]
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Category">Category</th>
+<th title="Sales Amount">Sales Amount</th>
+<th title="Discounted sales">Discounted sales</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Audio</td>
+<td class="col-float">384,518.16</td>
+<td class="col-float">326,840.44</td>
+</tr>
+<tr>
+<td class="col-string">Cameras and camcorders</td>
+<td class="col-float">7,192,581.95</td>
+<td class="col-float">7,192,581.95</td>
+</tr>
+<tr>
+<td class="col-string">Cell phones</td>
+<td class="col-float">1,604,610.26</td>
+<td class="col-float">1,396,010.93</td>
+</tr>
+<tr>
+<td class="col-string">Computers</td>
+<td class="col-float">6,741,548.73</td>
+<td class="col-float">5,393,238.98</td>
+</tr>
+<tr>
+<td class="col-string">Games and Toys</td>
+<td class="col-float">360,652.81</td>
+<td class="col-float">360,652.81</td>
+</tr>
+<tr>
+<td class="col-string">Home Appliances</td>
+<td class="col-float">9,600,457.04</td>
+<td class="col-float">9,600,457.04</td>
+</tr>
+<tr>
+<td class="col-string">Music, Movies and Audio Books</td>
+<td class="col-float">314,206.74</td>
+<td class="col-float">314,206.74</td>
+</tr>
+<tr>
+<td class="col-string">TV and Video</td>
+<td class="col-float">4,392,768.29</td>
+<td class="col-float">4,392,768.29</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/gyALTNy2TmedU3/; notranslate" title="">
+--  A common usage of SWITCH is to use a constant as the value argument
+--  and expressions in the pairs. This technique allows more flexibility
+--  even though it somewhat lacks in readability.
+DEFINE MEASURE Sales&#91;Discounted Sales] = 
+    SUMX ( 
+        SUMMARIZE ( Sales, Sales&#91;Net Price], Product&#91;Category] ),
+        VAR DiscountPct = 
+            SWITCH ( 
+                TRUE,
+                Sales&#91;Net Price] &lt;= 150, 0.15,
+                Sales&#91;Net Price] &lt;= 1000, 0.2,
+                Product&#91;Category] = &quot;Audio&quot;, 0.13,
+                0
+            ) 
+        RETURN
+            &#91;Sales Amount] * (1 - DiscountPct )
+    )
+EVALUATE
+SUMMARIZECOLUMNS ( 
+    'Product'&#91;Category],
+    &quot;Sales Amount&quot;, &#91;Sales Amount],
+    &quot;Discounted sales&quot;, &#91;Discounted Sales]
+)
+ORDER BY &#91;Category]
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Category">Category</th>
+<th title="Sales Amount">Sales Amount</th>
+<th title="Discounted sales">Discounted sales</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Audio</td>
+<td class="col-float">384,518.16</td>
+<td class="col-float">319,255.67</td>
+</tr>
+<tr>
+<td class="col-string">Cameras and camcorders</td>
+<td class="col-float">7,192,581.95</td>
+<td class="col-float">5,975,444.25</td>
+</tr>
+<tr>
+<td class="col-string">Cell phones</td>
+<td class="col-float">1,604,610.26</td>
+<td class="col-float">1,302,864.23</td>
+</tr>
+<tr>
+<td class="col-string">Computers</td>
+<td class="col-float">6,741,548.73</td>
+<td class="col-float">5,806,084.78</td>
+</tr>
+<tr>
+<td class="col-string">Games and Toys</td>
+<td class="col-float">360,652.81</td>
+<td class="col-float">306,554.89</td>
+</tr>
+<tr>
+<td class="col-string">Home Appliances</td>
+<td class="col-float">9,600,457.04</td>
+<td class="col-float">8,540,512.07</td>
+</tr>
+<tr>
+<td class="col-string">Music, Movies and Audio Books</td>
+<td class="col-float">314,206.74</td>
+<td class="col-float">255,356.90</td>
+</tr>
+<tr>
+<td class="col-string">TV and Video</td>
+<td class="col-float">4,392,768.29</td>
+<td class="col-float">3,561,271.37</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/ehnR8RSfx8rsKP/; notranslate" title="">
+--  Using SWITCH the first condition met defines the result.
+--  In the following example, the second condition (&lt;= 150) will never be
+--  met, because the first one is less restrictive.
+DEFINE MEASURE Sales&#91;Discounted Sales] = 
+    SUMX ( 
+        SUMMARIZE ( Sales, Sales&#91;Net Price], Product&#91;Category] ),
+        VAR DiscountPct = 
+            SWITCH ( 
+                TRUE,
+                Sales&#91;Net Price] &lt;= 1000, 0.2,
+                Sales&#91;Net Price] &lt;= 150, 0.15,
+                Product&#91;Category] = &quot;Audio&quot;, 0.13,
+                0
+            ) 
+        RETURN
+            &#91;Sales Amount] * (1 - DiscountPct )
+    )
+EVALUATE
+SUMMARIZECOLUMNS ( 
+    'Product'&#91;Category],
+    &quot;Sales Amount&quot;, &#91;Sales Amount],
+    &quot;Discounted sales&quot;, &#91;Discounted Sales]
+)
+ORDER BY &#91;Category]
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Category">Category</th>
+<th title="Sales Amount">Sales Amount</th>
+<th title="Discounted sales">Discounted sales</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Audio</td>
+<td class="col-float">384,518.16</td>
+<td class="col-float">307,614.53</td>
+</tr>
+<tr>
+<td class="col-string">Cameras and camcorders</td>
+<td class="col-float">7,192,581.95</td>
+<td class="col-float">5,961,597.72</td>
+</tr>
+<tr>
+<td class="col-string">Cell phones</td>
+<td class="col-float">1,604,610.26</td>
+<td class="col-float">1,283,688.21</td>
+</tr>
+<tr>
+<td class="col-string">Computers</td>
+<td class="col-float">6,741,548.73</td>
+<td class="col-float">5,765,868.70</td>
+</tr>
+<tr>
+<td class="col-string">Games and Toys</td>
+<td class="col-float">360,652.81</td>
+<td class="col-float">288,522.25</td>
+</tr>
+<tr>
+<td class="col-string">Home Appliances</td>
+<td class="col-float">9,600,457.04</td>
+<td class="col-float">8,489,439.38</td>
+</tr>
+<tr>
+<td class="col-string">Music, Movies and Audio Books</td>
+<td class="col-float">314,206.74</td>
+<td class="col-float">251,365.39</td>
+</tr>
+<tr>
+<td class="col-string">TV and Video</td>
+<td class="col-float">4,392,768.29</td>
+<td class="col-float">3,537,902.55</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about SWITCH in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/optimizing-mutually-exclusive-calculations/"  class="low-key"><strong>Optimizing mutually exclusive calculations</strong></a>
+                                <p>This article describes how to optimize DAX expressions with mutually exclusive calculations that might cause slow query performance. <a href="https://www.sqlbi.com/articles/optimizing-mutually-exclusive-calculations/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/optimizing-if-and-switch-expressions-using-variables/"  class="low-key"><strong>Optimizing IF and SWITCH expressions using variables</strong></a>
+                                <p>This article describes how variables should be used in DAX expressions involving IF and SWITCH statements in order to improve performance. <a href="https://www.sqlbi.com/articles/optimizing-if-and-switch-expressions-using-variables/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/if/" class="ajax" data-id="111">IF</a></li>
+                                                    <li><a href="https://dax.guide/coalesce/" class="ajax" data-id="613">COALESCE</a></li>
+                                                    <li><a href="https://dax.guide/if-eager/" class="ajax" data-id="607">IF.EAGER</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/dax-patterns/?aff=daxp-promo" target="_top" class="sam-click" data-campaign="dax-patterns-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/daxp-58090.png" title="DAX Patterns" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/switch-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/switch-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

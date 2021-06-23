@@ -1,0 +1,226 @@
+
+            <header>
+                <h1 title="DISTINCTCOUNT"><a href="https://dax.guide/distinctcount/" rel="bookmark">DISTINCTCOUNT</a> <span class="smaller">DAX Function (Aggregation)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                         &nbsp;|&nbsp; <a href="#articles" class="sliding">Articles</a>                         &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Counts the number of distinct values in a column.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    DISTINCTCOUNT ( &lt;ColumnName&gt; )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        ColumnName                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The column for which the distinct values are counted.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single <a href="https://dax.guide/dt/integer/" class="ajax" data-id="257">integer</a> value.</div></p>                    <p>The number of distinct values in ColumnName. </p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>The only argument allowed to this function is a column. You can use columns containing any type of data. When the function finds no rows to count, it returns a <a href="https://dax.guide/blank/" class="ajax" data-id="32">BLANK</a>, otherwise it returns the count of distinct values. </p>
+                </section>
+            
+            
+                                    <a href="#articles" class="sliding">&raquo; 2 related articles</a><br>
+                                                    <a href="#alt" class="sliding">&raquo; 4 related functions</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/M3AqFXajj9TD72/; notranslate" title="">
+--  DISTINCTCOUNT counts the number of distinct values in a column
+DEFINE
+    MEASURE Customer&#91;# Customers] = COUNTROWS ( Customer )        
+    MEASURE Customer&#91;# Names] =
+        DISTINCTCOUNT ( Customer&#91;Name] )
+    MEASURE Customer&#91;# Countries 1] =
+        DISTINCTCOUNT ( Customer&#91;CountryRegion] )
+    MEASURE Customer&#91;# Countries 2] =
+        COUNTROWS ( DISTINCT ( Customer&#91;CountryRegion] ) )
+EVALUATE
+SUMMARIZECOLUMNS (
+    Customer&#91;Continent],
+    &quot;# Customers&quot;, &#91;# Customers],
+    &quot;# Names&quot;, &#91;# Names],
+    &quot;# Countries 1&quot;, &#91;# Countries 1],
+    &quot;# Countries 2&quot;, &#91;# Countries 2]
+)
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Continent">Continent</th>
+<th title="# Customers"># Customers</th>
+<th title="# Names"># Names</th>
+<th title="# Countries 1"># Countries 1</th>
+<th title="# Countries 2"># Countries 2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Asia</td>
+<td class="col-int">3,658</td>
+<td class="col-int">3,583</td>
+<td class="col-int">15</td>
+<td class="col-int">15</td>
+</tr>
+<tr>
+<td class="col-string">North America</td>
+<td class="col-int">9,665</td>
+<td class="col-int">9,355</td>
+<td class="col-int">2</td>
+<td class="col-int">2</td>
+</tr>
+<tr>
+<td class="col-string">Europe</td>
+<td class="col-int">5,546</td>
+<td class="col-int">5,501</td>
+<td class="col-int">12</td>
+<td class="col-int">12</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/yFby9ojfhKz7Qz/; notranslate" title="">
+--
+--  DISTINCTCOUNT considers BLANK as a valid value, whereas
+--  DISTINCTCOUNTNOBLANK does not count any blank value
+-- 
+DEFINE
+    MEASURE Customer&#91;# Stores] =
+        COUNTROWS ( Store )
+    MEASURE Customer&#91;# Manager] =
+        DISTINCTCOUNT ( Store&#91;Area Manager] )
+    MEASURE Customer&#91;# Manager (no blank)] =
+        DISTINCTCOUNTNOBLANK ( Store&#91;Area Manager] )
+    MEASURE Customer&#91;# Stores without manager] =
+        COUNTBLANK ( Store&#91;Area Manager] )
+EVALUATE
+SUMMARIZECOLUMNS ( 
+    Store&#91;Continent],
+    &quot;# Stores&quot;, &#91;# Stores],
+    &quot;# Manager&quot;, &#91;# Manager],
+    &quot;# Manager (no blank)&quot;, &#91;# Manager (no blank)],
+    &quot;# Stores without manager&quot;, &#91;# Stores without manager]
+)
+ORDER BY
+    Store&#91;Continent]
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Continent">Continent</th>
+<th title="# Stores"># Stores</th>
+<th title="# Manager"># Manager</th>
+<th title="# Manager (no blank)"># Manager (no blank)</th>
+<th title="# Stores without manager"># Stores without manager</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Asia</td>
+<td class="col-int">41</td>
+<td class="col-int">5</td>
+<td class="col-int">5</td>
+<td class="col-int blank">(Blank)</td>
+</tr>
+<tr>
+<td class="col-string">Europe</td>
+<td class="col-int">54</td>
+<td class="col-int">8</td>
+<td class="col-int">7</td>
+<td class="col-int">7</td>
+</tr>
+<tr>
+<td class="col-string">North America</td>
+<td class="col-int">209</td>
+<td class="col-int">40</td>
+<td class="col-int">39</td>
+<td class="col-int">5</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+                            <section id="articles" class="articles">
+                    <h2>Related articles</h2>
+                    <p>Learn more about DISTINCTCOUNT in the following articles:</p>
+                    <ul>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/daxpatterns/distinct-count/"  class="low-key"><strong>Related Distinct Count</strong></a>
+                                <p>The Related Distinct Count pattern allows you to apply the distinct count calculation to any column in any table in the data model. Instead of just counting the number of distinct count values in the entire table using only the DISTINCTCOUNT function, the pattern filters only those values related to events filtered in another table. <a href="https://www.sqlbi.com/daxpatterns/distinct-count/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                                    <li>
+
+                                <a href="https://www.sqlbi.com/articles/analyzing-distinctcount-performance-in-dax/"  class="low-key"><strong>Analyzing the performance of DISTINCTCOUNT in DAX</strong></a>
+                                <p>This article describes how to analyze the performance of a DAX measure based on a DISTINCTCOUNT calculation and how to evaluate possible optimizations. <a href="https://www.sqlbi.com/articles/analyzing-distinctcount-performance-in-dax/"  class="small-link">&raquo; Read more</a></p>
+                                
+                            </li>
+                                            </ul>
+                </section>
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/values/" class="ajax" data-id="248">VALUES</a></li>
+                                                    <li><a href="https://dax.guide/distinct/" class="ajax" data-id="76">DISTINCT</a></li>
+                                                    <li><a href="https://dax.guide/approximatedistinctcount/" class="ajax" data-id="456">APPROXIMATEDISTINCTCOUNT</a></li>
+                                                    <li><a href="https://dax.guide/distinctcountnoblank/" class="ajax" data-id="484">DISTINCTCOUNTNOBLANK</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://dax.guide/" target="_top" class="sam-click" data-campaign="dax-guide" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/daxguide-58090.png" title="DAX Guide" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/distinctcount-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/distinctcount-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

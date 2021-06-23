@@ -1,0 +1,224 @@
+
+            <header>
+                <h1 title="AVERAGE"><a href="https://dax.guide/average/" rel="bookmark">AVERAGE</a> <span class="smaller">DAX Function (Aggregation)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                                                 &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Returns the average (arithmetic mean) of all the numbers in a column.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    AVERAGE ( &lt;ColumnName&gt; )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        ColumnName                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The column that contains the numbers for which you want the average.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p><div><span class="scalar-ret">Scalar</span> A single value of one these types: <a href="https://dax.guide/dt/currency" class="ajax" data-id="259">currency</a>, <a href="https://dax.guide/dt/decimal" class="ajax" data-id="258">decimal</a>.</div></p>                                    </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>The AVERAGE function internally executes <a href="https://dax.guide/averagex/" class="ajax" data-id="31">AVERAGEX</a>, without any performance difference.<br />
+The following AVERAGE call:</p>
+<pre class="brush: dax; gutter: false; title: ; notranslate" title="">
+AVERAGE ( table&#91;column] )
+</pre>
+<p>corresponds to the following <a href="https://dax.guide/averagex/" class="ajax" data-id="31">AVERAGEX</a> call:</p>
+<pre class="brush: dax; gutter: false; title: ; notranslate" title="">
+AVERAGEX (
+    table,
+    table&#91;column]
+)
+</pre>
+                </section>
+            
+            
+                                                    <a href="#alt" class="sliding">&raquo; 2 related functions</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/n49enLdPYSdfRg/; notranslate" title="">
+--  AVERAGE is the short version of AVERAGEX, when used with one column only
+--  In DAX, there are no differences between AVERAGEA and AVERAGE
+DEFINE
+    MEASURE Sales&#91;AVG Quantity 1] = AVERAGE ( Sales&#91;Quantity] )
+    MEASURE Sales&#91;AVG Quantity 2] = AVERAGEX ( Sales, Sales&#91;Quantity] )
+    MEASURE Sales&#91;AVG Line Amount] =
+        AVERAGEX ( Sales, Sales&#91;Quantity] * Sales&#91;Net Price] )
+EVALUATE
+SUMMARIZECOLUMNS (
+    'Product'&#91;Color],
+    &quot;AVG Quantity 1&quot;, &#91;AVG Quantity 1],
+    &quot;AVG Quantity 2&quot;, &#91;AVG Quantity 2],
+    &quot;AVG Line Amount&quot;, &#91;AVG Line Amount]
+)
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="Color">Color</th>
+<th title="AVG Quantity 1">AVG Quantity 1</th>
+<th title="AVG Quantity 2">AVG Quantity 2</th>
+<th title="AVG Line Amount">AVG Line Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-string">Silver</td>
+<td class="col-float">1.40</td>
+<td class="col-float">1.40</td>
+<td class="col-float">344.49</td>
+</tr>
+<tr>
+<td class="col-string">Blue</td>
+<td class="col-float">1.41</td>
+<td class="col-float">1.41</td>
+<td class="col-float">388.00</td>
+</tr>
+<tr>
+<td class="col-string">White</td>
+<td class="col-float">1.40</td>
+<td class="col-float">1.40</td>
+<td class="col-float">266.75</td>
+</tr>
+<tr>
+<td class="col-string">Red</td>
+<td class="col-float">1.39</td>
+<td class="col-float">1.39</td>
+<td class="col-float">191.33</td>
+</tr>
+<tr>
+<td class="col-string">Black</td>
+<td class="col-float">1.40</td>
+<td class="col-float">1.40</td>
+<td class="col-float">243.68</td>
+</tr>
+<tr>
+<td class="col-string">Green</td>
+<td class="col-float">1.40</td>
+<td class="col-float">1.40</td>
+<td class="col-float">652.64</td>
+</tr>
+<tr>
+<td class="col-string">Orange</td>
+<td class="col-float">1.40</td>
+<td class="col-float">1.40</td>
+<td class="col-float">543.64</td>
+</tr>
+<tr>
+<td class="col-string">Pink</td>
+<td class="col-float">1.40</td>
+<td class="col-float">1.40</td>
+<td class="col-float">235.54</td>
+</tr>
+<tr>
+<td class="col-string">Yellow</td>
+<td class="col-float">1.42</td>
+<td class="col-float">1.42</td>
+<td class="col-float">47.90</td>
+</tr>
+<tr>
+<td class="col-string">Purple</td>
+<td class="col-float">1.36</td>
+<td class="col-float">1.36</td>
+<td class="col-float">79.65</td>
+</tr>
+<tr>
+<td class="col-string">Brown</td>
+<td class="col-float">1.40</td>
+<td class="col-float">1.40</td>
+<td class="col-float">559.52</td>
+</tr>
+<tr>
+<td class="col-string">Grey</td>
+<td class="col-float">1.40</td>
+<td class="col-float">1.40</td>
+<td class="col-float">411.63</td>
+</tr>
+<tr>
+<td class="col-string">Gold</td>
+<td class="col-float">1.41</td>
+<td class="col-float">1.41</td>
+<td class="col-float">365.89</td>
+</tr>
+<tr>
+<td class="col-string">Azure</td>
+<td class="col-float">1.37</td>
+<td class="col-float">1.37</td>
+<td class="col-float">244.70</td>
+</tr>
+<tr>
+<td class="col-string">Silver Grey</td>
+<td class="col-float">1.42</td>
+<td class="col-float">1.42</td>
+<td class="col-float">550.98</td>
+</tr>
+<tr>
+<td class="col-string">Transparent</td>
+<td class="col-float">1.40</td>
+<td class="col-float">1.40</td>
+<td class="col-float">3.68</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>More examples available for the <a href="https://dax.guide/averagex/" class="ajax" data-id="31">AVERAGEX</a> function.</p>
+                </section>
+                        
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/averagea/" class="ajax" data-id="30">AVERAGEA</a></li>
+                                                    <li><a href="https://dax.guide/averagex/" class="ajax" data-id="31">AVERAGEX</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/data-modeling-for-power-bi-video-course/?aff=mod-promo" target="_top" class="sam-click" data-campaign="mod-video-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/mod-58090.png" title="Data Modeling for Power BI" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/average-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/average-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

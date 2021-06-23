@@ -1,0 +1,133 @@
+
+            <header>
+                <h1 title="ROLLUPISSUBTOTAL"><a href="https://dax.guide/rollupissubtotal/" rel="bookmark">ROLLUPISSUBTOTAL</a> <span class="smaller">DAX Function (Table manipulation)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                         &nbsp;|&nbsp; <a href="#returns" class="sliding">Return values</a>                         &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                                                 &nbsp;|&nbsp; <a href="#alt" class="sliding">Related</a>                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Pairs up the rollup groups with the column added by <a href="https://dax.guide/rollupaddissubtotal/" class="ajax" data-id="194">ROLLUPADDISSUBTOTAL</a>.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    ROLLUPISSUBTOTAL (  [&lt;GrandtotalFilter&gt;], &lt;GroupBy_ColumnName&gt;, &lt;IsSubtotal_ColumnName&gt; [, [&lt;GroupLevelFilter&gt;] [, &lt;GroupBy_ColumnName&gt;, &lt;IsSubtotal_ColumnName&gt; [, [&lt;GroupLevelFilter&gt;] [, … ] ] ] ] )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        GrandtotalFilter                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Optional<br></td>
+                                    <td class="definition">
+                                        <p>Filter to be applied to the grandtotal level.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        GroupBy_ColumnName                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Repeatable<br></td>
+                                    <td class="definition">
+                                        <p>A column to be returned.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        IsSubtotal_ColumnName                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Repeatable<br></td>
+                                    <td class="definition">
+                                        <p>An added IsSubtotal column.</p>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="parameter-name">
+                                        GroupLevelFilter                                                                                                                                                                                                    </td>
+                                    <td class="attributes">Optional<br>Repeatable<br></td>
+                                    <td class="definition">
+                                        <p>Filter to be applied to the current level.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+                            <section id="returns" class="return-value">
+                    <h2>Return values</h2>
+                    <p></p>                    <p>The function does not return a value. It only marks a subset of columns to <a href="https://dax.guide/addmissingitems/" class="ajax" data-id="19">ADDMISSINGITEMS</a>. </p>
+                </section>
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>The ROLLUPISSUBTOTAL function is used exclusively within <a href="https://dax.guide/addmissingitems/" class="ajax" data-id="19">ADDMISSINGITEMS</a>.</p>
+                </section>
+            
+            
+                                                    <a href="#alt" class="sliding">&raquo; 2 related functions</a><br>
+                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <pre class="brush: dax; title: ; try: https://dax.do/MTgMSDdhelWG9u/; notranslate" title="">
+--  ROLLUPISSUBTOTAL populates in ADDMISSINGITEMS the corresponding columns
+--  created by ROLLUPADDISSUBTOTAL in SUMMARIZECOLUMNS.
+EVALUATE
+ADDMISSINGITEMS (
+    'Date'&#91;Calendar Year],
+    'Date'&#91;Calendar Year Month],
+    SUMMARIZECOLUMNS (
+        ROLLUPADDISSUBTOTAL (
+            'Date'&#91;Calendar Year],
+            &quot;IsYearTotal&quot;,
+            'Date'&#91;Calendar Year Month],
+            &quot;IsYearMonthTotal&quot;
+        ),
+        &quot;Amt&quot;, &#91;Sales Amount]
+    ),
+    ROLLUPISSUBTOTAL (
+        'Date'&#91;Calendar Year],
+        &#91;IsYearTotal],
+        'Date'&#91;Calendar Year Month],
+        &#91;IsYearMonthTotal]
+    )
+)
+</pre>
+                </section>
+                        
+            
+                            <section id="alt" class="alt-fns">
+                    <h2>Related functions</h2>
+                                                                <p>Other related functions are:</p>
+                        <ul>
+                                                    <li><a href="https://dax.guide/addmissingitems/" class="ajax" data-id="19">ADDMISSINGITEMS</a></li>
+                                                    <li><a href="https://dax.guide/rollupgroup/" class="ajax" data-id="195">ROLLUPGROUP</a></li>
+                                                </ul>
+                                    </section>
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://www.sqlbi.com/p/mastering-dax-video-course/?aff=mdax-promo" target="_top" class="sam-click" data-campaign="mdax-video-2021" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/mdax-58090.jpg" title="Mastering DAX Video Course" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo, Imke Feldmann</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/rollupissubtotal-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/rollupissubtotal-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        

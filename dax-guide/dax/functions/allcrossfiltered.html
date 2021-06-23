@@ -1,0 +1,118 @@
+
+            <header>
+                <h1 title="ALLCROSSFILTERED"><a href="https://dax.guide/allcrossfiltered/" rel="bookmark">ALLCROSSFILTERED</a> <span class="smaller">DAX Function (Filter)</span></h1>
+
+                <div class="breadcrumb">
+                    <span class="nobot icon icon-menu">
+                        <a href="#syntax" class="sliding">Syntax</a>
+                                                 &nbsp;|&nbsp; <a href="#remarks" class="sliding">Remarks</a>                         &nbsp;|&nbsp; <a href="#examples" class="sliding">Examples</a>                                                                    </span>&nbsp;
+                </div>
+            </header>
+
+            <section class="description">
+                <p>Clear all filters which are applied to the specified table.</p>
+            </section>
+        
+            <section id="syntax" class="syntax">
+
+                <h2>Syntax</h2>
+
+                <div class="notation">
+                    ALLCROSSFILTERED ( &lt;TableName&gt; )                 </div>
+
+                                    <table class="parameters">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Attributes</th>
+                            <th>Description</th>
+                        </tr>
+                                                                                    <tr>
+                                    <td class="parameter-name">
+                                        TableName                                                                                                                                                                                                    </td>
+                                    <td class="attributes"></td>
+                                    <td class="definition">
+                                        <p>The table that you want to clear filters on.</p>
+                                    </td>
+                                </tr>
+                                                                        </table>
+                            </section>
+
+            
+            
+                            <section id="remarks" class="remarks">
+                    <h2>Remarks</h2>
+                    <p>ALLCROSSFILTERED can be used only as a <a href="https://dax.guide/calculate/" class="ajax" data-id="33">CALCULATE</a> modifier and cannot be used as a table function.</p>
+<p>ALLCROSSFILTERED removes all the filters on an expanded table (like <a href="https://dax.guide/all/" class="ajax" data-id="20">ALL</a>) and on columns and tables that are cross-filtering the table argument because of bidirectional cross-filters set on relationships directly or indirectly connected to the expanded table.</p>
+                </section>
+            
+            
+                                
+                <section id="examples" class="examples">
+                    <h2>Examples</h2>
+                    <p>ALLCROSSFILTERED removes the filter from the ColorGroups table that reaches Product through a limited relationship (many-to-many cardinality):</p>
+<div class="dax-do-block">
+<pre class="brush: dax; title: ; try: https://dax.do/DxeqyUXWvRt6KJ/; notranslate" title="">
+DEFINE
+    MEASURE Product&#91;#Prods] =
+        COUNTROWS ( 'Product' )
+    MEASURE Product&#91;#AllProds] =
+        CALCULATE ( &#91;#Prods], ALL ( 'Product' ) )
+    MEASURE Product&#91;#AllCrossProds] =
+        CALCULATE ( &#91;#Prods], ALLCROSSFILTERED ( 'Product' ) )
+EVALUATE
+ADDCOLUMNS (
+    VALUES ( ColorGroups&#91;Group] ),
+    &quot;#Prods&quot;, &#91;#Prods],
+    &quot;#AllProds&quot;, &#91;#AllProds],
+    &quot;#AllCrossProds&quot;, &#91;#AllCrossProds]
+)
+</pre>
+<div class="dax-do-results">
+<table>
+<thead>
+<tr>
+<th title="ColorGroups[Group]">Group</th>
+<th title="#Prods">#Prods</th>
+<th title="#AllProds">#AllProds</th>
+<th title="#AllCrossProds">#AllCrossProds</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-date">2009-01-01</td>
+<td class="col-int">135</td>
+<td class="col-int">135</td>
+<td class="col-int">2,517</td>
+</tr>
+<tr>
+<td class="col-date">2010-01-01</td>
+<td class="col-int">236</td>
+<td class="col-int">236</td>
+<td class="col-int">2,517</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                </section>
+                        
+            
+                        
+                        <div class="sam placeholder" style="width:580px;height:90px;" data-set="0" data-slot="s58090" data-multiple="true"><a href="https://dax.guide/" target="_top" class="sam-click" data-campaign="dax-guide" data-size="580x90"><img src="https://www.sqlbi.com/wp-content/uploads/daxguide-58090.png" title="DAX Guide" alt="" width="580" height="90"></a></div>
+        
+            <section class="side-notes">
+                
+<p>Last update: <span>Jun 16, 2021</span> &nbsp; <a href="#" class="show-dialog tooltip" title="Contribute to DAX Guide by submitting suggestions to improve the content and by reporting any issue." data-dialog="bug-dialog">&raquo; Contribute</a> &nbsp; <a href="#" class="show-contributors" data-toggle="&raquo; Hide contributors">&raquo; Show contributors</a></p>
+
+<p class="contributors">
+    Contributors: <span>Alberto Ferrari, Marco Russo</span>
+</p>                                    <p>Microsoft documentation: <a href="https://docs.microsoft.com/en-us/dax/allcrossfiltered-function-dax?WT.mc_id=DP-MVP-4025372" rel="nofollow" target="_blank">https://docs.microsoft.com/en-us/dax/allcrossfiltered-function-dax</a></p>
+                
+            </section>
+            
+            
+<div class="copy">
+    2018-2021 &copy; SQLBI. All rights are reserved. Information coming from Microsoft documentation is property of Microsoft Corp.  <a href="mailto:info@sqlbi.com?subject=DAX%20Guide" class="invert">&raquo; Contact us</a> &nbsp; <a href="https://dax.guide/privacy/" rel="nofollow" class="invert">&raquo; Privacy Policy &amp; Cookies</a>
+</div>        </div>
+
+        
